@@ -85,7 +85,7 @@
             </div>
             <div class="panel panel-primary">
                 <div class="panel-body">
-                    <table id="dataTables-example" class="table table-striped table-bordered table-sm">
+                    <table id="tblSG" class="table table-striped table-bordered table-sm">
                         <thead>
                             <tr>
                                 <th scope="col" width="200px" height=25px>ID Request</th>
@@ -107,29 +107,24 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Request Slip Gaji</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <form id="formSG">
-                    <div class="form-group">
-                        <span>Tanggal Request</span>
-                        <input type="date" name="txtTgl" id="txtTgl" placeholder="ID" class="form-control" style="width:500px" required/>
+                    <div class="form-group" hidden>
+                        <input type="text" name="txtIDReq" id="txtIDReq" placeholder="ID" class="form-control" style="width:500px" required />
                     </div>
-
-                    <div class="form-inline">
+                    <div class="form-group">
                         <div><span>Durasi Slip Gaji</span></div>
-                        @Html.DropDownList("Durasi1", new SelectList(listItems, "Value", "Text"), "Select Bulan", new { @class = "form-control", id = "Durasi1", style = "width:150px", required= "required" })
+                        <input type="date" name="txtTgl1" id="txtTgl1" placeholder="ID" class="form-control" style="width:500px" required />
                         <span>s/d</span>
-                        @Html.DropDownList("Durasi2", new SelectList(listItems, "Value", "Text"), "Select Bulan", new { @class = "form-control", id = "Durasi2", style = "width:150px", required= "required" })
+                        <input type="date" name="txtTgl2" id="txtTgl2" placeholder="ID" class="form-control" style="width:500px" required />
                         @*<input type="text" name="txtnamabank" id="txtnamabank" placeholder="nama bank" class="form-control" />*@
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" id="btnSubmit" class="btn btn-primary" data-dismiss="modal" value="Submit" />
+                <button type="button" class="btn btn-secondary" onclick="refresh()" data-dismiss="modal">Close</button>
+                <input type="submit" id="btnSubmit" class="btn btn-primary" value="Submit" />
             </div>
         </div>
     </div>
@@ -138,64 +133,118 @@
     <script type="text/javascript">
 
         $("#btnSubmit").on("click", function (e) {
-            var check = confirm('Are you sure to input data?');
                 e.preventDefault();
             let formdata = $("#formSG").serialize();
-            if (check == true) {
-                $.ajax({
-                    url: '@Url.Action("AddSG","User")',
-                    type: 'POST',
-                    data: formdata,
-                    success: function (data) {
-                        alert(data);
-                        refresh();
-                    },
-                    error: function () {
-                        alert("Insert Request Failed");
-                        refresh();
-                    }
-                });
-            } else {
-                return false;
+
+            if ($("#txtTgl1").val().length == 0) {
+                alert("Cek Kembali Inputan Anda");
+                $("#txtTgl1").focus();
             }
-                
+
+            if ($("#txtTgl2").val().length == 0) {
+                alert("Cek Kembali Inputan Anda");
+                $("#txtTgl2").focus();
+            }
+
+            else if ($("#txtTgl1").val().length != 0 && $("#txtTgl2").val().length != 0) {
+                 if ($("#txtIDReq").val().length == 0) {
+                    var check = confirm('Are you sure to input data?');
+                    if (check == true) {
+                        $.ajax({
+                            url: '@Url.Action("AddSG","User")',
+                            type: 'POST',
+                            data: formdata,
+                            success: function (data) {
+                                alert(data);
+                                refresh();
+                            },
+                            error: function () {
+                                alert("Insert Request Failed");
+                                refresh();
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                 }
+                 else if ($("#txtIDReq").val().length > 0) {
+                     var check = confirm("Are you sure to update data?")
+                     e.preventDefault();
+                    let formdata = $("#formSG").serialize();
+                    if (check == true) {
+                        $.ajax({
+                                url: '@Url.Action("UpdateSG","User")',
+                                type: 'POST',
+                                data: formdata,
+                                success: function (data) {
+                                    alert(data);
+                                    refresh();
+                                }
+                        });
+                    }
+                 }
+            }
+
         });
 
          $.get(
         '@Url.Action("ViewRequestSG")',
                  function (data) {
-                     $( "#dataTables-example tbody").empty();
+                     $( "#tblSG tbody").empty();
                      $.each(data, function (i, model) {
-                         console.log(model.status);
                          var date = `${model.value}`
                          var button = `<button id="${model.id_req}" class='btn btn-danger'>Delete</button>`
-                         var a = `<a href="FormEditSG/${model.id_req}" class='btn btn-primary'>Edit</a>`
-                         var rows = `<tr>
+                         var a = `<a id="${model.id_req}" data-toggle="modal" data-target="#mymodal" class='btn btn-primary'>Edit</a>`
+                         if (model.status == "requested") {
+                             var rows = `<tr>
                                         <td height=50px>${model.id_req}</td>
                                         <td height=50px > ${date}</td >
                                         <td height=50px > ${model.durasi_awal} - ${model.durasi_akhir}</td >
                                         <td height=50px > ${model.status}</td >
                                         <td height=50px >  ${a} ${button} </td >
                                     </tr >`;
+                         } else if (model.status != "requested") {
+                             var rows = `<tr>
+                                        <td height=50px>${model.id_req}</td>
+                                        <td height=50px > ${date}</td >
+                                        <td height=50px > ${model.durasi_awal} - ${model.durasi_akhir}</td >
+                                        <td height=50px > ${model.status}</td >
+                                        <td height=50px > </td >
+                                    </tr >`;
+                         }
 
-                         $("#dataTables-example tbody").append(rows);
-                 });
+
+                         $("#tblSG tbody").append(rows);
+                     });
+                     $("#tblSG").DataTable();
             });
 
         function refresh() {
             location.reload();
-            $("#txtTgl").val("");
-            $("#Durasi1").val("");
-            $("#Durasi2").val("");
+            $("#txtTgl1").val("");
+            $("#txtTgl2").val("");
 
         }
 
-        $("#dataTables-example").on("click", "button", function (e) {
+        $("#tblSG").on("click", "button", function (e) {
             var checkstr = confirm(`are you sure you want to delete Request ${e.target.id}?`);
             if (checkstr == true) {
                 $.get(`DeleteSG/${e.target.id}`, function (data) {
                     alert(data);
                     refresh();
+                });
+            } else {
+                return false;
+            }
+        });
+
+        $("#tblSG").on("click", "a", function (e) {
+            var checkstr = confirm(`are you sure you want to Update Request ${e.target.id}?`);
+            if (checkstr == true) {
+                $.get(`EditSG/${e.target.id}`, function (data) {
+                    $("#txtIDReq").val(`${data.id_req}`);
+                    $("#txtTgl1").val(`${data.durasi_awal}`);
+                    $("#txtTgl2").val(`${data.durasi_akhir}`);
                 });
             } else {
                 return false;
