@@ -1,0 +1,341 @@
+﻿
+@{
+    ViewBag.Title = "DashboardAdmin";
+    Layout = "~/Views/MasterLayout/MasterAdmin.cshtml";
+}
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Requested",
+        Value = "requested"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Processed",
+        Value = "processed"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Finished",
+        Value = "finished"
+    });
+}
+<style>
+    .panel-navy{
+        background-color:navy;
+        color:white
+    }
+    .panel-purple {
+      border-color: purple;
+    }
+    .panel-purple > .panel-heading {
+      border-color: purple;
+      color: white;
+      background-color: purple;
+    }
+    .panel-purple > a {
+      color: purple;
+    }
+    .panel-purple > a:hover {
+      color: purple;
+    }
+    .panel-darkblue {
+      border-color: navy;
+    }
+    .panel-darkblue > .panel-heading {
+      border-color: navy;
+      color: white;
+      background-color: navy;
+    }
+    .panel-darkblue > a {
+      color: navy;
+    }
+    .panel-darkblue > a:hover {
+      color: navy;
+    }
+</style>
+<div id="page-wrapper">    
+    <div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel" style="text-align:center">Detail Request</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="formDetailReq" name="formDetailReq">
+                        <div class="form-group col-lg-6">
+                            <span>ID Request</span>
+                            <input readonly id="id_req" placeholder="ID Request" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <span>Nama Pegawai</span>
+                            <input readonly id="nm_peg" placeholder="Nama Pegawai" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <span>Tanggal Request</span>
+                            <input readonly id="tgl_req" placeholder="Tanggal Request" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <span id="lbl_det1"></span>
+                            <input readonly id="det1" placeholder="Nama Pegawai" class="form-control" />
+                        </div>
+                        <div class="form-group col-lg" id="formDet2">
+                            <span id="lbl_det2"></span>
+                            <textarea id="det2" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group col-lg">
+                            <span>Update Status</span>
+                            @Html.DropDownList("StatusReq", new SelectList(listItems, "Value", "Text"), "Update Status",
+                                new { @class = "form-control", id = "StatusReq" })
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input type="submit" id="btnSubmit" class="btn btn-primary" data-dismiss="modal" value="Save" />
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div class="row"style="margin-top:6%">
+        <ul class="nav" id="nav_TipeSurat">
+            <li class="active" id="BREK">
+                <a href="#" class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-bank fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["BREK"]</div>
+                                    <div>Buka Rekening</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li id="KKRJ">
+                <a href="#" class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-suitcase fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["KKRJ"]</div>
+                                    <div>Keterangan Kerja</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li id="NPWP">
+                <a href="#" class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-file-text fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["NPWP"]</div>
+                                    <div>NPWP</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li id="GAJI">
+                <a href="#" class="col-lg-3 col-md-6">
+                    <div class="panel panel-purple">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-money fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["GAJI"]</div>
+                                    <div>Gaji</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li id="VISA">
+                <a href="#" class="col-lg-3 col-md-6">
+                    <div class="panel panel-darkblue">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-globe fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["VISA"]</div>
+                                    <div>VISA</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li id="PBTH">
+                <a href="#" class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-mortar-board fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["PBTH"]</div>
+                                    <div>Pemberitahuan</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary" id="TabelSurat">
+                <div class="panel-heading">
+                    Manage Request
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-pills" id="navpill_reqsurat">
+                        <li class="active" id="requested">
+                            <a href="#home-pills" data-toggle="tab">Requested</a>
+                        </li>
+                        <li id="processed">
+                            <a href="#profile-pills" data-toggle="tab">Processed</a>
+                        </li>
+                        <li id="finished">
+                            <a href="#messages-pills" data-toggle="tab">Finished</a>
+                        </li>
+                    </ul>
+                    <div class="panel-body">
+                        <table id="tbl_reqSurat" class="table-striped tbl_reqSurat">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="200px" height=25px>ID Request</th>
+                                    <th scope="col" width="250px" height=25px>Nama</th>
+                                    <th scope="col" width="150px" height=25px>Tanggal Request</th>
+                                    <th scope="col" width="150px" height=25px>Status</th>
+                                    <th scope="col" width="250px" height=25px>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- /#page-wrapper -->
+@section Script{
+    <script>
+
+        $("#btnSubmit").on("click", function () {
+            let idReq = $("#id_req").val();
+            let statusReq = $("#StatusReq").val();
+            $.post('@Url.Action("updateReq","Request")',
+                { 'status': statusReq, 'idReq': idReq },
+                function () {
+                    getData();
+                }
+            )
+        });
+
+        $().ready(function () {
+            getData();            
+        });
+
+        function getData() {
+            $('.tbl_reqSurat').DataTable().destroy();
+            let tipeSurat = $("#nav_TipeSurat li.active")[0].id;
+            let statusReq = $("#navpill_reqsurat li.active")[0].id;
+            $.get('@Url.Action("getListReq","Request")',
+                { 'status': statusReq, 'jenis': tipeSurat },
+                function (data) {                    
+                    $("#tbl_reqSurat tbody").empty();
+                    $.each(data, function (i, model) {
+                        var date = `${model.tglReq}`
+                        var button = `<button id="${model.id_req}" class='btn btn-success' data-toggle="modal" data-target="#MyModal" >View</button>`
+                        var a = `<a href="#/${model.id_req}" class="btn btn-xs btn-success">Check</a>`
+                        var rows = `<tr>
+                                        <td height=50px>${model.id_req}</td>
+                                        <td height=50px >${model.nama_pegawai}</td >
+                                        <td height=50px >${date}</td >
+                                        <td height=50px >${model.status}</td >
+                                        <td height=50px >${button} </td >
+                                    </tr >`;
+                        $("#tbl_reqSurat tbody").append(rows);
+                    });                              
+                    $('.tbl_reqSurat').DataTable();
+                }
+            )
+            
+        }
+
+        $("#tbl_reqSurat tbody").on("click", "button", function (e) {
+            console.log($(this)[0].id);
+            $.post('@Url.Action("DetReq", "Request")',
+                { 'idReq': $(this)[0].id },
+                function (data) {
+                    $("#id_req").val(data[0].id_req);
+                    $("#nm_peg").val(data[0].nama_pegawai);
+                    $("#tgl_req").val(data[0].tglReq);
+                    $("#det1").val(data[0].det1);
+                    $("#lbl_det1").html(data[0].textDet1);
+                    $("#StatusReq").val(data[0].status);
+                    if (data[0].det2 != 'none') {
+                        $("#formDet2").show();
+                        $("#lbl_det2").html(data[0].textDet2);
+                        $("#det2").val(data[0].det2);
+                    } else {
+                        $("#formDet2").hide();
+                    }
+
+                    console.log(data[0].det2);
+                }
+            )
+        });
+
+        $("#navpill_reqsurat").on("click", "li", function (e) {
+            $("#navpill_reqsurat li.active").removeClass("active");
+            $(this).addClass("active")
+            getData();
+        });
+
+        $("#nav_TipeSurat").on("click","li", function (e) {
+            $("#nav_TipeSurat li.active").removeClass("active");
+            $(this).addClass("active")
+
+            let className_TipeSurat = $("#nav_TipeSurat li.active")[0].children[0].children[0].className;
+            $("#TabelSurat").removeClass();
+            $("#TabelSurat").addClass(className_TipeSurat);
+
+            getData();
+        });
+
+
+    </script>
+
+}

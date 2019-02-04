@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="464b0f798b8b4eb0b56b5c1a918194cb" Name="Diagram1">
+        <EntityTypeShape EntityType="ACEModel.buku_rekening" Width="1.5" PointX="5.25" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.cuti" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.file_dokumen" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.keterangan_kerja" Width="1.5" PointX="5.25" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.klaim_medis" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.kuota_cuti" Width="1.5" PointX="3" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.lembur" Width="1.5" PointX="3" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.notifikasi" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.NPWP" Width="1.5" PointX="5.25" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.pemberitahuan" Width="1.5" PointX="5.25" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.personal_information" Width="1.5" PointX="0.75" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.request" Width="1.5" PointX="3" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.slip_gaji" Width="1.5" PointX="5.25" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.tunjangan_medical" Width="1.5" PointX="3" PointY="34.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.user" Width="1.5" PointX="3" PointY="38" IsExpanded="true" />
+        <EntityTypeShape EntityType="ACEModel.visa" Width="1.5" PointX="5.25" PointY="32.25" IsExpanded="true" />
+        <AssociationConnector Association="ACEModel.FK_REQ_B" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_NIP_CUTI" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.cFK_NIP" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_REQ_K" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_NIP_klaimMed" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_kuota_cuti_personal_information" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_NIP_LEMBUR" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_REQ_N" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_REQ_P" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_NIP_REQ" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_NIP_tunjMed" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_user_personal_information" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_REQ_S" ManuallyRouted="false" />
+        <AssociationConnector Association="ACEModel.FK_REQ_V" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

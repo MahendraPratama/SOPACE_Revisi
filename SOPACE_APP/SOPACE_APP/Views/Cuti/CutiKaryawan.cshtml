@@ -1,0 +1,170 @@
+﻿
+
+@{
+    ViewBag.Title = "Riwayat Cuti Karyawan";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Riwayat Cuti Karyawan @Session["user_nip"].ToString()</h2>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <button id="btnCuti" onclick="BtnClick()" class="btn btn-success" data-toggle="modal" data-target="#mymodal">Kuota Cuti</button>
+            </div>
+            
+            <table id="dataTables-example" class="table table-striped table-bordered table-sm-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" width="150px" height=20px>Tanggal Mulai Cuti</th>
+                        <th scope="col" width="150px" height=20px>Tanggal Selesai Cuti</th>
+                        <th scope="col" width="150px" height=20px>Alasan Cuti</th>
+                        <th scope="col" width="150px" height=20px>Detail</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="mymodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Informasi Detail Cuti</h3>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body row">
+                <form id="formCuti" name="formCuti">
+                    <table style="margin-left:50px">
+                        <tr>
+                            <td scope="col" width="150px" height=20px><span id="spNIP"><strong>NIP</strong></span></td>
+                            <td scope="col" width="150px" height=20px><span name="txtNIP" id="txtNIP"></span></td>
+                        </tr>
+                        <tr>
+                            <td scope="col" width="150px" height=20px><span id="spanNo"><strong>No Telepone</strong></span></td>
+                            <td scope="col" width="150px" height=20px><span name="txtNO" id="txtNo"></span></td>
+                        </tr>
+                        <tr>
+                            <td scope="col" width="150px" height=20px><span id="spanTglM"><strong>Tanggal Mulai Cuti</strong></span></td>
+                            <td scope="col" width="150px" height=20px><span name="txtTglMulai" id="txtTglMulai"></span></td>
+                        </tr>
+                        <tr>
+                            <td scope="col" width="150px" height=20px><span id="spanTglS"><strong>Tanggal Selesai Cuti</strong></span></td>
+                            <td scope="col" width="150px" height=20px><span name="txtTglSelesai" id="txtTglSelesai"></span></td>
+                        </tr>
+                        <tr>
+                            <td scope="col" width="150px" height=20px><span id="spanAlasan"><strong>Alasan Cuti</strong></span></td>
+                            <td><span id="t1">:</span></td>
+                            <td scope="col" width="150px" height=20px><textarea  name="txtAlasan" id="txtAlasan" class="form-control" style="border-color:white;background:none;margin-left:-145px" readonly></textarea></td>
+                        </tr>
+                        <tr>
+                            <td scope="col" width="150px" height=20px><span id="spAlamat"><strong>Alamat</strong></span></td>
+                            <td><span id="t2">:</span></td>
+                            <td scope="col" width="150px" height=20px><textarea name="txtAlamat" id="txtAlamat" class="form-control" style="border-color:white;background:none;margin-left:-145px" readonly></textarea></td>
+                        </tr>
+                    </table>
+                    @*<div class="col-md-8">
+                        <div class="form-inline">
+                          
+                        </div>
+                        <div class="form-inline">
+                            
+                            <text name="txtNO" id="txtNo" class="form-control" style="border-color:white;background:none" readonly></text>
+                        </div>
+                        <div class="form-inline">
+                            
+                            <text name="txtTglMulai" id="txtTglMulai" class="form-control" style="border-color:white;background:none" readonly></text>
+                        </div>
+                        <div class="form-inline">
+                            
+                            <text name="txtTglSelesai" id="txtTglSelesai" class="form-control" style="border-color:white;background:none" readonly></text>
+                        </div>
+                        <div class="form-inline">
+                            
+                            <textarea name="txtAlasan"id="txtAlasan" class="form-control" style="border-color:white;background:none" readonly></textarea>
+                        </div>
+                        <div class="form-inline">
+                            
+                            <textarea name="txtAlamat" id="txtAlamat" class="form-control" style="border-color:white;background:none" readonly></textarea>
+                        </div>
+                    </div>*@
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="refresh()" data-dismiss="modal">Close</button>
+                @*<input type="submit" id="btnSubmit" class="btn btn-primary" data-dismiss="modal" value="Submit" />*@
+            </div>
+        </div>
+    </div>
+</div>
+@section script{
+    <script type="text/javascript">
+         $.get(
+                 '@Url.Action("getcutikaryawan")',
+                 function (data) {
+                     $( "#dataTables-example tbody").empty();
+                     $.each(data, function (i, model) {
+                         var date1 = `${model.value1}`
+                         var date2 = `${model.value2}`
+                         //var button = `<button id="${model.id_req}" class='btn btn-danger'>Delete</button>`
+                         var a = `<a id=${model.id_cuti} data-toggle="modal" data-target="#mymodal" class='glyphicon glyphicon-eye-open'></a>`
+                         var rows = `<tr>
+                                        <td height=30px >${date1}</td >
+                                        <td height=30px > ${date2}</td >
+                                        <td height=30px>${model.alasan_cuti}</td>
+                                        <td height=30px>${a}</td>
+                                    </tr >`;
+
+                         $("#dataTables-example tbody").append(rows);
+                     });
+            });
+        $("#dataTables-example").on("click","a", function (e) {
+                $.get(`getcutikaryawanID/${e.target.id}`, function (data) {
+                    $.each(data, function (i, model) {
+                        $("#txtNIP").html(": " +`${model.NIP}`);
+                        $("#txtTglMulai").html(": "+`${model.value1}`);
+                        $("#txtTglSelesai").html(": "+`${model.value2}`);
+                        $("#txtAlasan").html(`${model.alasan_cuti}`);
+                        $("#txtNo").html(": "+`${model.no_tlp}`);
+                        $("#txtAlamat").html(`${model.alamat}`);
+                    });
+                });
+
+        });
+
+        function BtnClick() {
+            $.get('GetDataCutiKaryawan', function (data) {
+                $.each(data, function (i, model) {
+                    $("#spNIP").html('<strong>Sisa Cuti</strong>');
+                    $("#spanNo").html('<strong>Cuti Baru</strong>');
+                    $("#spanTglM").html('<strong>Expire Sisa Cuti</strong>');
+                    $("#spanTglS").html('<strong>Expire Cuti Baru</strong>');
+                    $("#spAlamat").hide();
+                    $("#spanAlasan").hide();
+                    $("#txtAlasan").hide();
+                    $("#txtAlamat").hide();
+                    $("#t1").hide();
+                    $("#t2").hide();
+                    $("#txtNIP").html(": "+`${model.sisa_cuti}`);
+                    $("#txtTglMulai").html(": "+`${model.value2}`);
+                    $("#txtTglSelesai").html(": "+`${model.value1}`);
+                    $("#txtNo").html(": "+`${model.cuti_baru}`);
+                });
+            });
+        };
+        function refresh() {
+            location.reload();
+        }
+
+
+    </script>
+}

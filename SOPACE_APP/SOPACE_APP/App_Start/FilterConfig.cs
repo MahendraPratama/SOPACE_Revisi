@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace SOPACE_APP
+namespace SOPACE_MVC
 {
     public class FilterConfig
     {

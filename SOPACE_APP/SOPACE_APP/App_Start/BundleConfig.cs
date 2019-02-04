@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace SOPACE_APP
+namespace SOPACE_MVC
 {
     public class BundleConfig
     {

@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Request Surat Keterangan Buka Rekening";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "BCA",
+        Value = "BCA"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "BNI",
+        Value = "BNI"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "BRI",
+        Value = "BRI"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "CIMB NIAGA",
+        Value = "CIMB NIAGA"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "MANDIRI",
+        Value = "MANDIRI"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "DANAMON",
+        Value = "DANAMON"
+    });
+}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Request Surat Keterangan Buka Rekening</h2>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <form id="formBR" name="formBR">
+            <div class="form-group">
+                <span>Tanggal Request</span>
+                <input type="date" name="txtTgl" id="txtTgl" placeholder="ID" class="form-control" style="width:500px" />
+            </div>
+
+            <div class="form-group">
+                <span >Nama Bank Dituju</span>
+                <div>@Html.DropDownList("NamaBank", new SelectList(listItems, "Value", "Text"), "Select Bank", new { @class = "form-control", id = "NamaBank", style = "width:500px" })</div>
+                @*<input type="text" name="txtnamabank" id="txtnamabank" placeholder="nama bank" class="form-control" />*@
+            </div>
+
+            <div class="form-group">
+                <span>Keperluan</span>
+                <textarea name="txtKeperluan" id="txtKeperluan" maxlength="50" class="form-control" style="width:500px" onkeyup="hitungtext()"></textarea>
+                <span id="hasil">0</span>/50 Karakter
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Submit" />
+        </form>
+        @Html.ActionLink("Back to List", "ViewBR")
+    </div>
+</div>
+@section script{
+    <script type="text/javascript">
+
+        $("#formBR").on("submit", function (e) {
+                e.preventDefault();
+                    let formdata = $("#formBR").serialize();
+                $.ajax({
+                    url: '@Url.Action("AddBR","User")',
+                    type: 'POST',
+                    data: formdata,
+                    success: function (data) {
+                        alert(data);
+                        refresh();
+                    },
+                    error: function () {
+                        alert("Insert Request Failed");
+                        refresh();
+                    }
+                });
+             });
+
+        function refresh() {
+            $("#txtTgl").val("");
+            $("#txtNamaBank").val("");
+            $("#NamaBank").val("");
+            $("#txtKeperluan").val("");
+            var total = document.getElementById('hasil');
+            total.innerHTML = 0;
+        }
+
+        function hitungtext() {
+            var teks = document.formBR.txtKeperluan.value.length;
+            var total = document.getElementById('hasil');
+            total.innerHTML = teks;
+        }
+        @*$('#txtNIP').change(function () {
+            $('#lblcheck').html("Checking....");
+            $.post('@Url.Action("GetNama")',
+                {
+                    id: $("#txtNIP").val()
+                },
+                function (data) {
+                    if (data == 0) {
+                        $('#lblcheck').html('<font color="Red">NIP Tidak Terdaftar</font>');
+                        $('#txtNIP').css("border-color", "red");
+                    }
+                    else {
+                        $('#txtNIP').css("border-color","black");
+                        $('#lblcheck').html(``);
+                        $('#txtNama').val(`${data}`);
+                    }
+                });
+        });*@
+
+    </script>
+
+}
+

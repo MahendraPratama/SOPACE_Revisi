@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewBag.Title = "Form Input Cuti Karyawan";
+    Layout = "~/Views/MasterLayout/MasterAdmin.cshtml";
+}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Form Input Cuti Karyawan</h2>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <form id="formCuti" name="formCuti">
+            <div class="col-lg-5">
+                <div class="panel panel-info" style="margin-left:10px">
+                    <div class="panel-heading">
+                        <div class="form-group">
+                            <span>NIP</span>
+                            <div class="form-inline">
+                                <input type="text" class="form-control" id="txtNIP" name="txtNIP" placeholder="NIP" style="width:300px" required />
+                                <label id="lblcheck"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span>Nama Pegawai</span>
+                            <div class="form-inline">
+                                <input type="text" class="form-control" id="txtNama" name=" txtNama" placeholder="Nama Pegawai" style="width:300px" readonly />
+                                <input type="submit" class="btn btn-primary" name="btnCheck" id="btnCheck" value="Check" />
+                                @*<label id="lblcuti"></label>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div id="formInput" name="formInput" hidden>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="form-group">
+                                <span>No Tlp</span>
+                                <input type="text" class="form-control" maxlength="15" id="txtNoTlp" name="txtNoTlp" pattern="[0-9]+" placeholder="( 0 - 9 )" required />
+                            </div>
+                            <div class="form-group">
+                                <span>Tanggal Mulai Cuti</span>
+                                <input type="date" class="form-control" id="txtTglMulai" name="txtTglMulai" required />
+                            </div>
+                            <div class="form-group">
+                                <span>Tanggal Selesai Cuti</span>
+                                <input type="date" class="form-control" id="txtTglSelesai" name="txtTglSelesai" required />
+                            </div>
+                            <div class="form-group">
+                                <span>Alamat yang Ditempati</span>
+                                <textarea type="text" class="form-control" maxlength="150" id="txtAlamat" onkeyup="hitungtext()" name="txtAlamat" required></textarea>
+                                <span id="hasil">0</span>/150 Karakter
+                            </div>
+                            <div class="form-group">
+                                <span>Alasan Cuti</span>
+                                <textarea type="text" class="form-control" maxlength="150" id="txtAlasan" onkeyup="hitungtext1()" name="txtAlasan" required></textarea>
+                                <span id="hasil1">0</span>/50 Karakter
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-lg-offset-7" id="btnSubmit" name="btnSubmit" hidden>
+                <input type="submit" class="btn btn-primary" value="Submit" onclick="return confirm('Are You Sure ?')" />
+                <input type="button" id="btnCancel" name="btnCancel" class="btn btn-danger" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section script{
+    <script type="text/javascript">
+
+        $('#formCuti').on("submit", function (e) {
+            var tglmulai = $("#txtTglMulai").val();
+            var tglselesai = $("#txtTglSelesai").val();
+            
+
+
+            if (tglselesai < tglmulai) {
+                alert("Tgl Selesai Lebih Kecil Dari Tanggal Mulai");
+            }
+            else {
+                e.preventDefault();
+                let formdata = $("#formCuti").serialize();
+                $.ajax({
+                    url: '@Url.Action("AddCuti","Cuti")',
+                    type: 'POST',
+                    data: formdata,
+                    success: function (data) {
+                        alert(data);
+                        refresh();
+                    },
+                    error: function () {
+                        alert("Insert Cuti Failed");
+                        refresh();
+                    }
+                });
+
+                $.ajax({
+                    url: '@Url.Action("UpdateKuota","Cuti")',
+                    type: 'POST',
+                    data: formdata,
+                    success: function (data) {
+                        alert(data);
+                        refresh();
+                    },
+                    error: function () {
+                        alert("Update Kuota Failed");
+                        refresh();
+                    }
+                });
+            }
+        })
+        
+
+        function refresh() {
+            $("#txtNIP").val("");
+            $("#txtNama").val("");
+            $("#lblcuti").html("");
+            $("#txtNoTlp").val("");
+            $("#txtTglMulai").val("");
+            $("#txtTglSelesai").val("");
+            $("#txtAlamat").val("");
+            $("#txtAlasan").val("");
+            $("#formInput").hide();
+            $('#btnSubmit').hide();
+        }
+
+         $('#txtNIP').change(function () {
+             $('#lblcheck').html("Checking....");
+             $('#formInput').hide();
+             $('#btnSubmit').hide();             
+             ($.post('@Url.Action("GetNamaEmp")',
+                 {
+                     'id': $("#txtNIP").val()
+                 },
+                 function (data) {
+                     
+                     if ($("#txtNIP").val().length < 1) {
+                         $('#lblcheck').html('');
+                         $('#txtNIP').css("border-color", "black");
+                         $('#txtNama').val(``);
+                         $('#lblcheck1').html('');
+                         $('#formInput').hide();
+                         refresh();
+                     }
+                     else if (data == 0) {
+                         $('#lblcheck').html('<font color="Red">NIP Tidak Terdaftar</font>');
+                         $('#txtNIP').css("border-color", "red");
+                     }
+                     else {
+                         $('#txtNIP').css("border-color", "black");
+                         $('#lblcheck').html(``);
+                         $('#txtNama').val(`${data}`);
+                     }
+                 }))
+        });
+
+        $('#btnCancel').on("click", function () {
+            refresh();
+        });
+
+        $('#btnCheck').on("click", function () {
+            var empid = $("#txtNIP").val().length;
+            if (empid < 1) {
+                alert("NIP Tidak Boleh Kosong");
+            }
+            else {
+                $.post('@Url.Action("GetJoinDate")',
+                    {
+                        id: $("#txtNIP").val()
+                    },
+                    function (data) {
+                        if (data == 0) {
+                            alert(data);
+                        }
+                        else {
+                            if (data < 365) {
+                                var checkstr = confirm(`Pegawai Belum 1 tahun bekerja, Lanjutkan?`);
+                                if (checkstr == true) {
+                                    $('#formInput').show();
+                                    $('#btnSubmit').show();
+
+                                } else {
+                                    $('#formInput').hide();
+                                    $('#btnSubmit').hide();
+                                }
+                            } else if(data >= 365) {
+                                $('#formInput').show();
+                                $('#btnSubmit').show();
+                            }
+                        }
+                    });
+
+                @*$.post('@Url.Action("GetCuti")',
+                    {
+                        id: $("#txtNIP").val()
+                    },
+                    function (data) {
+                        if (data == 0) {
+                            $('#lblcuti').text(``);
+                        }
+                        else if(data > 0) {
+                            $('#lblcuti').text(`${data}`);
+                        }
+                    });*@
+            }
+        });
+        
+
+
+
+        function hitungtext() {
+            var teks = document.formCuti.txtAlamat.value.length;
+            var total = document.getElementById('hasil');
+            total.innerHTML = teks;
+        }
+
+        function hitungtext1() {
+            var teks = document.formCuti.txtAlasan.value.length;
+            var total = document.getElementById('hasil1');
+            total.innerHTML = teks;
+        }
+    </script>
+   
+
+}

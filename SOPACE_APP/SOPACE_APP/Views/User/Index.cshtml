@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+
+<div id="page-wrapper">
+    <div class="col-lg-4 col-lg-push-4">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                <div class="row">
+                    <img class="col-xs-6 col-xs-push-3" id="imgProfil" alt="Sample Image"
+                         style="border-radius:50%;" />
+                </div>
+                <div class="row">
+                    <div class="huge text-center">Welcome</div>
+                    <div class="text-center">@TempData["Name"]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section script{
+    <script>
+        $("#imgProfil").attr("src", `../Content/@TempData["dir_profil"].ToString()`);
+    </script>
+
+}
+

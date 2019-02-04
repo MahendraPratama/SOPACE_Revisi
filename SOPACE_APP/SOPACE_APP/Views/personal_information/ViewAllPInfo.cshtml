@@ -1,0 +1,321 @@
+﻿@model IEnumerable<SOPACE_MVC.Models.personal_information>
+
+@{
+    ViewBag.Title = "ViewAllPInfo";
+    Layout = "~/Views/MasterLayout/MasterAdmin.cshtml";    
+
+    List<SelectListItem> listStatus = new List<SelectListItem>();
+    listStatus.Add(new SelectListItem
+    {
+        Text = "Active",
+        Value = "aktif"
+    });
+    listStatus.Add(new SelectListItem
+    {
+        Text = "Non Active",
+        Value = "nonaktif"
+    });
+}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class=" page-header col-lg-12">
+            <input id="btnMenu" type="button" class="btn  btn-outline btn-default" value="Menu" />
+            <label class="h3" style="margin-left:20px">Daftar Karyawan</label>
+        </div>
+        <div class="col-md-8 col-md-offset-2" id="menuViewEmp">
+            <ul class="nav" id="nav_stsKaryawan">
+                <li class="active" id="ACE">
+                    <a href="#" class="col-lg-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-sign-in fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">@TempData["EmpInt"]</div>
+                                        <div>Karyawan Internal</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li id="Eksternal">
+                    <a href="#" class="col-lg-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-external-link fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">@TempData["EmpEks"]</div>
+                                        <div>Karyawan Eksternal</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" id="tabelListEmp">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ul class="nav nav-pills" id="navpill_stsAktif">
+                        <li class="active col-md-2" id="aktif">
+                            <a href="#home-pills" data-toggle="tab">Aktif</a>
+                        </li>
+                        <li class="col-md-2" id="nonaktif">
+                            <a href="#profile-pills" data-toggle="tab">Non Aktif</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered table-hover tableEmp">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="200px" height=25px>NIP</th>
+                                <th scope="col" width="200px" height=25px>Nama Pegawai</th>
+                                <th scope="col" width="200px" height=25px>Posisi</th>
+                                <th scope="col" width="200px" height=25px>Tanggal Masuk</th>
+                                <th scope="col" width="200px" height=25px>Tanggal Lahir</th>
+                                <th scope="col" width="200px" height=25px>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--MODAL VIEW DETAIL-->
+    <div class="modal" tabindex="-1" role="dialog" id="MyModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Data Karyawan</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="claimdetail">
+                        <table>
+                            <tr>
+                                <td scope="col" width="180px" height="50px"><span>NIK</span></td>
+                                <td><label id="nik"></label></td>
+                            </tr>
+                            <tr>
+                                <td scope="col" width="180px" height="50px"><span>Nama</span></td>
+                                <td><label id="nama"></label></td>
+                            </tr>
+                            <tr>
+                                <td scope="col" width="180px" height="50px"><span>No.KTP</span></td>
+                                <td><label id="ktp"></label></td>
+                            </tr>
+                            <tr>
+                                <td scope="col" width="180px" height="50px"><span>Alamat</span></td>
+                                <td><label>:</label></td>
+                                <td><textarea id="alamat" readonly style="width:300px; height:100px; margin-left:-123px"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td scope="col" width="180px" height="50px"><span>No. Telp</span></td>
+                                <td><label id="notlp"></label></td>
+                            </tr>
+                            <tr>
+                                <td scope="col" width="180px" height="50px"><span>Email</span></td>
+                                <td><label id="email"></label></td>
+                            </tr>
+                            <tr>
+                                <td scope="col" width="180px" height="50px"><span>No. Rek</span></td>
+                                <td><label id="norek"></label></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--MODAL VIEW DETAIL-->
+    <!--Modal Ubah Status-->
+    <div id="ModalUbahStatus" tabindex="-1" role="dialog" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--modal header-->
+                <div class="modal-header">
+                    <button type="button" class="close cancelUbahStatus" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title text-center">Ubah Status Karyawan</h3>
+                </div>
+                <!--modal header-->
+                <!--modal body-->
+                <div class="modal-body">
+                    <form id="formUbahStatus">
+                        <div class="form-group">
+                            <label> NIP Pegawai</label>
+                            <input id="nip_pegawai" name="nip_pegawai" class="form-control" placeholder="NIP Pegawai" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label> Nama Pegawai</label>
+                            <input id="nm_pegawai" name="nm_pegawai" class="form-control" placeholder="Nama Pegawai" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label> Status</label>
+                            @Html.DropDownList("status_aktif",
+                                new SelectList(listStatus, "Value", "Text"), "Set Status Karyawan",
+                                new { @class = "form-control"})
+                        </div>
+                        <div id="resign" hidden>
+                            <div class="form-group">
+                                <label> Tanggal Resign</label>
+                                <input type="date" class="form-control" id="tanggal_resign" name="tanggal_resign" />
+                            </div>
+                            <div class="form-group">
+                                <label> Alasan Resign</label>
+                                <textarea class="form-control" id="alasan_resign" name="alasan_resign"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--modal body-->
+                <!--modal footer-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cancelUbahStatus" data-dismiss="modal">Cancel</button>
+                    <input type="submit" id="btnSubmitStatus" class="btn btn-primary" data-dismiss="modal" value="Save" />
+                </div>
+                <!--modal footer-->
+            </div>
+        </div>
+    </div>
+    <!--Modal Ubah Status-->
+</div>
+
+@section Script{
+    <script>
+        $().ready(function () {
+            $("#tabelListEmp").hide();
+        });
+
+        $("#btnMenu").click(function () {
+            $("#tabelListEmp").hide();
+            $("#menuViewEmp").fadeIn();
+        });
+
+        $(".cancelUbahStatus").click(function () {
+            $("#formUbahStatus")[0].reset();
+            $("#resign").hide();
+        });
+
+        $("#btnSubmitStatus").click(function (event) {
+            let form = $("#formUbahStatus");
+            event.preventDefault();
+            let formdata = form.serialize();
+            $.ajax({
+                url: '@Url.Action("UbahStatus","PersonInfo")',
+                type: 'POST',
+                data: formdata,
+                success: function (data) {
+                    alert(data);
+                    getData();
+                }
+            });
+        });
+
+        $("#status_aktif").on("change", function (e) {
+            console.log(e.target.value);
+            if (e.target.value == 'nonaktif') {
+                $("#resign").show();
+            } else {
+                $("#resign").hide();
+            }
+        });
+        function getData() {
+            $('.tableEmp').DataTable().destroy();
+            let penempatan = $("#nav_stsKaryawan li.active")[0].id;
+            let statusAktif = $("#navpill_stsAktif li.active")[0].id;
+            $.get('@Url.Action("getDataPInfo", "PersonInfo")',
+                { 'penempatan': penempatan, 'status': statusAktif },
+                function (data) {
+                    $(".tableEmp tbody").empty();
+                    $.each(data, function (i, model) {
+                        var buttonView = `<button id="btnView" onclick=ViewDetail('${model.usrnm}') class='btn btn-success btn-xs'
+                                                data-toggle="modal" data-target="#MyModal" >View</button>`
+                        var buttonEdit = `<button id="btnEdit" onclick=EditPinfo('${model.usrnm}') class='btn btn-primary btn-xs'>Edit</button>`
+                        var buttonDelete = `<button id="btnDelete" onclick=DelPinfo('${model.usrnm}') class='btn btn-danger btn-xs'>Delete</button>`
+                        var buttonStatus = `<button id="btnStatus" class='btn btn-info btn-xs' data-toggle="modal"
+                                                data-target="#ModalUbahStatus">Status</button>`
+                        var rows = `<tr>
+                                        <td height=50px class="nipPegawai">${model.NIP}</td>
+                                        <td height=50px class="namaPegawai" >${model.nama_pegawai}</td >
+                                        <td height=50px >${model.posisi}</td >                                        
+                                        <td height=50px >${model.tglMasuk}</td >
+                                        <td height=50px >${model.tglLahir}</td >
+                                        `;
+
+                        var superadmin = `<td height=50px >${buttonView} ${buttonEdit} ${buttonStatus} ${buttonDelete}</td >
+                                    </tr >`
+                        var admin = `<td height=50px >${buttonView} ${buttonEdit} ${buttonStatus}</td >
+                                    </tr >`
+                        if ('@Session["user_nip"]' == 'superadmin') {
+                            $(".tableEmp tbody").append(rows + superadmin);
+                        } else {
+                            $(".tableEmp tbody").append(rows + admin);
+                        }
+                    });
+                    $('.tableEmp').DataTable();
+                }
+            )
+        }
+        $(".tableEmp").on("click", "button[id=btnStatus]", function () {
+            let nama = $(this).closest("tr").find(".namaPegawai").text();
+            let nip = $(this).closest("tr").find(".nipPegawai").text();
+            $("#nm_pegawai").val(nama);
+            $("#nip_pegawai").val(nip);
+        });
+        function DelPinfo(username) {
+            location.href = `/PersonInfo/DELETE/${username}`;
+        }
+       
+        function ViewDetail(username) {
+            console.log(username);
+            $.get(`GetInfo/${username}`, function (data) {
+                $.each(data, function (i, model) {                    
+                    $("#nik").html(": " + `${model.NIP}`);
+                    $("#nama").html(": " + `${model.nama_pegawai}`);
+                    $("#ktp").html(": " + `${model.no_ktp}`);
+                    $("#alamat").html(`${model.alamat_identitas}`);
+                    $("#notlp").html(": " + `${model.no_hp}`);
+                    $("#email").html(": " + `${model.email}`);
+                    $("#norek").html(": " + `${model.no_rek}`);
+                });
+            });
+        }
+        function EditPinfo(username) {
+            location.href = `/PersonInfo/${username}/edit`;
+        }
+        
+        $("#nav_stsKaryawan").on("click", "li", function (e) {
+            $("#nav_stsKaryawan li.active").removeClass("active");
+            $(this).addClass("active");
+            $("#menuViewEmp").fadeOut();
+            $("#tabelListEmp").fadeIn();
+            getData();
+        });
+
+        $("#navpill_stsAktif").on("click", "li", function (e) {
+            console.log($("#navpill_stsAktif li.active")[0].id);
+            $("#navpill_stsAktif li.active").removeClass("active");
+            $(this).addClass("active");
+            getData();
+        });
+    </script>
+}

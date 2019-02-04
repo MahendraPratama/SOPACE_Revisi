@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SOPACE_APP")]
+[assembly: AssemblyTitle("SOPACE_MVC")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SOPACE_APP")]
+[assembly: AssemblyProduct("SOPACE_MVC")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d7e4186f-d4aa-408e-b059-f4b02d0ba967")]
+[assembly: Guid("b023f826-2d2b-43f3-8c50-cc11c926588b")]
 
 // Version information for an assembly consists of the following four values:
 //

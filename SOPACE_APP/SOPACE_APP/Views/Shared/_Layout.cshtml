@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Adicipta Carsani Ekakarya</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -27,16 +27,28 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    <div class="section col-md-12 row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item">News</li>
+                <li class="list-group-item"><a href="#">Request Surat slip Gaji</a></li>
+                <li class="list-group-item"><a href="@Url.Action("/ViewBR")">Request Surat Surat Keterangan Buka Rekening</a></li>
+                <li class="list-group-item"><a href="@Url.Action("/ViewKKRJ")">Request Surat Keterangan Kerja</a></li>
+                <li class="list-group-item">Request Surat Keterangan Buat NPWP</li>
+            </ul>
+        </div>
+        <div class="col-md-7">
+            @RenderBody()
+        </div>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <div class="footer text-center">
+        &copy;2019 Adicipta Carsani Ekakarya
+    </div>
+    <script src="~/Style/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Style/vendor/bootstrap/js/bootstrap.min.js"></script>
+    @RenderSection("script")
 </body>
 </html>

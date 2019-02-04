@@ -1,0 +1,90 @@
+﻿@model SOPACE_MVC.Models.visa
+
+@{
+    ViewBag.Title = "Request Surat Pembuatan Visa";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Request Surat Pembuatan Visa</h2>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+
+        <form id="formVisa" name="formVisa">
+            <div class="form-horizontal">
+                <h4>visa</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.id_req)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.no_passport, "No Passport", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.no_passport, new { htmlAttributes = new { @class = "form-control", style = "width:300px", id="txtnopass",name="txtnopass", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.no_passport, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.keperluan, "Keperluan", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.keperluan, new { @class = "form-control", id = "txtKeperluan", name = "txtKeperluan", style = "width:300px;height:100px", onKeyUp = "hitungtext()", maxlength = "50", required = "required" })<span id="hasil">0</span>/50 Karakter
+                        @Html.ValidationMessageFor(model => model.keperluan, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Submit" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div>
+            @Html.ActionLink("Back to List", "ViewVisa")
+        </div>
+    </div>
+</div>
+
+@section script{
+    <script type="text/javascript">
+
+                $("#formVisa").on("submit", function (e) {
+                    var check = confirm("Are you sure to update data??")
+                                e.preventDefault();
+                    let formdata = $("#formVisa").serialize();
+                    if (check == true) {
+                        $.ajax({
+                            url: '@Url.Action("UpdateVisa","User")',
+                            type: 'POST',
+                            data: formdata,
+                            success: function (data) {
+                                alert(data);
+                                refresh();
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                   
+                });
+        function refresh() {
+            $("#txtnopass").val("");
+            $("#txtKeperluan").val("");
+
+            var total = document.getElementById('hasil');
+            total.innerHTML = 0;
+        }
+        function hitungtext() {
+            var teks = document.formVisa.txtKeperluan.value.length;
+            var total = document.getElementById('hasil');
+            total.innerHTML = teks;
+        }
+    </script>
+}

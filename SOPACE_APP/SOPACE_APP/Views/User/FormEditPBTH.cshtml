@@ -1,0 +1,90 @@
+﻿@model SOPACE_MVC.Models.pemberitahuan
+
+@{
+    ViewBag.Title = "FormEditPBTH";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Request Surat Pemberitahuan</h2>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+
+        <form id="formPBTH" name="formPBTH">
+            <div class="form-horizontal">
+                <h4>pemberitahuan</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.id_req)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.tujuan, "Yang Dituju", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.tujuan, new { htmlAttributes = new { @class = "form-control", id = "txtTujuan", style = "width:300px", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.tujuan, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.deskripsi, "Deskripsi Pemberitahuan", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.deskripsi, new { @class = "form-control", id = "txtDesc", onKeyUp = "hitungtext()", style = "width:300px;height:100px", maxlength = "150", required = "required" })<span id="hasil">0</span>/150 Karakter
+                        @Html.ValidationMessageFor(model => model.deskripsi, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Submit" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        @Html.ActionLink("Back to List", "ViewPBTH")
+    </div>
+</div>
+        
+        @section script{
+            <script type="text/javascript">
+
+                $("#formPBTH").on("submit", function (e) {
+                    var check = confirm("Are you sure to update data?")
+                        e.preventDefault();
+                    let formdata = $("#formPBTH").serialize();
+                    if (check == true) {
+                        $.ajax({
+                            url: '@Url.Action("UpdatePBTH","User")',
+                            type: 'POST',
+                            data: formdata,
+                            success: function (data) {
+                                alert(data);
+                                refresh();
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                    
+                });
+                function refresh() {
+                    $("#txtTujuan").val("");
+                    $("#txtDesc").val("");
+
+                    var total = document.getElementById('hasil');
+                    total.innerHTML = 0;
+        }
+        function hitungtext() {
+            var teks = document.formPBTH.txtDesc.value.length;
+            var total = document.getElementById('hasil');
+            total.innerHTML = teks;
+        }
+            </script>
+        }

@@ -1,0 +1,125 @@
+﻿@model SOPACE_MVC.Models.slip_gaji
+
+@{
+    ViewBag.Title = "Request Slip Gaji";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Januari",
+        Value = "Januari"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Februari",
+        Value = "Februari"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Maret",
+        Value = "Maret"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "April",
+        Value = "April"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Mei",
+        Value = "Mei    "
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Juni",
+        Value = "Juni"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Juli",
+        Value = "Juli"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Agustus",
+        Value = "Agustus"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "September",
+        Value = "September"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Oktober",
+        Value = "Oktober"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "November",
+        Value = "November"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Desember",
+        Value = "Desember"
+    });
+}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Request Slip Gaji</h2>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <form id="formSG">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.id_req)
+
+                <div class="form-inline">
+                    <div><span>Durasi Slip Gaji</span></div>
+                    @Html.DropDownListFor(model => model.durasi_awal, new SelectList(listItems, "Value", "Text"), "Select Bulan", new { @class = "form-control", id = "Durasi1", style = "width:150px", required="required" })
+                    <span>s/d</span>
+                    @Html.DropDownListFor(model => model.durasi_akhir, new SelectList(listItems, "Value", "Text"), "Select Bulan", new { @class = "form-control", id = "Durasi2", style = "width:150px", required = "required" })
+                    @*<input type="text" name="txtnamabank" id="txtnamabank" placeholder="nama bank" class="form-control" />*@
+                </div>
+                        <input type="submit" value="Submit" class="btn btn-default" style="margin-left:2px;margin-top:4px" />
+        </form>
+
+        <div>
+            @Html.ActionLink("Back to List", "ViewSG")
+        </div>
+    </div>
+</div>
+@section script{
+    <script type="text/javascript">
+
+                $("#formSG").on("submit", function (e) {
+                    var check = confirm("Are you sure to update data?")
+                                e.preventDefault();
+                    let formdata = $("#formSG").serialize();
+                    if (check == true) {
+                        $.ajax({
+                                url: '@Url.Action("UpdateSG","User")',
+                                type: 'POST',
+                                data: formdata,
+                                success: function (data) {
+                                    alert(data);
+                                    refresh();
+                                }
+                        });
+                    }
+                    
+                });
+                function refresh() {
+                    $("#Durasi1").val("");
+                    $("#Durasi2").val("");
+                }
+    </script>
+
+    }

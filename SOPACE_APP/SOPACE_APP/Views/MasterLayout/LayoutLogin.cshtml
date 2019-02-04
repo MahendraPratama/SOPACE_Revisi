@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link href="~/Style/MatrixAdmin/dist/css/style.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="main-wrapper">        
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-theme">            
+            <div class="auth-box bg-light border-top border-secondary">
+                <div class="text-center p-t-20 p-b-20" style="margin-bottom:20px">
+                    <h3 class="font-weight-bold">ACE EMPLOYEE INFORMATION</h3>
+                </div>
+                @RenderBody()
+
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Style/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Style/vendor/bootstrap/js/bootstrap.min.js"></script>
+    @RenderSection("Script")
+</body>
+</html>

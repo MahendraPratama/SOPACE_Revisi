@@ -1,0 +1,132 @@
+﻿@model SOPACE_MVC.Models.user
+    @{
+        ViewBag.Title = "HalamanLogin";
+        Layout = "~/Views/MasterLayout/LayoutLogin.cshtml";
+    }
+
+<div id="loginform">
+    
+    <!-- Form -->
+    <form class="form-horizontal m-t-20" id="loginForm">
+        <div class="row p-b-30">
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
+                    </div>
+                    @Html.TextBoxFor(model => model.username, "", new { @class = "form-control form-control-lg", required="", placeholder="Username" })
+                    @*< input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required="">*@
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-warning text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
+                    </div>
+                    @Html.TextBoxFor(model => model.password, "", new { @class = "form-control form-control-lg", type = "password", required = "", placeholder = "Password" })
+                    @*<input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required="">*@
+                </div>
+            </div>
+        </div>
+        <div class="row border-top border-secondary">
+            <div class="col-12" style="margin-top:10px">
+                <div class="form-group">
+                    <div class="p-t-20">
+                        <button class="btn btn-info" id="to-recover" type="button"><i class="fa fa-lock m-r-5"></i> Lost password?</button>
+                        <button class="btn btn-success float-right" type="submit" id="btnlogin">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="recoverform">
+    <div class="text-center">
+        <span class="text-white">Enter your e-mail address below and we will send you instructions how to recover a password.</span>
+    </div>
+    <div class="row m-t-20">
+        <!-- Form -->
+        <form class="col-12" id="recoverForm">
+            <!-- email -->
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-danger text-white" id="basic-addon1"><i class="ti-email"></i></span>
+                </div>
+                <input id="email" type="text" class="form-control form-control-lg" placeholder="Email Address" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <!-- pwd -->
+            <div class="row m-t-20 p-t-20 border-top border-secondary">
+                <div class="col-12" style="margin-top:10px">
+                    <a class="btn btn-success" href="#" id="to-login" name="action">Back To Login</a>
+                    <button class="btn btn-info float-right" type="button" onclick="sendRecover()" name="action">Recover</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Script{
+    <script type="text/javascript">
+
+        $().ready(function () {
+            $.get('@Url.Action("CekLogin")', function (dataUrl) {
+                if (dataUrl == 'admin' || dataUrl == 'superadmin') {
+                    location.href = '/Admin';
+                } else if (dataUrl == 'user') {
+                    location.href = '/user';
+                }
+            });
+        });
+        // ==============================================================
+        // Login and Recover Password
+        // ==============================================================
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            //$("#loginform : input").attr('disabled', true);
+            $("#recoverform").fadeIn();
+            //$("#recoverform : input").attr('disabled', false);
+        });
+
+        $('#to-login').click(function () {
+
+            $("#recoverform").hide();
+            //$("#recoverform : input").attr('disabled', true);
+            $("#loginform").fadeIn();
+            //$("#loginform : input").attr('disabled', false);
+        });
+
+        function sendRecover() {
+            let emailAddr = $("#email").val();
+            $.post('@Url.Action("recover","Email")',
+                { 'email': emailAddr },
+                function (data) {
+                    alert(data);
+                }
+            )
+        };
+
+        $("#loginForm").on("submit", function (e) {
+            e.preventDefault();
+            let formData = $(this).serialize();
+
+            $.ajax({
+                url: '@Url.Action("Login", "Home")',
+                type: 'POST',
+                data: formData,
+                success: function (data) {
+                    if (data == 'superadmin' || data == 'admin') {
+                        location.href = '/Admin';
+                    } else if (data == 'user') {
+                        location.href = '/User';
+                    }
+                    else {
+                        alert(data);
+                    }                    
+                }
+
+            });
+        });
+    </script>
+}
+
+
+

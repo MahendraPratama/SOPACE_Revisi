@@ -1,0 +1,180 @@
+﻿@model SOPACE_MVC.Models.lembur
+
+@{
+    ViewBag.Title = "InputLembur";
+    Layout = "~/Views/MasterLayout/MasterAdmin.cshtml";
+}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Input Data Lembur</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <form id="formAdd">
+                <div class="form-horizontal">
+                    <h4>Form Lembur</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("ID Lembur", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.id_lembur, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.id_lembur, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NIP, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.NIP, new { htmlAttributes = new { @class = "form-control", id = "nip", placeholder = "Ex: ACE.YYYY.001", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.NIP, "", new { @class = "text-danger" })
+                        </div>
+                        <div><label id="asd"></label></div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Nama Pegawai", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @*@Html.Editor("Nama", new { htmlAttributes = new { @class = "form-control", id = "nama", @readonly = "true" } })*@
+                            <label class="form-control" id="nama"></label>
+                            @*@Html.Label("Nama", new { htmlAttributes = new { @class = "form-control", id = "nama" } })*@
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                    @Html.LabelFor(model => model.NIP, "NIP", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("NIP", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NIP, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                    <div class="form-group">
+                        @Html.Label("Tanggal", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.tanggal, new { htmlAttributes = new { @class = "form-control", type = "date", id = "tgl", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.tanggal, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Jam Mulai Lembur", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.jam_mulai, new { htmlAttributes = new { @class = "form-control", type = "time", id = "jamm", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.jam_mulai, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Jam Selesai Lembur", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.jam_selesai, new { htmlAttributes = new { @class = "form-control", type = "time", id = "jams", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.jam_selesai, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Total Jam Lembur", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.total_jam, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "totjam" } })
+                            @Html.ValidationMessageFor(model => model.total_jam, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" id="input" />
+                        </div>
+                    </div>
+                </div>
+                @*}*@
+            </form>
+        </div>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+@section Script{
+    <script>
+        $().ready(function () {
+            $.get('@Url.Action("GetIDLembur","Lembur")', function (data) {
+                console.log(data);
+                $("#id_lembur").val(data);
+            });
+        });
+
+        $().ready(function () {
+            $("#totjam").html("");
+            $("#jams, #jamm").change(function () {
+                var stime = $('#jamm').val();
+                var etime = $('#jams').val();
+                var hours = etime.split(':')[0] - stime.split(':')[0];
+                var minutes = etime.split(':')[1] - stime.split(':')[1];
+                minutes = minutes.toString().length < 2 ? '0' + minutes : minutes;
+                if (minutes < 0) {
+                    hours--;
+                    minutes = 60 + minutes;
+                    if (hours < 0) {
+                        $("#totjam").css("border-color", "red");
+                    }
+                    else {
+                        $("#totjam").css("border-color", "");
+                    }
+                }
+                hours = hours.toString().length < 2 ? '0' + hours : hours;
+                $('#totjam').val(hours + ':' + minutes);
+            });
+        });
+
+        $("#nip").change(function () {
+            $("#asd").html("Checking . . .");
+            $.post("@Url.Action("GetNIP","Lembur")",
+                {
+                    nip: $("#nip").val()
+                },
+            function (data) {
+                    if (data == 0) {
+                        $("#asd").html(`<font color="Red">NIP Tidak Terdaftar</font>`);
+                        $("#asd").val(null);
+                        $("#nip").css("border-color", "red");
+                        $("#nama").text("");
+                    }
+                    else {
+                        $("#asd").html("");
+                        $("#nip").css("border-color", "");
+                        $("#nama").text(`${data}`)
+                    }
+                });
+        });
+
+        $("#formAdd").on("submit", function (e) {
+            var stime = $("#jamm").val();
+            var etime = $("#jams").val();
+            var nip = $("#nama").text();
+
+            if (stime > etime) {
+                alert("Start Time Should Not Be Greater Than End Time");
+            }else if (nip == '') {
+                alert("Employee Not Registered");
+            } else {
+                e.preventDefault();
+                   let formdata = $(this).serialize();
+                   $.ajax({
+                        url: '@Url.Action("AddLembur","Lembur")',
+                        type: 'POST',
+                        data: formdata,
+                        success: function (data) {
+                            alert(data);
+                            location.reload();
+                        }
+                   });
+            }
+
+        });
+    </script>
+}
+

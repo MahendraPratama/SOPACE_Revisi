@@ -1,0 +1,1245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ACEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="buku_rekening">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="keperluan" Type="varchar" MaxLength="50" />
+          <Property Name="nama_bank" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="cuti">
+          <Key>
+            <PropertyRef Name="id_cuti" />
+          </Key>
+          <Property Name="id_cuti" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="tgl_mulai_cuti" Type="date" />
+          <Property Name="tgl_selesai_cuti" Type="date" />
+          <Property Name="alasan_cuti" Type="varchar" MaxLength="50" />
+          <Property Name="no_tlp" Type="varchar" MaxLength="15" />
+          <Property Name="alamat" Type="text" />
+        </EntityType>
+        <EntityType Name="file_dokumen">
+          <Key>
+            <PropertyRef Name="id_dok" />
+          </Key>
+          <Property Name="id_dok" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="foto_profil" Type="varchar" MaxLength="50" />
+          <Property Name="foto_buku_rekening" Type="varchar" MaxLength="50" />
+          <Property Name="cv" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="keterangan_kerja">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="jabatan" Type="varchar" MaxLength="20" />
+          <Property Name="alamat" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="klaim_medis">
+          <Key>
+            <PropertyRef Name="id_klaim_medis" />
+          </Key>
+          <Property Name="id_klaim_medis" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="nama_pasien" Type="varchar" MaxLength="50" />
+          <Property Name="hubungan_pasien" Type="varchar" MaxLength="15" />
+          <Property Name="nama_dokter" Type="varchar" MaxLength="50" />
+          <Property Name="tgl_perawatan" Type="date" />
+          <Property Name="alamat_rs" Type="varchar" MaxLength="50" />
+          <Property Name="no_tlp" Type="varchar" MaxLength="15" />
+          <Property Name="diagnosa" Type="varchar" MaxLength="15" />
+          <Property Name="total_tagihan" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="15" />
+          <Property Name="id_tipe" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="payout" Type="numeric" Precision="12" Scale="0" />
+        </EntityType>
+        <EntityType Name="kuota_cuti">
+          <Key>
+            <PropertyRef Name="NIP" />
+          </Key>
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="sisa_cuti" Type="int" />
+          <Property Name="exp_sisa_cuti" Type="date" />
+          <Property Name="cuti_baru" Type="int" />
+          <Property Name="exp_cuti_baru" Type="date" />
+          <Property Name="status" Type="varchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="lembur">
+          <Key>
+            <PropertyRef Name="id_lembur" />
+          </Key>
+          <Property Name="id_lembur" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="tanggal" Type="date" />
+          <Property Name="jam_mulai" Type="time" Precision="7" />
+          <Property Name="jam_selesai" Type="time" Precision="7" />
+          <Property Name="total_jam" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="notifikasi">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="id_notifikasi" Type="varchar" MaxLength="20" />
+          <Property Name="id_penerima" Type="varchar" MaxLength="20" />
+          <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NPWP">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="no_tlp" Type="varchar" MaxLength="15" />
+          <Property Name="alamat_kantor_pajak" Type="text" />
+        </EntityType>
+        <EntityType Name="pemberitahuan">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="tujuan" Type="varchar" MaxLength="50" />
+          <Property Name="deskripsi" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="personal_information">
+          <Key>
+            <PropertyRef Name="NIP" />
+          </Key>
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="nama_pegawai" Type="varchar" MaxLength="50" />
+          <Property Name="tgl_lahir" Type="date" />
+          <Property Name="alamat_identitas" Type="text" />
+          <Property Name="alamat_domisili" Type="text" />
+          <Property Name="NPWP" Type="varchar" MaxLength="25" />
+          <Property Name="no_ktp" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="no_hp" Type="varchar" MaxLength="15" />
+          <Property Name="agama" Type="varchar" MaxLength="10" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="pendidikan" Type="varchar" MaxLength="50" />
+          <Property Name="jurusan" Type="varchar" MaxLength="50" />
+          <Property Name="tgl_masuk" Type="date" />
+          <Property Name="status_pajak" Type="varchar" MaxLength="15" />
+          <Property Name="jenis_kelamin" Type="char" MaxLength="1" />
+          <Property Name="status_aktif" Type="varchar" MaxLength="15" />
+          <Property Name="no_rek" Type="varchar" MaxLength="20" />
+          <Property Name="penempatan" Type="varchar" MaxLength="30" />
+          <Property Name="posisi" Type="varchar" MaxLength="30" />
+          <Property Name="tgl_resign" Type="date" />
+          <Property Name="alasan_resign" Type="text" />
+        </EntityType>
+        <EntityType Name="request">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="nama_pegawai" Type="varchar" MaxLength="50" />
+          <Property Name="status" Type="varchar" MaxLength="20" />
+          <Property Name="tanggal_request" Type="date" />
+        </EntityType>
+        <EntityType Name="slip_gaji">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="durasi_awal" Type="varchar" MaxLength="10" />
+          <Property Name="durasi_akhir" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tunjangan_medical">
+          <Key>
+            <PropertyRef Name="NIP" />
+          </Key>
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="saldo_kacamata" Type="numeric" Precision="6" Scale="0" />
+          <Property Name="saldo_rawat_jalan" Type="numeric" Precision="7" Scale="0" />
+          <Property Name="saldo_rawat_inap" Type="numeric" Precision="7" Scale="0" />
+          <Property Name="renewalDate" Type="date" />
+          <Property Name="status" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="150" />
+          <Property Name="role" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="visa">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="no_passport" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="keperluan" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="cFK_NIP">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="file_dokumen" Type="Self.file_dokumen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="file_dokumen">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kuota_cuti_personal_information">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="kuota_cuti" Type="Self.kuota_cuti" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="kuota_cuti">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_CUTI">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="cuti" Type="Self.cuti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="cuti">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_klaimMed">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="klaim_medis" Type="Self.klaim_medis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="klaim_medis">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_LEMBUR">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="lembur" Type="Self.lembur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="lembur">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_REQ">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_tunjMed">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tunjangan_medical" Type="Self.tunjangan_medical" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="tunjangan_medical">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_B">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="buku_rekening" Type="Self.buku_rekening" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="buku_rekening">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_K">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="keterangan_kerja" Type="Self.keterangan_kerja" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="keterangan_kerja">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_N">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NPWP" Type="Self.NPWP" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="NPWP">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_P">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="pemberitahuan" Type="Self.pemberitahuan" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="pemberitahuan">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_S">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="slip_gaji" Type="Self.slip_gaji" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="slip_gaji">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_V">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="visa" Type="Self.visa" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="visa">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_personal_information">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_getLastNIP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="NIP" Type="varchar" MaxLength="20" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="pr_CekLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="usrnm" Type="varchar" Mode="In" />
+          <Parameter Name="pwd" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="pr_cekNipAlready" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="CekNip" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="pr_cekPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="cekPwd" Type="varchar" Mode="In" />
+          <Parameter Name="retPwd" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="pr_cekUsername" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="cekUsername" Type="varchar" Mode="In" />
+          <Parameter Name="retUsrnm" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="pr_createSU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="pr_DiffKuotaCuti" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="nip" Type="varchar" Mode="In" />
+          <Parameter Name="dateawal" Type="date" Mode="In" />
+          <Parameter Name="dateakhir" Type="date" Mode="In" />
+          <Parameter Name="Jmlh_LbrNas" Type="int" Mode="In" />
+        </Function>
+        <Function Name="pr_getIDLembur" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE" />
+        <Function Name="pr_getLastNIP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE" />
+        <Function Name="pr_KuotaCuti" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="nip" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="pr_RenewalClaim" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ACE">
+          <Parameter Name="nip" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="ACEModelStoreContainer">
+          <EntitySet Name="buku_rekening" EntityType="Self.buku_rekening" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="cuti" EntityType="Self.cuti" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="file_dokumen" EntityType="Self.file_dokumen" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="keterangan_kerja" EntityType="Self.keterangan_kerja" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="klaim_medis" EntityType="Self.klaim_medis" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="kuota_cuti" EntityType="Self.kuota_cuti" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="lembur" EntityType="Self.lembur" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="notifikasi" EntityType="Self.notifikasi" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="NPWP" EntityType="Self.NPWP" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="pemberitahuan" EntityType="Self.pemberitahuan" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="personal_information" EntityType="Self.personal_information" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="request" EntityType="Self.request" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="slip_gaji" EntityType="Self.slip_gaji" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="tunjangan_medical" EntityType="Self.tunjangan_medical" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="ACE" store:Type="Tables" />
+          <EntitySet Name="visa" EntityType="Self.visa" Schema="ACE" store:Type="Tables" />
+          <AssociationSet Name="cFK_NIP" Association="Self.cFK_NIP">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="file_dokumen" EntitySet="file_dokumen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kuota_cuti_personal_information" Association="Self.FK_kuota_cuti_personal_information">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="kuota_cuti" EntitySet="kuota_cuti" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_CUTI" Association="Self.FK_NIP_CUTI">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="cuti" EntitySet="cuti" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_klaimMed" Association="Self.FK_NIP_klaimMed">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="klaim_medis" EntitySet="klaim_medis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_LEMBUR" Association="Self.FK_NIP_LEMBUR">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="lembur" EntitySet="lembur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_REQ" Association="Self.FK_NIP_REQ">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="request" EntitySet="request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_tunjMed" Association="Self.FK_NIP_tunjMed">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="tunjangan_medical" EntitySet="tunjangan_medical" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_B" Association="Self.FK_REQ_B">
+            <End Role="request" EntitySet="request" />
+            <End Role="buku_rekening" EntitySet="buku_rekening" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_K" Association="Self.FK_REQ_K">
+            <End Role="request" EntitySet="request" />
+            <End Role="keterangan_kerja" EntitySet="keterangan_kerja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_N" Association="Self.FK_REQ_N">
+            <End Role="request" EntitySet="request" />
+            <End Role="NPWP" EntitySet="NPWP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_P" Association="Self.FK_REQ_P">
+            <End Role="request" EntitySet="request" />
+            <End Role="pemberitahuan" EntitySet="pemberitahuan" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_S" Association="Self.FK_REQ_S">
+            <End Role="request" EntitySet="request" />
+            <End Role="slip_gaji" EntitySet="slip_gaji" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_V" Association="Self.FK_REQ_V">
+            <End Role="request" EntitySet="request" />
+            <End Role="visa" EntitySet="visa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_personal_information" Association="Self.FK_user_personal_information">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ACEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="fn_getLastNIP_Result">
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="buku_rekening">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="keperluan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nama_bank" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_REQ_B" FromRole="buku_rekening" ToRole="request" />
+        </EntityType>
+        <EntityType Name="cuti">
+          <Key>
+            <PropertyRef Name="id_cuti" />
+          </Key>
+          <Property Name="id_cuti" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tgl_mulai_cuti" Type="DateTime" Precision="0" />
+          <Property Name="tgl_selesai_cuti" Type="DateTime" Precision="0" />
+          <Property Name="alasan_cuti" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="no_tlp" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="alamat" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="personal_information" Relationship="Self.FK_NIP_CUTI" FromRole="cuti" ToRole="personal_information" />
+        </EntityType>
+        <EntityType Name="file_dokumen">
+          <Key>
+            <PropertyRef Name="id_dok" />
+          </Key>
+          <Property Name="id_dok" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="foto_profil" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="foto_buku_rekening" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="personal_information" Relationship="Self.cFK_NIP" FromRole="file_dokumen" ToRole="personal_information" />
+        </EntityType>
+        <EntityType Name="keterangan_kerja">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="jabatan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="alamat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_REQ_K" FromRole="keterangan_kerja" ToRole="request" />
+        </EntityType>
+        <EntityType Name="klaim_medis">
+          <Key>
+            <PropertyRef Name="id_klaim_medis" />
+          </Key>
+          <Property Name="id_klaim_medis" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nama_pasien" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="hubungan_pasien" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="nama_dokter" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tgl_perawatan" Type="DateTime" Precision="0" />
+          <Property Name="alamat_rs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="no_tlp" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="diagnosa" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="total_tagihan" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="id_tipe" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="payout" Type="Decimal" Precision="12" Scale="0" />
+          <NavigationProperty Name="personal_information" Relationship="Self.FK_NIP_klaimMed" FromRole="klaim_medis" ToRole="personal_information" />
+        </EntityType>
+        <EntityType Name="kuota_cuti">
+          <Key>
+            <PropertyRef Name="NIP" />
+          </Key>
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sisa_cuti" Type="Int32" />
+          <Property Name="exp_sisa_cuti" Type="DateTime" Precision="0" />
+          <Property Name="cuti_baru" Type="Int32" />
+          <Property Name="exp_cuti_baru" Type="DateTime" Precision="0" />
+          <Property Name="status" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="personal_information" Relationship="Self.FK_kuota_cuti_personal_information" FromRole="kuota_cuti" ToRole="personal_information" />
+        </EntityType>
+        <EntityType Name="lembur">
+          <Key>
+            <PropertyRef Name="id_lembur" />
+          </Key>
+          <Property Name="id_lembur" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tanggal" Type="DateTime" Precision="0" />
+          <Property Name="jam_mulai" Type="Time" Precision="7" />
+          <Property Name="jam_selesai" Type="Time" Precision="7" />
+          <Property Name="total_jam" Type="Time" Precision="7" />
+          <NavigationProperty Name="personal_information" Relationship="Self.FK_NIP_LEMBUR" FromRole="lembur" ToRole="personal_information" />
+        </EntityType>
+        <EntityType Name="notifikasi">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_notifikasi" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="id_penerima" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NPWP">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="no_tlp" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="alamat_kantor_pajak" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_REQ_N" FromRole="NPWP" ToRole="request" />
+        </EntityType>
+        <EntityType Name="pemberitahuan">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tujuan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deskripsi" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_REQ_P" FromRole="pemberitahuan" ToRole="request" />
+        </EntityType>
+        <EntityType Name="personal_information">
+          <Key>
+            <PropertyRef Name="NIP" />
+          </Key>
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nama_pegawai" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tgl_lahir" Type="DateTime" Precision="0" />
+          <Property Name="alamat_identitas" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="alamat_domisili" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NPWP" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="no_ktp" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="no_hp" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="agama" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pendidikan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="jurusan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tgl_masuk" Type="DateTime" Precision="0" />
+          <Property Name="status_pajak" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="jenis_kelamin" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="status_aktif" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="no_rek" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="penempatan" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="posisi" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="tgl_resign" Type="DateTime" Precision="0" />
+          <Property Name="alasan_resign" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cutis" Relationship="Self.FK_NIP_CUTI" FromRole="personal_information" ToRole="cuti" />
+          <NavigationProperty Name="file_dokumen" Relationship="Self.cFK_NIP" FromRole="personal_information" ToRole="file_dokumen" />
+          <NavigationProperty Name="klaim_medis" Relationship="Self.FK_NIP_klaimMed" FromRole="personal_information" ToRole="klaim_medis" />
+          <NavigationProperty Name="kuota_cuti" Relationship="Self.FK_kuota_cuti_personal_information" FromRole="personal_information" ToRole="kuota_cuti" />
+          <NavigationProperty Name="lemburs" Relationship="Self.FK_NIP_LEMBUR" FromRole="personal_information" ToRole="lembur" />
+          <NavigationProperty Name="requests" Relationship="Self.FK_NIP_REQ" FromRole="personal_information" ToRole="request" />
+          <NavigationProperty Name="tunjangan_medical" Relationship="Self.FK_NIP_tunjMed" FromRole="personal_information" ToRole="tunjangan_medical" />
+          <NavigationProperty Name="users" Relationship="Self.FK_user_personal_information" FromRole="personal_information" ToRole="user" />
+        </EntityType>
+        <EntityType Name="request">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nama_pegawai" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="tanggal_request" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="buku_rekening" Relationship="Self.FK_REQ_B" FromRole="request" ToRole="buku_rekening" />
+          <NavigationProperty Name="keterangan_kerja" Relationship="Self.FK_REQ_K" FromRole="request" ToRole="keterangan_kerja" />
+          <NavigationProperty Name="NPWP" Relationship="Self.FK_REQ_N" FromRole="request" ToRole="NPWP" />
+          <NavigationProperty Name="pemberitahuan" Relationship="Self.FK_REQ_P" FromRole="request" ToRole="pemberitahuan" />
+          <NavigationProperty Name="personal_information" Relationship="Self.FK_NIP_REQ" FromRole="request" ToRole="personal_information" />
+          <NavigationProperty Name="slip_gaji" Relationship="Self.FK_REQ_S" FromRole="request" ToRole="slip_gaji" />
+          <NavigationProperty Name="visa" Relationship="Self.FK_REQ_V" FromRole="request" ToRole="visa" />
+        </EntityType>
+        <EntityType Name="slip_gaji">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="durasi_awal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="durasi_akhir" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_REQ_S" FromRole="slip_gaji" ToRole="request" />
+        </EntityType>
+        <EntityType Name="tunjangan_medical">
+          <Key>
+            <PropertyRef Name="NIP" />
+          </Key>
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="saldo_kacamata" Type="Decimal" Precision="6" Scale="0" />
+          <Property Name="saldo_rawat_jalan" Type="Decimal" Precision="7" Scale="0" />
+          <Property Name="saldo_rawat_inap" Type="Decimal" Precision="7" Scale="0" />
+          <Property Name="renewalDate" Type="DateTime" Precision="0" />
+          <Property Name="status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="personal_information" Relationship="Self.FK_NIP_tunjMed" FromRole="tunjangan_medical" ToRole="personal_information" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="NIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="role" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="personal_information" Relationship="Self.FK_user_personal_information" FromRole="user" ToRole="personal_information" />
+        </EntityType>
+        <EntityType Name="visa">
+          <Key>
+            <PropertyRef Name="id_req" />
+          </Key>
+          <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="no_passport" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="keperluan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_REQ_V" FromRole="visa" ToRole="request" />
+        </EntityType>
+        <Association Name="FK_REQ_B">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="buku_rekening" Type="Self.buku_rekening" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="buku_rekening">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_CUTI">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="cuti" Type="Self.cuti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="cuti">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="cFK_NIP">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="file_dokumen" Type="Self.file_dokumen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="file_dokumen">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_K">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="keterangan_kerja" Type="Self.keterangan_kerja" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="keterangan_kerja">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_klaimMed">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="klaim_medis" Type="Self.klaim_medis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="klaim_medis">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kuota_cuti_personal_information">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="kuota_cuti" Type="Self.kuota_cuti" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="kuota_cuti">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_LEMBUR">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="lembur" Type="Self.lembur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="lembur">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_N">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NPWP" Type="Self.NPWP" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="NPWP">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_P">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="pemberitahuan" Type="Self.pemberitahuan" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="pemberitahuan">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_REQ">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NIP_tunjMed">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tunjangan_medical" Type="Self.tunjangan_medical" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="tunjangan_medical">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_personal_information">
+          <End Role="personal_information" Type="Self.personal_information" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal_information">
+              <PropertyRef Name="NIP" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="NIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_S">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="slip_gaji" Type="Self.slip_gaji" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="slip_gaji">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REQ_V">
+          <End Role="request" Type="Self.request" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="visa" Type="Self.visa" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="id_req" />
+            </Principal>
+            <Dependent Role="visa">
+              <PropertyRef Name="id_req" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ACEEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="buku_rekening" EntityType="Self.buku_rekening" />
+          <EntitySet Name="cutis" EntityType="Self.cuti" />
+          <EntitySet Name="file_dokumen" EntityType="Self.file_dokumen" />
+          <EntitySet Name="keterangan_kerja" EntityType="Self.keterangan_kerja" />
+          <EntitySet Name="klaim_medis" EntityType="Self.klaim_medis" />
+          <EntitySet Name="kuota_cuti" EntityType="Self.kuota_cuti" />
+          <EntitySet Name="lemburs" EntityType="Self.lembur" />
+          <EntitySet Name="notifikasis" EntityType="Self.notifikasi" />
+          <EntitySet Name="NPWPs" EntityType="Self.NPWP" />
+          <EntitySet Name="pemberitahuans" EntityType="Self.pemberitahuan" />
+          <EntitySet Name="personal_information" EntityType="Self.personal_information" />
+          <EntitySet Name="requests" EntityType="Self.request" />
+          <EntitySet Name="slip_gaji" EntityType="Self.slip_gaji" />
+          <EntitySet Name="tunjangan_medical" EntityType="Self.tunjangan_medical" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <EntitySet Name="visas" EntityType="Self.visa" />
+          <AssociationSet Name="FK_REQ_B" Association="Self.FK_REQ_B">
+            <End Role="request" EntitySet="requests" />
+            <End Role="buku_rekening" EntitySet="buku_rekening" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_CUTI" Association="Self.FK_NIP_CUTI">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="cuti" EntitySet="cutis" />
+          </AssociationSet>
+          <AssociationSet Name="cFK_NIP" Association="Self.cFK_NIP">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="file_dokumen" EntitySet="file_dokumen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_K" Association="Self.FK_REQ_K">
+            <End Role="request" EntitySet="requests" />
+            <End Role="keterangan_kerja" EntitySet="keterangan_kerja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_klaimMed" Association="Self.FK_NIP_klaimMed">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="klaim_medis" EntitySet="klaim_medis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kuota_cuti_personal_information" Association="Self.FK_kuota_cuti_personal_information">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="kuota_cuti" EntitySet="kuota_cuti" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_LEMBUR" Association="Self.FK_NIP_LEMBUR">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="lembur" EntitySet="lemburs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_N" Association="Self.FK_REQ_N">
+            <End Role="request" EntitySet="requests" />
+            <End Role="NPWP" EntitySet="NPWPs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_P" Association="Self.FK_REQ_P">
+            <End Role="request" EntitySet="requests" />
+            <End Role="pemberitahuan" EntitySet="pemberitahuans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_REQ" Association="Self.FK_NIP_REQ">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="request" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NIP_tunjMed" Association="Self.FK_NIP_tunjMed">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="tunjangan_medical" EntitySet="tunjangan_medical" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_personal_information" Association="Self.FK_user_personal_information">
+            <End Role="personal_information" EntitySet="personal_information" />
+            <End Role="user" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_S" Association="Self.FK_REQ_S">
+            <End Role="request" EntitySet="requests" />
+            <End Role="slip_gaji" EntitySet="slip_gaji" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REQ_V" Association="Self.FK_REQ_V">
+            <End Role="request" EntitySet="requests" />
+            <End Role="visa" EntitySet="visas" />
+          </AssociationSet>
+          <FunctionImport Name="fn_getLastNIP" IsComposable="true" ReturnType="Collection(ACEModel.fn_getLastNIP_Result)" />
+          <FunctionImport Name="pr_CekLogin" ReturnType="Collection(String)">
+            <Parameter Name="usrnm" Mode="In" Type="String" />
+            <Parameter Name="pwd" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="pr_cekNipAlready" ReturnType="Collection(Int32)">
+            <Parameter Name="CekNip" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="pr_cekPassword">
+            <Parameter Name="cekPwd" Mode="In" Type="String" />
+            <Parameter Name="retPwd" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="pr_cekUsername">
+            <Parameter Name="cekUsername" Mode="In" Type="String" />
+            <Parameter Name="retUsrnm" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="pr_createSU" ReturnType="Collection(String)">
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="pr_DiffKuotaCuti" ReturnType="Collection(Int32)">
+            <Parameter Name="nip" Mode="In" Type="String" />
+            <Parameter Name="dateawal" Mode="In" Type="DateTime" />
+            <Parameter Name="dateakhir" Mode="In" Type="DateTime" />
+            <Parameter Name="Jmlh_LbrNas" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="pr_getIDLembur" ReturnType="Collection(String)" />
+          <FunctionImport Name="pr_getLastNIP" ReturnType="Collection(String)" />
+          <FunctionImport Name="pr_KuotaCuti">
+            <Parameter Name="nip" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="pr_RenewalClaim">
+            <Parameter Name="nip" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ACEModelStoreContainer" CdmEntityContainer="ACEEntities">
+          <EntitySetMapping Name="buku_rekening">
+            <EntityTypeMapping TypeName="ACEModel.buku_rekening">
+              <MappingFragment StoreEntitySet="buku_rekening">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="keperluan" ColumnName="keperluan" />
+                <ScalarProperty Name="nama_bank" ColumnName="nama_bank" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cutis">
+            <EntityTypeMapping TypeName="ACEModel.cuti">
+              <MappingFragment StoreEntitySet="cuti">
+                <ScalarProperty Name="id_cuti" ColumnName="id_cuti" />
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="tgl_mulai_cuti" ColumnName="tgl_mulai_cuti" />
+                <ScalarProperty Name="tgl_selesai_cuti" ColumnName="tgl_selesai_cuti" />
+                <ScalarProperty Name="alasan_cuti" ColumnName="alasan_cuti" />
+                <ScalarProperty Name="no_tlp" ColumnName="no_tlp" />
+                <ScalarProperty Name="alamat" ColumnName="alamat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="file_dokumen">
+            <EntityTypeMapping TypeName="ACEModel.file_dokumen">
+              <MappingFragment StoreEntitySet="file_dokumen">
+                <ScalarProperty Name="id_dok" ColumnName="id_dok" />
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="foto_profil" ColumnName="foto_profil" />
+                <ScalarProperty Name="foto_buku_rekening" ColumnName="foto_buku_rekening" />
+                <ScalarProperty Name="cv" ColumnName="cv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="keterangan_kerja">
+            <EntityTypeMapping TypeName="ACEModel.keterangan_kerja">
+              <MappingFragment StoreEntitySet="keterangan_kerja">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="jabatan" ColumnName="jabatan" />
+                <ScalarProperty Name="alamat" ColumnName="alamat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="klaim_medis">
+            <EntityTypeMapping TypeName="ACEModel.klaim_medis">
+              <MappingFragment StoreEntitySet="klaim_medis">
+                <ScalarProperty Name="id_klaim_medis" ColumnName="id_klaim_medis" />
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="nama_pasien" ColumnName="nama_pasien" />
+                <ScalarProperty Name="hubungan_pasien" ColumnName="hubungan_pasien" />
+                <ScalarProperty Name="nama_dokter" ColumnName="nama_dokter" />
+                <ScalarProperty Name="tgl_perawatan" ColumnName="tgl_perawatan" />
+                <ScalarProperty Name="alamat_rs" ColumnName="alamat_rs" />
+                <ScalarProperty Name="no_tlp" ColumnName="no_tlp" />
+                <ScalarProperty Name="diagnosa" ColumnName="diagnosa" />
+                <ScalarProperty Name="total_tagihan" ColumnName="total_tagihan" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="id_tipe" ColumnName="id_tipe" />
+                <ScalarProperty Name="payout" ColumnName="payout" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="kuota_cuti">
+            <EntityTypeMapping TypeName="ACEModel.kuota_cuti">
+              <MappingFragment StoreEntitySet="kuota_cuti">
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="sisa_cuti" ColumnName="sisa_cuti" />
+                <ScalarProperty Name="exp_sisa_cuti" ColumnName="exp_sisa_cuti" />
+                <ScalarProperty Name="cuti_baru" ColumnName="cuti_baru" />
+                <ScalarProperty Name="exp_cuti_baru" ColumnName="exp_cuti_baru" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lemburs">
+            <EntityTypeMapping TypeName="ACEModel.lembur">
+              <MappingFragment StoreEntitySet="lembur">
+                <ScalarProperty Name="id_lembur" ColumnName="id_lembur" />
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="tanggal" ColumnName="tanggal" />
+                <ScalarProperty Name="jam_mulai" ColumnName="jam_mulai" />
+                <ScalarProperty Name="jam_selesai" ColumnName="jam_selesai" />
+                <ScalarProperty Name="total_jam" ColumnName="total_jam" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="notifikasis">
+            <EntityTypeMapping TypeName="ACEModel.notifikasi">
+              <MappingFragment StoreEntitySet="notifikasi">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="id_notifikasi" ColumnName="id_notifikasi" />
+                <ScalarProperty Name="id_penerima" ColumnName="id_penerima" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NPWPs">
+            <EntityTypeMapping TypeName="ACEModel.NPWP">
+              <MappingFragment StoreEntitySet="NPWP">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="no_tlp" ColumnName="no_tlp" />
+                <ScalarProperty Name="alamat_kantor_pajak" ColumnName="alamat_kantor_pajak" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pemberitahuans">
+            <EntityTypeMapping TypeName="ACEModel.pemberitahuan">
+              <MappingFragment StoreEntitySet="pemberitahuan">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="tujuan" ColumnName="tujuan" />
+                <ScalarProperty Name="deskripsi" ColumnName="deskripsi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personal_information">
+            <EntityTypeMapping TypeName="ACEModel.personal_information">
+              <MappingFragment StoreEntitySet="personal_information">
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="nama_pegawai" ColumnName="nama_pegawai" />
+                <ScalarProperty Name="tgl_lahir" ColumnName="tgl_lahir" />
+                <ScalarProperty Name="alamat_identitas" ColumnName="alamat_identitas" />
+                <ScalarProperty Name="alamat_domisili" ColumnName="alamat_domisili" />
+                <ScalarProperty Name="NPWP" ColumnName="NPWP" />
+                <ScalarProperty Name="no_ktp" ColumnName="no_ktp" />
+                <ScalarProperty Name="no_hp" ColumnName="no_hp" />
+                <ScalarProperty Name="agama" ColumnName="agama" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="pendidikan" ColumnName="pendidikan" />
+                <ScalarProperty Name="jurusan" ColumnName="jurusan" />
+                <ScalarProperty Name="tgl_masuk" ColumnName="tgl_masuk" />
+                <ScalarProperty Name="status_pajak" ColumnName="status_pajak" />
+                <ScalarProperty Name="jenis_kelamin" ColumnName="jenis_kelamin" />
+                <ScalarProperty Name="status_aktif" ColumnName="status_aktif" />
+                <ScalarProperty Name="no_rek" ColumnName="no_rek" />
+                <ScalarProperty Name="penempatan" ColumnName="penempatan" />
+                <ScalarProperty Name="posisi" ColumnName="posisi" />
+                <ScalarProperty Name="tgl_resign" ColumnName="tgl_resign" />
+                <ScalarProperty Name="alasan_resign" ColumnName="alasan_resign" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="requests">
+            <EntityTypeMapping TypeName="ACEModel.request">
+              <MappingFragment StoreEntitySet="request">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="nama_pegawai" ColumnName="nama_pegawai" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="tanggal_request" ColumnName="tanggal_request" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="slip_gaji">
+            <EntityTypeMapping TypeName="ACEModel.slip_gaji">
+              <MappingFragment StoreEntitySet="slip_gaji">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="durasi_awal" ColumnName="durasi_awal" />
+                <ScalarProperty Name="durasi_akhir" ColumnName="durasi_akhir" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tunjangan_medical">
+            <EntityTypeMapping TypeName="ACEModel.tunjangan_medical">
+              <MappingFragment StoreEntitySet="tunjangan_medical">
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="saldo_kacamata" ColumnName="saldo_kacamata" />
+                <ScalarProperty Name="saldo_rawat_jalan" ColumnName="saldo_rawat_jalan" />
+                <ScalarProperty Name="saldo_rawat_inap" ColumnName="saldo_rawat_inap" />
+                <ScalarProperty Name="renewalDate" ColumnName="renewalDate" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="ACEModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="visas">
+            <EntityTypeMapping TypeName="ACEModel.visa">
+              <MappingFragment StoreEntitySet="visa">
+                <ScalarProperty Name="id_req" ColumnName="id_req" />
+                <ScalarProperty Name="no_passport" ColumnName="no_passport" />
+                <ScalarProperty Name="keperluan" ColumnName="keperluan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionName="ACEModel.Store.fn_getLastNIP" FunctionImportName="fn_getLastNIP">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ACEModel.fn_getLastNIP_Result">
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="pr_CekLogin" FunctionName="ACEModel.Store.pr_CekLogin" />
+          <FunctionImportMapping FunctionImportName="pr_cekNipAlready" FunctionName="ACEModel.Store.pr_cekNipAlready" />
+          <FunctionImportMapping FunctionImportName="pr_cekPassword" FunctionName="ACEModel.Store.pr_cekPassword" />
+          <FunctionImportMapping FunctionImportName="pr_cekUsername" FunctionName="ACEModel.Store.pr_cekUsername" />
+          <FunctionImportMapping FunctionImportName="pr_createSU" FunctionName="ACEModel.Store.pr_createSU" />
+          <FunctionImportMapping FunctionImportName="pr_DiffKuotaCuti" FunctionName="ACEModel.Store.pr_DiffKuotaCuti" />
+          <FunctionImportMapping FunctionImportName="pr_getIDLembur" FunctionName="ACEModel.Store.pr_getIDLembur" />
+          <FunctionImportMapping FunctionImportName="pr_getLastNIP" FunctionName="ACEModel.Store.pr_getLastNIP" />
+          <FunctionImportMapping FunctionImportName="pr_KuotaCuti" FunctionName="ACEModel.Store.pr_KuotaCuti" />
+          <FunctionImportMapping FunctionImportName="pr_RenewalClaim" FunctionName="ACEModel.Store.pr_RenewalClaim" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

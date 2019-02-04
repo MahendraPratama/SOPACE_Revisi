@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Request Surat Keterangan Membuat NPWP";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Request Surat Keterangan Membuat NPWP</h2>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <form id="formNPWP" name="formNPWP">
+            <div class="form-group">
+                <span>Tanggal Request</span>
+                <input type="date" name="txtTgl" id="txtTgl" placeholder="ID" class="form-control" style="width:500px" />
+            </div>
+
+            <div class="form-group">
+                <span>No Tlp</span>
+                <input type="text" name="txtNoTlp" id="txtNoTlp" pattern="[0-9]{3,4}[-][0-9]+" placeholder="e.x 021-373737" class="form-control" style="width:500px" />
+            </div>
+
+            <div class="form-group">
+                <span>Alamat Kantor Pajak</span>
+                <textarea name="txtAlamat" id="txtAlamat" class="form-control" onkeyup="hitungtext()" maxlength="150" style="width:500px"></textarea>
+                <span id="hasil">0</span>/150 Karakter
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Submit" />
+        </form>
+        @Html.ActionLink("Back to List", "ViewNpwp")
+    </div>
+</div>
+@section script{
+    <script type="text/javascript">
+        $("#formNPWP").on("submit", function (e) {
+            e.preventDefault();
+            $("#formNPWP").validate();
+                let formdata = $("#formNPWP").serialize();
+            $.ajax({
+                url: '@Url.Action("AddNPWP","User")',
+                type: 'POST',
+                data: formdata,
+                success: function (data) {
+                    alert(data);
+                    refresh();
+                },
+                error: function () {
+                    alert("Insert Data Failed");
+                    refresh();
+                }
+            });
+        });
+
+        function refresh() {
+            $("#txtTgl").val("");
+            $("#txtNoTlp").val("");
+            $("#txtAlamat").val("");
+            var total = document.getElementById('hasil');
+            total.innerHTML = 0;
+        }
+        function hitungtext() {
+            var teks = document.formNPWP.txtAlamat.value.length;
+            var total = document.getElementById('hasil');
+            total.innerHTML = teks;
+        }
+        @*$('#txtNIP').change(function () {
+            $('#lblcheck').html("Checking....");
+            $.post('@Url.Action("GetNama")',
+                {
+                    id: $("#txtNIP").val()
+                },
+                function (data) {
+                    if (data == 0) {
+                        $('#lblcheck').html('<font color="Red">NIP Tidak Terdaftar</font>');
+                        $('#txtNIP').css("border-color", "red");
+                    }
+                    else {
+                        $('#txtNIP').css("border-color","black");
+                        $('#lblcheck').html(``);
+                        $('#txtNama').val(`${data}`);
+                    }
+                });
+        });*@
+
+    </script>
+
+}
+

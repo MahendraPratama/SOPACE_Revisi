@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SOPACE_MVC.Models.lembur>
+
+@{
+    ViewBag.Title = "Show";
+    Layout = "~/Views/MasterLayout/MasterUser.cshtml";
+}
+
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">NIP : @Session["user_nip"].ToString()</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+
+                <div class="panel-body">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>
+                                    ID Lembur
+                                </th>
+                                <th>
+                                    Tanggal Lembur
+                                </th>
+                                <th>
+                                    Jam Mulai
+                                </th>
+                                <th>
+                                    Jam Selesai
+                                </th>
+                                <th>
+                                    Total Jam Lembur
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var lembur in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelLembur => lembur.id_lembur)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelLembur => lembur.tanggal)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelLembur => lembur.jam_mulai)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelLembur => lembur.jam_selesai)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelTotal => lembur.total_jam)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section script{}

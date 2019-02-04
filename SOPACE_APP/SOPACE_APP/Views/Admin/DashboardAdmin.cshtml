@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "DashboardAdmin";
+    Layout = "~/Views/MasterLayout/MasterAdmin.cshtml";
+}
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Requested",
+        Value = "requested"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Processed",
+        Value = "processed"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Finished",
+        Value = "finished"
+    });
+}
+<div id="page-wrapper">    
+    <div class="row" >
+        <div class="col-lg-6" style="margin-top:6%">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row">
+                        <img class="col-xs-4 col-xs-push-1" id="imgProfil" alt="Sample Image" style="border-radius:50%;" />                        
+                        <div class="col-xs-6 text-right">
+                            <div class="huge">Welcome</div>
+                            <div>Admin @TempData["FirstName"]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6" style="margin-top:6%">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-sign-in fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["EmpInt"]</div>
+                                    <div>Karyawan Internal</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-external-link fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["EmpEks"]</div>
+                                    <div>Karyawan Eksternal</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-inbox fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["requested"]</div>
+                                    <div>Surat Requested</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-refresh fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">@TempData["processed"]</div>
+                                    <div>Surat Processed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <select id="chooseMonth">
+                    <option value="">Year-round</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+            </select>
+            <div id="chartContainer" style="height:300px;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- /#page-wrapper -->
+@section Script{
+    <script src="~/Scripts/canvasjs.min.js"></script>
+    <script type="text/javascript">
+        $("#imgProfil").attr("src", `../Content/defaultImage/d.png`);
+        getChart('');
+        $("#chooseMonth").on("change", function (e) {
+            console.log(e.target.selectedOptions[0].value);
+            let selected = e.target.selectedOptions[0].value;
+            getChart(selected);
+        });
+
+
+        function getChart(mon) {
+            $.post("@Url.Action("GetData")", { 'month': mon }, function (data) {
+                    console.log(data.SG);
+                   var chart = new CanvasJS.Chart("chartContainer", {
+                      animationEnabled: true,
+                      title: {
+                            text: "REQUEST SURAT-SURAT"
+                      },
+                      data: [{
+                         type: "column",
+                           startAngle: 240,
+                         yValueFormatString: "##0",
+                          //indexLabel: "{label} ",
+                          dataPoints: [
+                                { y: data.SG, label: "Slip Gaji" },
+                                { y: data.KKRJ, label: "Keterangan Kerja" },
+                                { y: data.PBTH, label: "Pemberitahuan" },
+                                { y: data.BREK, label: "Buka Rekening" },
+                                { y: data.VISA, label: "Pembuatan Visa" }
+                           ]
+                      }]
+                   });
+                     chart.render();
+                 });
+        }
+        
+    </script>
+
+}
