@@ -86,14 +86,12 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" onclick="return confirm('Are You Sure?')" value="Edit" class="btn btn-default" />
+                        @Html.ActionLink("Cancel", "Show", null, new { @class="btn btn-default" })
                     </div>
                 </div>
             </div>
             @*}*@
         </form>
-        <div>
-            @Html.ActionLink("Back to List", "Show","Lembur")
-        </div>
     </div>
 </div>
 @section script{
