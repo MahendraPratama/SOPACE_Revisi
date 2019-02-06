@@ -26,7 +26,7 @@
 
     <!-- Custom Fonts -->
     <link href="~/Style/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-
+    <link href="~/Content/bootstrap-chosen.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -89,10 +89,13 @@
                             <a href="#"><i class="fa fa-calendar fa-fw"></i> Cuti<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="@Url.Action("CutiMassal","Cuti")">Input Cuti Massal</a>
+                                    <a href="@Url.Action("FormListCuti","Cuti")">Daftar Cuti Karyawan</a>
                                 </li>
                                 <li>
-                                    <a href="@Url.Action("Index","Cuti")">Input Form Cuti Karyawan</a>
+                                    <a href="@Url.Action("CutiMassal","Cuti")">Form Cuti Bersama Karyawan</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index","Cuti")">Form Cuti Pribadi Karyawan</a>
                                 </li>
                             </ul>
                         </li>
@@ -157,6 +160,7 @@
     <script src="~/Style/vendor/datatables-responsive/dataTables.responsive.js"></script>
     <script src="~/Style/vendor/bootstrap/js/bootstrap-datepicker.min.js"></script>
     <script src="~/Style/MatrixAdmin/dist/js/jquery-steps/build/jquery.steps.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#dataTables-example').DataTable({
