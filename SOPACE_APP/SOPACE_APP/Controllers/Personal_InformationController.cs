@@ -80,7 +80,6 @@ namespace SOPACE_MVC.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("Add")]
         public JsonResult InsertPersonalInformation(InsertPersonUser insertPersonUser)
@@ -119,7 +118,7 @@ namespace SOPACE_MVC.Controllers
             tunjangan.saldo_rawat_jalan = 3000000;
             tunjangan.status = "update";
             int year = DateTime.Now.Year - tgl_masuk.Year;
-            tunjangan.renewalDate = tgl_masuk.AddMonths(3).AddYears(year);
+            tunjangan.renewalDate = tgl_masuk.AddYears(year);
             //======================================= insert data to kuota_cuti
             kuota_Cuti.NIP = nip;
             kuota_Cuti.cuti_baru = 0;
@@ -176,8 +175,7 @@ namespace SOPACE_MVC.Controllers
         [Route("DownloadFile")]
         public ActionResult DonwloadFile(string fileName, string nip)
         {
-            string mapPath = "~/Content/uploads/" + nip;
-            //var fd = sopace.file_dokumen.Where(f => f.NIP == nip).FirstOrDefault();
+            string mapPath = "~/Content/uploads/" + nip;            
             var path = Server.MapPath(mapPath);
            
             byte[] fileBytes = System.IO.File.ReadAllBytes(Path.Combine(Server.MapPath(mapPath), fileName));
