@@ -72,11 +72,11 @@ namespace SOPACE_MVC.Controllers
                 ubahStatus.alasan_resign = alasan_resign;
                 sopace.Entry(ubahStatus).State = EntityState.Modified;
                 sopace.SaveChanges();
-                return Json("success", JsonRequestBehavior.AllowGet);
+                return Json("Data Updated Successfully..", JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(nip_pegawai + " Data not Found", JsonRequestBehavior.AllowGet);
+                return Json(nip_pegawai + " Data not Found..", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -102,7 +102,7 @@ namespace SOPACE_MVC.Controllers
                 sopace.SaveChanges();
 
                 insertTableElse(personNIP, joinDate);
-                jsonResult = "Insert Data Success";
+                jsonResult = "Insert Data Successfully..";
             }            
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
