@@ -27,6 +27,7 @@ namespace SOPACE_MVC.Models
         public string status { get; set; }
         public string id_tipe { get; set; }
         public Nullable<decimal> payout { get; set; }
+        public string alasan_reject { get; set; }
     
         public virtual personal_information personal_information { get; set; }
     }

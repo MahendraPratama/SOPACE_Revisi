@@ -26,6 +26,17 @@ namespace SOPACE_MVC.Controllers
             return View("ListClaimMedical");
         }
 
+        [HttpPost]
+        public JsonResult alasanReject(string idklaim_medis, string alasan_reject)
+        {
+            var rejectKlaim = sopace.klaim_medis.Where(e => e.id_klaim_medis
+                                                        == idklaim_medis).FirstOrDefault();
+            rejectKlaim.alasan_reject = alasan_reject;
+            sopace.Entry(rejectKlaim).State = EntityState.Modified;
+            sopace.SaveChanges();
+            return Json("Rejected success", JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet, ActionName("updateClaim"), Route("updateClaim")]
         public JsonResult updateClaim(string idClaim, string status)
         {
@@ -39,7 +50,7 @@ namespace SOPACE_MVC.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
-        [Route("detailClaim/{idklaim?}"),ActionName("detailClaim"),AcceptVerbs("POST","GET")]
+        [Route("detailClaim/{idklaim?}"), ActionName("detailClaim"), AcceptVerbs("POST", "GET")]
         public JsonResult detailClaim(string idklaim)
         {
             var detail = sopace.klaim_medis.ToList().Where(kl => kl.id_klaim_medis.Equals(idklaim))
@@ -54,6 +65,8 @@ namespace SOPACE_MVC.Controllers
                     kl.alamat_rs,
                     value = kl.tgl_perawatan.Value.ToString("dd/MM/yyyy"),
                     kl.no_tlp,
+                    kl.status,
+                    kl.alasan_reject,
                     kl.total_tagihan,
                     kl.payout
                 });
@@ -80,7 +93,8 @@ namespace SOPACE_MVC.Controllers
                               e.diagnosa,
                               e.total_tagihan,
                               e.status,
-                              e.id_tipe
+                              e.id_tipe,
+                              e.payout
                           });
                 return Json(list_klaim, JsonRequestBehavior.AllowGet);
             }
@@ -88,8 +102,8 @@ namespace SOPACE_MVC.Controllers
             {
                 return Json("");
             }
-            
-            
+
+
         }
 
         [HttpPost]
@@ -116,7 +130,7 @@ namespace SOPACE_MVC.Controllers
             {
                 return Json("Nip Tidak Terdaftar", JsonRequestBehavior.AllowGet);
             }
-            
+
         }
         //UpdateSaldoTunjangan(addClaim.NIP, addClaim.id_tipe, addClaim.total_tagihan);
         [HttpPost]
@@ -130,11 +144,11 @@ namespace SOPACE_MVC.Controllers
             if (cari != null)
             {
                 joinDate = cari.tgl_masuk.Value;
-                dateNow = DateTime.Now;                
+                dateNow = DateTime.Now;
                 date = dateNow.Subtract(joinDate).TotalDays;
                 if (date < 90)
                 {
-                    message = "false";                   
+                    message = "false";
                 }
                 else
                 {
@@ -148,20 +162,20 @@ namespace SOPACE_MVC.Controllers
                 return Json(0);
             }
         }
-        
+
         [ActionName("updatePlafond"), HttpGet]
         public ActionResult UpdateSaldoTunjangan(string idClaim)
         {
             string json = "";
             var klaimMedis = sopace.klaim_medis.Where(k => k.id_klaim_medis.Equals(idClaim)).First();
-            decimal saldo = 0, saldoBaru=0, payout=0;
+            decimal saldo = 0, saldoBaru = 0, payout = 0;
             var entity = sopace.tunjangan_medical.Where(e => e.NIP.Equals(klaimMedis.NIP)).First();
             if (entity != null)
             {
                 switch (klaimMedis.id_tipe)
                 {
                     case "Kacamata":
-                        saldo = entity.saldo_kacamata.Value;                        
+                        saldo = entity.saldo_kacamata.Value;
                         break;
                     case "Rawat Inap":
                         saldo = entity.saldo_rawat_inap.Value;
@@ -172,8 +186,16 @@ namespace SOPACE_MVC.Controllers
                 }
                 if ((klaimMedis.total_tagihan * 8 / 10) < saldo) // jika total tagihan yang masih bisa diclaim kurang dari saldo
                 {
-                    payout = (klaimMedis.total_tagihan * 8 / 10);
-                    saldoBaru = saldo - payout; // maka saldo akan dikurangi dengan total tagihan
+                    if (klaimMedis.id_tipe == "Kacamata")
+                    {
+                        payout = (klaimMedis.total_tagihan * 10 / 10);
+                        saldoBaru = saldo - payout;
+                    }
+                    else
+                    {
+                        payout = (klaimMedis.total_tagihan * 8 / 10);
+                        saldoBaru = saldo - payout; // maka saldo akan dikurangi dengan total tagihan
+                    }
                 }
                 else // jika total tagihan yg bisa diclaim lebih dari saldo
                 {
@@ -192,13 +214,13 @@ namespace SOPACE_MVC.Controllers
                         entity.saldo_rawat_jalan = saldoBaru;
                         break;
                 }
-                json = "Payout Sejumlah "+ payout;
+                json = "Payout Sejumlah " + payout;
             }
             else
             {
                 json = "Claim Failed";
             }
-           
+
             klaimMedis.payout = payout;
             sopace.Entry(klaimMedis).State = EntityState.Modified;
             sopace.Entry(entity).State = EntityState.Modified;
@@ -222,19 +244,14 @@ namespace SOPACE_MVC.Controllers
         [HttpPost, Route("UpdateClaim"), ActionName("UpdateClaim")]
         public ActionResult UpdateClaimMedical(klaim_medis klaim)
         {
-            var entity = sopace.personal_information.Where(e => e.NIP == klaim.NIP).FirstOrDefault();
-            if (entity != null)
+            klaim_medis Km = klaim;
+            var entityUser = sopace.klaim_medis.Where(e
+                    => e.id_klaim_medis == klaim.id_klaim_medis).FirstOrDefault();
+            if (entityUser != null)
             {
-                klaim_medis Km = klaim;
-                sopace.Entry(entity).CurrentValues.SetValues(Km);
-                var entityUser = sopace.klaim_medis.Where(e => e.NIP == klaim.NIP).FirstOrDefault();
-                if (entityUser != null)
-                {
-                    sopace.Entry(entityUser).CurrentValues.SetValues(Km);
-                }
-                sopace.SaveChanges();
+                sopace.Entry(entityUser).CurrentValues.SetValues(Km);
             }
-            //return Json("Update Data Success", JsonRequestBehavior.AllowGet);
+            sopace.SaveChanges();
             return RedirectToAction("ViewClaimMedical");
         }
 

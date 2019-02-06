@@ -6,7 +6,7 @@
 }
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="margin-top:20px">
             <h1 class="page-header">List Claim Medical</h1>
         </div>
         <!-- /.col-lg-12 -->
@@ -25,7 +25,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -52,7 +51,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="panel-body">
                     <table class="table table-striped table-bordered table-hover tbl_viewClaim">
                         <thead>
@@ -60,9 +59,9 @@
                                 <th style="text-align:center" scope="col" width="230px" height=25px>NIP</th>
                                 <th style="text-align:center" scope="col" width="150px" height=25px>Tipe Klaim</th>
                                 <th style="text-align:center" scope="col" width="150px" height=25px>Tanggal</th>
-                                <th style="text-align:center" scope="col" width="150px" height=25px>Total Tagihan</th>
+                                <th style="text-align:center" scope="col" width="150px" height=25px>Total Biaya</th>
                                 <th style="text-align:center" scope="col" width="150px" height=25px>Status</th>
-                                <th style="text-align:center" scope="col" width="280px" height=25px>Action</th>
+                                <th id="action" style="text-align:center" scope="col" width="280px" height=25px>Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -71,58 +70,67 @@
             </div>
         </div>
     </div>
-    <!--modal-->
+    <!--MODAL VIEW-->
     <div class="modal" tabindex="-1" role="dialog" id="mymodal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">View Detail Claim</h3>
+                <div class="modal-header" style="background-color:dodgerblue">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <h3 class="modal-title"><i class="glyphicon glyphicon-eye-open"></i>View Detail Claim</h3>
                 </div>
                 <div class="modal-body">
-                    <form id="claimdetail">
-                        <table>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>Tipe Medis</span></td>
-                                <td><label id="tipe"></label></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>NIP</span></td>
-                                <td><label id="nip"></label></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>Nama Pasien</span></td>
-                                <td><label id="npasien"></label></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>Hubungan Dengan Pasien</span></td>
-                                <td><label id="hbgn"></label></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>Alamat RS</span></td>
-                                <td><label>:</label></td>
-                                <td><textarea id="alamat" readonly style="width:300px; height:100px; margin-left:-93px;"></textarea></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>No. Telp</span></td>
-                                <td><label id="notlp"></label></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>Tanggal Rawat</span></td>
-                                <td><label id="tglrwt"></label></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>Total Biaya</span></td>
-                                <td><label id="total"></label></td>
-                            </tr>
-                            <tr>
-                                <td scope="col" width="180px" height="50px"><span>Klaim yang dibayarkan</span></td>
-                                <td><label id="payout"></label></td>
-                            </tr>
-                        </table>
-                    </form>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <span>NIP</span>
+                                <input disabled id="nip" placeholder="NIP" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Nama Pasien</span>
+                                <input disabled id="npasien" placeholder="Nama Pasien" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Alamat Rumah Sakit</span>
+                                <textarea id="alamat" disabled class="form-control" placeholder="Alamat Rumah Sakit"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <span>No. Telp</span>
+                                <input disabled id="notlp" placeholder="Nomor Telepon" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Status</span>
+                                <input disabled id="status" placeholder="Status Proses" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Klaim yang Dibayarkan</span>
+                                <input disabled id="payout" placeholder="Klaim yang dibayarkan" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <span>Tipe Claim</span>
+                                <input disabled id="tipe" placeholder="Tipe Claim" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Hubungan dengan Pasien</span>
+                                <input disabled id="hbgn" placeholder="Hubungan dengan Pasien" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Alasan</span>
+                                <textarea id="alasan_reject" disabled class="form-control" placeholder="Alasan"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <span>Tanggal Rawat</span>
+                                <input disabled id="tglrwt" placeholder="Tanggal Rawat" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Total Biaya</span>
+                                <input disabled id="total" placeholder="Total Biaya" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -130,19 +138,52 @@
             </div>
         </div>
     </div>
-    <!--modal-->
+    <!--MODAL ALASAN REJECT-->
+    <div class="modal" tabindex="-1" role="dialog" id="modalReject">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Alasan Reject</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="reject">
+                        <div>
+                            <label>ID</label>
+                            <input readonly name="idklaim_medis" id="idmedis" placeholder="ID" class="form-control" />
+                        </div>
+                        <div>
+
+                        </div>
+                        <div>
+                            <label>Alasan Reject</label>
+                            <textarea name="alasan_reject" class="form-control col-xs-12" placeholder="Alasan"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="submit_reject" class="btn btn-success" data-dismiss="modal">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @section Script{
     <script>
         var nip="";
         var temp = "Requested";
         $().ready(function () {
-            getData(temp);            
+            getData(temp);
         });
 
         $("#navpill_").click("li", function (e) {
             $("#navpill_ li.active").removeClass("active");
-            $(this).addClass("active");           
+            $(this).addClass("active");
+            $('.tbl_viewClaim').DataTable().destroy();
             getData(e.target.innerHTML);
             temp = e.target.innerHTML;
         });
@@ -151,21 +192,24 @@
             $.get('@Url.Action("detailClaim","Claim")'
                 , { 'idklaim': idklaim }
                 , function (model) {
-                    console.log(model);
-                    $("#tipe").html(": " + `${model[0].id_tipe}`);
-                    $("#nip").html(": " + `${model[0].NIP}`);
-                    $("#npasien").html(": " + `${model[0].nama_pasien}`);
-                    $("#hbgn").html(": " + `${model[0].hubungan_pasien}`);
-                    $("#alamat").html(`${model[0].alamat_rs}`);
-                    $("#notlp").html(": " + `${model[0].no_tlp}`);
-                    $("#tglrwt").html(": " + `${model[0].value}`);
-                    $("#total").html(": " + `${model[0].total_tagihan}`);
-                    $("#payout").html(": " + `${model[0].payout}`);                
+                    let tot = model[0].total_tagihan;
+                    //console.log(model);
+                    $("#tipe").val(model[0].id_tipe);
+                    $("#nip").val(model[0].NIP);
+                    $("#npasien").val(model[0].nama_pasien);
+                    $("#hbgn").val(model[0].hubungan_pasien);
+                    $("#alamat").val(model[0].alamat_rs);
+                    $("#notlp").val(model[0].no_tlp);
+                    $("#tglrwt").val(model[0].value);
+                    $("#status").val(model[0].status);
+                    $("#alasan_reject").val(model[0].alasan_reject);
+                    $("#total").val('Rp. ' + model[0].total_tagihan);
+                    $("#payout").val('Rp. ' + model[0].payout);
             });
         }
 
         function getData(StatusReq) {
-            $('.tbl_viewClaim').DataTable().destroy();
+
              $.get(
                  '@Url.Action("getDataListClaim","Claim")',
                  { 'status': StatusReq },
@@ -174,45 +218,56 @@
                     $.each(data, function (i, model) {
                         nip = model.NIP;
                         var date = `${model.value}`
-                        //=========================================================== button Request 
-                        var btn_delete = `<button onclick="DeleteClaim('${model.id_klaim_medis}')" class='btn btn-danger'>Delete</button>`;
-                        var btn_edit = `<a href="/EditClaim/${model.id_klaim_medis}" class='btn btn-primary'>Edit</a>`;
-                        var btn_process = `<button id="${model.id_klaim_medis}" name="Processed" class='btn btn-success'>Proses</button>`;
+                        //=========================================================== button Request
+                        var btn_delete = `<button onclick="DeleteClaim('${model.id_klaim_medis}')" class='btn btn-danger'>
+                                         <i class="glyphicon glyphicon-remove"></i></button>`;
+                        var btn_edit = `<a href="/EditClaim/${model.id_klaim_medis}" class='btn btn-primary'>
+                                         <i class="glyphicon glyphicon-edit"></i></a>`;
+                        var btn_process = `<button id="${model.id_klaim_medis}" name="Processed" class='btn btn-success'>
+                                         <i class="glyphicon glyphicon-ok"></i></button>`;
+                        var btn_reject = `<button id="${model.id_klaim_medis}" onclick="RejectClaim('${model.id_klaim_medis}')"
+                                            class='btn btn-danger'><i class="glyphicon glyphicon-trash"></i></a>`;
 
                         //============================================================ button Proses
                         var btn_detail = `<a class='btn btn-info' onclick="ViewDetail('${model.id_klaim_medis}')" data-toggle='modal' data-target='#mymodal'>
-                                            <i class="glyphicon glyphicon-eye-open"></i>Detail</a>`;
+                                            <i class="glyphicon glyphicon-eye-open"></i></a>`;
                         var btn_accept = `<a id="${model.id_klaim_medis}" onclick="UpdateSaldo('${model.id_klaim_medis}')"
-                                            class='btn btn-success'><i class="glyphicon glyphicon-ok"></i>Accept</a>`;
+                                            class='btn btn-success'><i class="glyphicon glyphicon-ok"></i></a>`;
 
-                        //============================================================ button Finish                       
+                        //============================================================ button Finish
 
                         //============================================================= untuk memasukkan ke dalam IF ELSE
                         var statusRequested = `<td style=text-align:center height=50px > ${btn_process} ${btn_edit} ${btn_delete} </td >` + `</tr >`;
-                        var statusProcessed = `<td style=text-align:center height=50px > ${btn_accept} ${btn_detail} </td >` + `</tr >`;
+                        var statusProcessed = `<td style=text-align:center height=50px > ${btn_accept} ${btn_reject} </td >` + `</tr >`;
                         var statusFinished = `<td style=text-align:center height=50px > ${btn_detail} </td >` + `</tr >`;
+                        var rows1 = `<td style=text-align:center height=50px > ${model.payout} </td >` + `</tr >`;
 
                         //============================================================== Membuat row
                         var rows = `<tr>`
-                            + `<td style=text-align:center height=50px>${model.NIP}</td>`
-                            + `<td style=text-align:center height=50px >${model.id_tipe}</td >`
-                            + `<td style=text-align:center height=50px > ${date}</td >`
-                            + `<td style=text-align:center height=50px > ${model.total_tagihan}</td >`
-                            + `<td style=text-align:center height=50px > ${model.status}</td >`;
+                            + `<td style=text-align:center height=50px><a href="#" onclick="ViewDetail('${model.id_klaim_medis}')" data-toggle='modal' data-target='#mymodal'> ${model.NIP}</a></td>`
+                            + `<td style=text-align:center height=50px> ${model.id_tipe}</td >`
+                            + `<td style=text-align:center height=50px> ${date}</td >`
+                            + `<td style=text-align:center height=50px> ${model.total_tagihan}</td >`
+                            + `<td style=text-align:center height=50px> ${model.status}</td >`;
                         if (model.status == "Requested") {
                             $(".tbl_viewClaim tbody").append(rows + statusRequested);
                         } else if (model.status == "Processed") {
                             $(".tbl_viewClaim tbody").append(rows + statusProcessed);
                         } else {
-                            $(".tbl_viewClaim tbody").append(rows + statusFinished);
+                            $(".tbl_viewClaim tbody").append(rows + rows1);
                         }
-                        $('.tbl_viewClaim').DataTable();
+
                     });
-                    
-                });            
+                    $('.tbl_viewClaim').DataTable();
+                });
+            if (StatusReq == "Finished" || StatusReq == "Rejected") {
+                $("#action").text("Payout");
+            } else {
+                $("#action").text("Action");
+            }
         }
 
-        $(".tbl_viewClaim tbody").on("click", "button", function (e) {
+        $(".tbl_viewClaim tbody").on("click", "button[name='Processed']", function (e) {
             $.get('@Url.Action("updateClaim", "Claim")',
                 { 'idClaim': $(this)[0].id, 'status': $(this)[0].name },
                 function (data)
@@ -227,8 +282,10 @@
                 {
                     id: nip
                 }, function (data) {
-                    console.log(data);
-                    if (data == 'true') {
+                    //console.log(data);
+                    var checkstr = confirm(`Are you sure you want to process this ${idklaim}?`);
+                    if (checkstr == true) {
+                        if (data == 'true') {
                         $.get('@Url.Action("updateClaim", "Claim")',
                             { 'idClaim': idklaim, 'status': "Finished" });
                         $.get('@Url.Action("updatePlafond", "Claim")',
@@ -236,23 +293,16 @@
                             function (data) {
                                 alert(data);
                                 getData(temp);
-                            }
-                        );
-                    } else {
-                        $.get('@Url.Action("updateClaim", "Claim")',
-                            { 'idClaim': idklaim, 'status': "Rejected" },
-                            function ()
-                            {
-                                alert("Claim Request Rejected");
-                                getData(temp);
-                            }
-                        )
+                            });
+                        }
 
+                    } else {
+                        return false;
                     }
                 }
             );
-            
-        }       
+
+        }
 
         function DeleteClaim(idklaim) {
             console.log(idklaim);
@@ -260,79 +310,45 @@
             if (checkstr == true)
             {
                 $.get(`/DeleteClaim/${idklaim}`, function (data) {
-                    alert(`Delete ${idklaim} Successfully`);                    
+                    alert(`Delete ${idklaim} Successfully`);
                     getData(temp);
                 });
             } else
             {
                 return false;
             }
-            //location.href = `/DeleteClaim/${idklaim}`
         }
 
-    //function handleDelete(e, stop) {
-    //    if (stop) {
-    //        e.preventDefault();
-    //        swal({
-    //            title: "Are you sure?",
-    //            text: "You will not be able to recover the delaer again!",
-    //            type: "warning",
-    //            showCancelButton: true,
-    //            confirmButtonColor: "#DD6B55",
-    //            confirmButtonText: "Yes, delete!",
-    //            closeOnConfirm: false
-    //        },
-    //        function (isConfirm) {
-    //            if (isConfirm) {
-    //                swal("Deleted", "", "success");
-    //                $('.delete').trigger('click', {});
-    //            }
-    //            else {
-    //                swal("Cancelled", "", "error");
-    //            }
-    //        });
-    //    }
-    //};
-    //    $("[data-toggle=popover]").popover()
+        $("#submit_reject").on("click", function (e) {
+            e.preventDefault();
+            let formdata = $("#reject").serialize();
+            $.ajax({
+                    url: '@Url.Action("alasanReject","Claim")',
+                    type: 'POST',
+                    data: formdata,
+                    success: function (data) {
+                    $.get('@Url.Action("updateClaim", "Claim")',
+                        { 'idClaim': $("#idmedis").val(), 'status': "Rejected" },
+                    function () {
+                        alert("Claim Request Rejected");
+                        getData(temp);
+                    });
+                    },
+                    error: function () {
+                        alert("Update Kuota Failed");
+                    }
+                });
+        });
+
+        function RejectClaim(idklaim) {
+            //console.log(idklaim);
+            var checkstr = confirm(`Are you sure you want to Reject ${idklaim}?`);
+            if (checkstr == true) {
+                $("#modalReject").modal('show');
+                document.getElementById("idmedis").value = idklaim;
+            } else {
+                return false;
+            }
+        }
     </script>
 }
-
-
-@*@foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NIP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.nama_pasien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.id_tipe)
-            </td>
-            <td>
-                @Convert.ToDateTime(item.tgl_perawatan).ToString("dd-MM-yyyy")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_tagihan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.status)
-            </td>
-            <td>
-                <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#myModal">
-                    Process
-                </button>
-                <a href="@Url.Action("EditClaim",
-                                                    new {id = item.id_klaim_medis})" class="btn btn-xs btn-primary"
-                   onclick="return confirm ('Are you sure want to edit?');">
-                    <i class="glyphicon glyphicon-edit"></i> Edit
-                </a>
-                @*==========================================================*@
-@*                  <a href="@Url.Action("DeleteClaim",
-                                                    new {id = item.id_klaim_medis})" class="btn btn-xs btn-danger"
-                   onclick="return confirm ('Are you sure want to delete?');" />
-                <i class="glyphicon glyphicon-remove"></i> Delete
-            </td>
-        </tr>
-    }*@

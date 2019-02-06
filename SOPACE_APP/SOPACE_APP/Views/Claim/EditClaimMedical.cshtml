@@ -25,21 +25,19 @@
 }
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="margin-top:20px">
             <h1 class="page-header">Edit Data Klaim Medis</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-    <div class="row">
-        @using (Html.BeginForm("UpdateClaim","Claim", FormMethod.Post, new { enctype = "multipart/form-data", id = "formAdd" }))
+    <div class="row" style="background-color:lightblue">
+        @using (Html.BeginForm("UpdateClaim", "Claim", FormMethod.Post, new { enctype = "multipart/form-data", id = "formAdd" }))
         {
             <div class="form-horizontal">
 
-                <h4><b>Input Claim Medical</b></h4><br />
-
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
+                <div class="form-group" style="margin-top:20px">
                     @Html.LabelFor(model => model.NIP, "NIP:", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-5">
                         @Html.EditorFor(model => model.NIP, new { htmlAttributes = new { @class = "form-control",
@@ -68,10 +66,10 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.id_tipe, "Tipe Medis:", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.id_tipe, "Tipe Klaim:", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-3">
                         @Html.DropDownListFor(model => model.id_tipe, new SelectList(listItems, "Value", "Text"), "-- Select Tipe Medis --", new
-                            {@class = "form-control", id="TipeMedis"})
+                            {@class = "form-control", id="TipeKlaim"})
                     </div>
                 </div>
 
@@ -105,8 +103,9 @@
                     @Html.LabelFor(model => model.no_tlp, "No. Telp:", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-5">
                         @Html.EditorFor(model => model.no_tlp, new { htmlAttributes = new { @class = "form-control",
-                                            placeholder = "No. Telp RS (Ex. 0212323xxx)", onkeypress="return hanyaAngka(event)", maxlength = 12}})
+                                            placeholder = "No. Telp RS (Ex. 0212323xxx)", maxlength = 12}})
                         @Html.ValidationMessageFor(model => model.no_tlp, "", new { @class = "text-danger" })
+                        <span style="color:red" id="pesan1"></span>
                     </div>
                 </div>
 
@@ -121,15 +120,16 @@
                     @Html.LabelFor(model => model.total_tagihan, "Total Tagihan:", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-5">
                         @Html.EditorFor(model => model.total_tagihan, new { htmlAttributes = new { @class = "form-control",
-                                     onkeypress = "return hanyaAngka(event)", placeholder = "Total Tagihan Rumah Sakit" } })
+                                      placeholder = "Total Tagihan Rumah Sakit" } })
                         @Html.ValidationMessageFor(model => model.total_tagihan, "", new { @class = "text-danger" })
+                        <span style="color:red" id="pesan2"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Save" class="btn btn-primary" id="btn_save" />
-                        <input type="button" value="Cancel" class="btn btn-danger" 
-                               onclick="location.href='/Claim/ViewClaimMedical'"/>                        
+                        <input type="button" value="Cancel" class="btn btn-danger"
+                               onclick="location.href='/Claim/ViewClaimMedical'" />
                     </div>
                 </div>
                 @Html.HiddenFor(m => m.status)
@@ -145,11 +145,38 @@
     <script src="~/Scripts/lodash.js"></script>
     <script>
 
+        //ketika input total tagihan dengan huruf, akan hilang karena tidak boleh pakai huruf
+        $(document).ready(function () {
+            $('#total_tagihan').keyup(function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+        });
+
+        //validasi No Telp
+        $(document).ready(function () {
+            $("#no_tlp").keypress(function (data) {
+                if (data.which != 8 && data.which != 0 && (data.which < 48 || data.which > 57)) {
+                    $("#pesan1").html("Tidak boleh menggunakan huruf").show().fadeOut("slow");
+                    return false;
+                }
+            });
+        });
+
+        //validasi Total tagihan
+        $(document).ready(function () {
+            $("#total_tagihan").keypress(function (data) {
+                if (data.which != 8 && data.which != 0 && (data.which < 48 || data.which > 57)) {
+                    $("#pesan2").html("Tidak boleh menggunakan huruf").show().fadeOut("slow");
+                    return false;
+                }
+            });
+        });
+
         $().ready(function () {
             $("#tgl_perawatan").val('@TempData["tgl_perawatan"]');
         })
 
-        $("#TipeMedis").on("change", function (value) {
+        $("#TipeKlaim").on("change", function (value) {
             var valueTipeMedic = value.target.selectedOptions[0].value
             $("#id_tipe").val(`${valueTipeMedic}`);
         });
@@ -174,11 +201,11 @@
                     'nama_pasien': {
                        required: true,
                     },
-                    
+
                     'tgl_perawatan': {
                         required: true,
                     },
-                    
+
                     'alamat_rs': {
                         required: true,
                     },
@@ -203,11 +230,11 @@
                             type: 'POST',
                             data: formdata,
                             success: function (data) {
-                                alert("Data Updated");
+                                alert("Data is Successfully Updated..");
                                 location.href = '/Claim/ViewClaimMedical';
                             },
                             error: function () {
-                                alert("Update Data Failed");                                
+                                alert("Update Data Failed..");
                             }
                     });
                 }

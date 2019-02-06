@@ -1,4 +1,4 @@
-﻿
+﻿@model SOPACE_MVC.Models.klaim_medis
 @{
     ViewBag.Title = "ShowClaimUser";
     Layout = "~/Views/MasterLayout/MasterUser.cshtml";
@@ -10,7 +10,11 @@
         <div class="col-lg-12">
             <h1 class="page-header">NIP : @Session["user_nip"].ToString()</h1>
         </div>
-        <!-- /.col-lg-12 -->
+    </div>
+    <div>
+        <a id="saldoPerson" href="#" class="btn btn-primary" data-toggle="modal" data-target="#saldoModal">
+            <i class="glyphicon glyphicon-eye-open">Saldo</i>
+        </a>
     </div>
     <!-- /.row -->
     <div class="row">
@@ -20,12 +24,12 @@
                     <table class="table table-striped table-bordered table-sm" id="dataTables-Claim">
                         <thead>
                             <tr>
-                                <th scope="col" width="100px" height=25px >ID Claim</th>
-                                <th scope="col" width="150px" height=25px>Tipe Claim</th>
-                                <th scope="col" width="100px" height=25px>Tanggal</th>
-                                <th scope="col" width="230px" height="25px">Nama Pasien</th>
-                                <th scope="col" width="150px" height=25px>Total Tagihan</th>
-                                <th scope="col" width="50px" height=25px>Detail</th>
+                                <th style="text-align:center" scope="col" width="120px" height=25px>ID Claim</th>
+                                <th style="text-align:center" scope="col" width="130px" height=25px>Tipe Claim</th>
+                                <th style="text-align:center" scope="col" width="150px" height=25px>Tanggal</th>
+                                <th style="text-align:center" scope="col" width="180px" height="25px">Payout</th>
+                                <th style="text-align:center" scope="col" width="150px" height=25px>Status</th>
+                                <th style="text-align:center" scope="col" width="50px" height=25px>Detail</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -35,101 +39,116 @@
         </div>
     </div>
 </div>
-<div class="modal" tabindex="-1" role="dialog" id="mymodal">
+<!--Modal Saldo Claim Medical-->
+<div class="modal" tabindex="-1" role="dialog" id="saldoModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">View Detail Claim</h3>
+            <div class="modal-header" style="background-color:dodgerblue">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <h3 class="modal-title"><i class="glyphicon glyphicon-eye-open"></i>Saldo Claim Medical</h3>
             </div>
             <div class="modal-body">
-                <form id="claimdetail">
-                    <table>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>Tipe Medis</span></td>
-                            <td><label id="tipe"></label></td>
-                        </tr>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>NIP</span></td>
-                            <td><label id="nip"></label></td>
-                        </tr>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>Nama Pasien</span></td>
-                            <td><label id="npasien"></label></td>
-                        </tr>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>Hubungan Dengan Pasien</span></td>
-                            <td><label id="hbgn"></label></td>
-                        </tr>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>Alamat RS</span></td>
-                            <td><label>:</label></td>
-                            <td><textarea id="alamat" readonly style="width:300px; height:100px; margin-left:-93px"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>No. Telp</span></td>
-                            <td><label id="notlp"></label></td>
-                        </tr>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>Tanggal Rawat</span></td>
-                            <td><label id="tglrwt"></label></td>
-                        </tr>
-                        <tr>
-                            <td scope="col" width="180px" height="50px"><span>Total Biaya</span></td>
-                            <td><label id="total"></label></td>
-                        </tr>
-                    </table>
-                    @*<div class="form-group">
-                        <span>Tipe Medis</span>
-                        <span style="margin-left:100px">:&nbsp;</span>
-                        <label id="tipe"></label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <span>Rawat Jalan</span>
+                            <input disabled id="rwtjln" placeholder="Saldo Rawat Jalan" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Rawat Inap</span>
+                            <input disabled id="rwtinap" placeholder="Saldo Rawat Inap" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Kacamata</span>
+                            <input disabled id="kacamata" placeholder="Saldo Kacamata" class="form-control" />
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <span>NIP</span>
-                        <span style="margin-left:145px">:&nbsp;</span>
-                        <label id="nip"></label>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <span>Berlaku s/d</span>
+                            <input disabled id="exp_rwtjln" placeholder="Expired Date Rawat Jalan" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Berlaku s/d</span>
+                            <input disabled id="exp_rwtinap" placeholder="Expired Date Rawat Inap" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Berlaku s/d</span>
+                            <input disabled id="exp_kacamata" placeholder="Expired Date Kacamata" class="form-control" />
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    <div class="form-group">
-                        <span>Nama Pasien</span>
-                        <span style="margin-left:85px">:&nbsp;</span>
-                        <label id="npasien"></label>
+<!--Modal View Claim Medical-->
+<div class="modal" tabindex="-1" role="dialog" id="mymodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:dodgerblue">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title"><i class="glyphicon glyphicon-eye-open"></i>View Detail Claim</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <span>NIP</span>
+                            <input disabled id="nip" placeholder="NIP" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Nama Pasien</span>
+                            <input disabled id="npasien" placeholder="Nama Pasien" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Alamat Rumah Sakit</span>
+                            <textarea id="alamat" disabled class="form-control" placeholder="Alamat Rumah Sakit"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <span>No. Telp</span>
+                            <input disabled id="notlp" placeholder="Nomor Telepon" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Status</span>
+                            <input disabled id="status" placeholder="Status Proses" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Klaim yang Dibayarkan</span>
+                            <input disabled id="payout" placeholder="Klaim yang dibayarkan" class="form-control" />
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <span>Hubungan Dengan Pasien</span>
-                        <span style="margin-left:5px">:&nbsp;</span>
-                        <label id="hbgn"></label>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <span>Tipe Claim</span>
+                            <input disabled id="tipe" placeholder="Tipe Claim" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Hubungan dengan Pasien</span>
+                            <input disabled id="hbgn" placeholder="Hubungan dengan Pasien" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Alasan</span>
+                            <textarea id="alasan_reject" disabled class="form-control" placeholder="Alasan"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <span>Tanggal Rawat</span>
+                            <input disabled id="tglrwt" placeholder="Tanggal Rawat" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <span>Total Biaya</span>
+                            <input disabled id="total" placeholder="Total Biaya" class="form-control" />
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <span>Alamat RS</span>
-                        <span style="margin-left:103px">:&nbsp;</span><span>
-                        <textarea id="alamat" style="width:350px; top:auto "   readonly></textarea></span>
-                    </div>
-
-                    <div class="form-group">
-                        <span>No.Telp RS</span>
-                        <span style="margin-left:100px">:&nbsp;</span>
-                        <label id="notlp"></label>
-                    </div>
-
-                    <div class="form-group">
-                        <span>Tanggal Rawat</span>
-                        <span style="margin-left:79px">:&nbsp;</span>
-                        <label id="tglrwt"></label>
-                    </div>
-
-                    <div class="form-group">
-                        <span>Total Tagihan</span>
-                        <span style="margin-left:90px">:&nbsp;</span>
-                        <label id="total"></label>
-                    </div>*@
-
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -138,53 +157,67 @@
     </div>
 </div>
 @section script{
-    <script type="text/javascript">
-        refresh();    
-        function refresh() {
-             $.get(
-                '@Url.Action("ShowClaim")',
-                 function (data) {
-                     $("#dataTables-Claim tbody").empty();
-                     $.each(data, function (i, model) {
-                         var date = `${model.value}`
-                         var rows = `<tr>
+<script type="text/javascript">
+    refresh();
+    function refresh() {
+        $.get(
+            '@Url.Action("ShowClaim")',
+            function (data) {
+                $("#dataTables-Claim tbody").empty();
+                $.each(data, function (i, model) {
+                    var date = `${model.value}`
+                    var rows = `<tr>
                                         <td height=20px>${model.id_klaim_medis}</td>
                                         <td height=20px >${model.id_tipe}</td>
                                         <td height=20px >${date}</td>
-                                        <td height=20px >${model.nama_pasien}</td>
-                                        <td height=20px >${model.total_tagihan}</td>
+                                        <td height=20px >Rp. ${model.payout}</td>
+                                        <td height=20px >${model.status}</td> @* Total Tagihan atau Total Biaya *@
                                         <td height=20px >
-                                            <a id=${model.id_klaim_medis} style="text-align:center" class="glyphicon glyphicon-eye-open"  href="#" data-toggle="modal" data-target="#mymodal" />
+                                        <a id=${model.id_klaim_medis} style="text-align:center" class="glyphicon glyphicon-eye-open"
+                                            href="#" data-toggle="modal" data-target="#mymodal" />
                                         </td>
                                     </tr >`;
-
-                         $("#dataTables-Claim tbody").append(rows);
-                 });
-            });
-        }
-
-        $().ready(function () {
-            
-            $('#dataTables-Claim').DataTable({
-                responsive: true,
-                searching: true
-            });
-            
-        });
-
-        $("#dataTables-Claim tbody").on("click", "a", function (e) {
-            $.get(`GetClaim/${e.target.id}`, function (data) {
-                $.each(data, function (i, model) {
-                    $("#tipe").html(": "+`${model.id_tipe}`);
-                    $("#nip").html(": " +`${model.NIP}`);
-                    $("#npasien").html(": " +`${model.nama_pasien}`);
-                    $("#hbgn").html(": " +`${model.hubungan_pasien}`);
-                    $("#alamat").html(`${model.alamat_rs}`);
-                    $("#notlp").html(": " +`${model.no_tlp}`);
-                    $("#tglrwt").html(": " +`${model.value}`);
-                    $("#total").html(": " +`${model.total_tagihan}`);
+                    $("#dataTables-Claim tbody").append(rows);
                 });
             });
+    }
+
+    $().ready(function () {
+
+        $('#dataTables-Claim').DataTable({
+            responsive: true,
+            searching: true
         });
-    </script>
+
+    });
+
+    $.get(`GetPlafond`, function (model) {
+        console.log(model);
+        $("#rwtjln").val("Rp. " + model.saldo_rawat_jalan);
+        $("#rwtinap").val("Rp. " + model.saldo_rawat_inap);
+        $("#kacamata").val("Rp. " + model.saldo_kacamata);
+        $("#exp_rwtjln").val(model.value);
+        $("#exp_rwtinap").val(model.value);
+        $("#exp_kacamata").val(model.value);
+    });
+
+    $("#dataTables-Claim tbody").on("click", "a", function (e) {
+        $.get(`GetClaim/${e.target.id}`, function (data) {
+            //console.log(e.target.id);
+            $.each(data, function (i, model) {
+                $("#tipe").val(model.id_tipe);
+                $("#nip").val(model.NIP);
+                $("#npasien").val(model.nama_pasien);
+                $("#hbgn").val(model.hubungan_pasien);
+                $("#alamat").val(model.alamat_rs);
+                $("#notlp").val(model.no_tlp);
+                $("#tglrwt").val(model.value);
+                $("#status").val(model.status);
+                $("#alasan_reject").val(model.alasan_reject);
+                $("#total").val('Rp. ' + model.total_tagihan);
+                $("#payout").val('Rp. ' + model.payout);
+            });
+        });
+    });
+</script>
 }

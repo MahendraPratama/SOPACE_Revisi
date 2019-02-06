@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ACEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ACEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="buku_rekening">
           <Key>
             <PropertyRef Name="id_req" />
@@ -60,6 +60,7 @@
           <Property Name="status" Type="varchar" MaxLength="15" />
           <Property Name="id_tipe" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="payout" Type="numeric" Precision="12" Scale="0" />
+          <Property Name="alasan_reject" Type="text" />
         </EntityType>
         <EntityType Name="kuota_cuti">
           <Key>
@@ -491,8 +492,7 @@
             <End Role="user" EntitySet="user" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ACEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -559,6 +559,7 @@
           <Property Name="id_tipe" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="payout" Type="Decimal" Precision="12" Scale="0" />
           <NavigationProperty Name="personal_information" Relationship="Self.FK_NIP_klaimMed" FromRole="klaim_medis" ToRole="personal_information" />
+          <Property Name="alasan_reject" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="kuota_cuti">
           <Key>
@@ -977,7 +978,7 @@
             <Parameter Name="pwd" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="pr_cekNipAlready" ReturnType="Collection(Int32)">
-            <Parameter Name="CekNip" Mode="In" Type="String" />
+          <Parameter Name="CekNip" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="pr_cekPassword">
             <Parameter Name="cekPwd" Mode="In" Type="String" />
@@ -988,7 +989,7 @@
             <Parameter Name="retUsrnm" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="pr_createSU" ReturnType="Collection(String)">
-            <Parameter Name="password" Mode="In" Type="String" />
+          <Parameter Name="password" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="pr_DiffKuotaCuti" ReturnType="Collection(Int32)">
             <Parameter Name="nip" Mode="In" Type="String" />
@@ -999,10 +1000,10 @@
           <FunctionImport Name="pr_getIDLembur" ReturnType="Collection(String)" />
           <FunctionImport Name="pr_getLastNIP" ReturnType="Collection(String)" />
           <FunctionImport Name="pr_KuotaCuti">
-            <Parameter Name="nip" Mode="In" Type="String" />
+          <Parameter Name="nip" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="pr_RenewalClaim">
-            <Parameter Name="nip" Mode="In" Type="String" />
+          <Parameter Name="nip" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
       </Schema>
@@ -1056,6 +1057,7 @@
           <EntitySetMapping Name="klaim_medis">
             <EntityTypeMapping TypeName="ACEModel.klaim_medis">
               <MappingFragment StoreEntitySet="klaim_medis">
+                <ScalarProperty Name="alasan_reject" ColumnName="alasan_reject" />
                 <ScalarProperty Name="id_klaim_medis" ColumnName="id_klaim_medis" />
                 <ScalarProperty Name="NIP" ColumnName="NIP" />
                 <ScalarProperty Name="nama_pasien" ColumnName="nama_pasien" />
