@@ -227,6 +227,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-chosen.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -255,6 +256,7 @@
     <Content Include="Models\SOPACE_DB_Model.edmx.diagram">
       <DependentUpon>SOPACE_DB_Model.edmx</DependentUpon>
     </Content>
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\canvasjs.min.js" />
     <Content Include="Scripts\canvasjs.react.js" />
@@ -810,6 +812,7 @@
     <Content Include="Views\Email\Index.cshtml" />
     <Content Include="Views\RequestSurat\RequestSurat.cshtml" />
     <Content Include="Views\TemplateSurat\KeteranganKerja.cshtml" />
+    <Content Include="Views\Cuti\ListCutiKaryawan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

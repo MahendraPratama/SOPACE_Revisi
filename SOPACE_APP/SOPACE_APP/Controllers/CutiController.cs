@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SOPACE_MVC.Models;
-using System.Data.Entity;   
+using System.Data.Entity;
 namespace SOPACE_MVC.Controllers
 {
     public class CutiController : Controller
@@ -13,7 +13,8 @@ namespace SOPACE_MVC.Controllers
         // GET: Cuti
         public ActionResult Index()
         {
-                return View("Cuti");
+            ViewBag.NamaPeg = new SelectList(sopace.personal_information.Where(e => e.status_aktif == "aktif"), "nama_pegawai", "nama_pegawai");
+            return View("Cuti");
         }
 
         [HttpGet]
@@ -24,20 +25,43 @@ namespace SOPACE_MVC.Controllers
         }
 
         [HttpGet]
+        [Route("ListCuti")]
+        public JsonResult ListCuti()
+        {
+
+            var list_cuti = sopace.cutis.ToList().Select(e => new
+            {
+                e.id_cuti,
+                e.personal_information.nama_pegawai,
+                value1 = e.tgl_mulai_cuti.Value.ToLongDateString(),
+                value2 = e.tgl_selesai_cuti.Value.ToLongDateString(),
+                e.alasan_cuti
+            });
+            return Json(list_cuti, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [Route("FormListCuti")]
+        public ActionResult FormListCuti()
+        {
+            return View("ListCutiKaryawan");
+        }
+
+        [HttpGet]
         [Route("CutiKaryawan")]
         public ActionResult CutiKaryawan()
         {
             return View();
         }
 
-        [HttpPost,ActionName("GetNamaEmp"),Route("GetNamaEmp")]
-        public JsonResult GetNama(string id)
+        [HttpPost, ActionName("GetNamaEmp"), Route("GetNamaEmp")]
+        public JsonResult GetNama(string nama)
         {
-            int cari = sopace.personal_information.Where(e => e.NIP == id).Count();
+            int cari = sopace.personal_information.Where(e => e.nama_pegawai == nama).Count();
             if (cari > 0)
             {
-                string nama = sopace.personal_information.Where(e => e.NIP == id).Select(e => e.nama_pegawai).FirstOrDefault();
-                return Json(nama);
+                string id = sopace.personal_information.Where(e => e.nama_pegawai == nama).Select(e => e.NIP).FirstOrDefault();
+                return Json(id);
             }
             else
             {
@@ -51,38 +75,65 @@ namespace SOPACE_MVC.Controllers
         {
 
             string nip = Session["user_nip"].ToString();
-            var list_cuti = sopace.cutis.ToList().Where(e => e.NIP == nip).Join(sopace.personal_information, r => r.NIP,
-                                                        bt => bt.NIP,
-                                                        (r, bt) => new {
-                                                            r.id_cuti,
-                                                            r.NIP,
-                                                            bt.nama_pegawai,
-                                                            value1 = r.tgl_mulai_cuti.Value.ToString("dd-MM-yyyy"),
-                                                            value2 = r.tgl_selesai_cuti.Value.ToString("dd-MM-yyyy"),
-                                                            r.alasan_cuti,
-                                                            r.no_tlp,
-                                                            r.alamat
-                                                        });
+            var list_cuti = sopace.cutis.ToList().Where(e => e.NIP == nip).Select(e => new {
+                e.id_cuti,
+                value1 = e.tgl_mulai_cuti.Value.ToString("dd-MM-yyyy"),
+                value2 = e.tgl_selesai_cuti.Value.ToString("dd-MM-yyyy"),
+                e.alasan_cuti
+            });
             return Json(list_cuti, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        [Route("getcutikaryawanID/{id}")]
-        public JsonResult getcutikaryawanID(string id)
+        [Route("getDetailcutikaryawan/{id}")]
+        public JsonResult getDetailcutikaryawan(string id)
         {
+            if (Session["user_role"].ToString() == "admin" || Session["user_role"].ToString() == "superadmin")
+            {
+                var list_cuti = sopace.cutis.ToList().Where(e => e.id_cuti == id).Select(e => new
+                {
+                    e.id_cuti,
+                    e.NIP,
+                    value1 = e.tgl_mulai_cuti.Value.ToString("dd-MM-yyyy"),
+                    value2 = e.tgl_selesai_cuti.Value.ToString("dd-MM-yyyy"),
+                    e.no_tlp,
+                    e.alamat,
+                    e.alasan_cuti
+                });
+
+                return Json(list_cuti, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                string nip = Session["user_nip"].ToString();
+                var list_cuti = sopace.cutis.ToList().Where(e => e.NIP == nip && e.id_cuti == id).Select(e => new {
+                    e.id_cuti,
+                    e.NIP,
+                    value1 = e.tgl_mulai_cuti.Value.ToString("dd-MM-yyyy"),
+                    value2 = e.tgl_selesai_cuti.Value.ToString("dd-MM-yyyy"),
+                    e.no_tlp,
+                    e.alamat,
+                    e.alasan_cuti
+                });
+
+                return Json(list_cuti, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("GetKuotaCutiKaryawan")]
+        public JsonResult getcutikaryawanID()
+        {
+
             string nip = Session["user_nip"].ToString();
-            var list_cuti = sopace.cutis.ToList().Where(e => e.NIP == nip && e.id_cuti == id).Join(sopace.personal_information, r => r.NIP,
-                                                        bt => bt.NIP,
-                                                        (r, bt) => new {
-                                                            r.id_cuti,
-                                                            r.NIP,
-                                                            bt.nama_pegawai,
-                                                            value1 = r.tgl_mulai_cuti.Value.ToString("dd-MM-yyyy"),
-                                                            value2 = r.tgl_selesai_cuti.Value.ToString("dd-MM-yyyy"),
-                                                            r.alasan_cuti,
-                                                            r.no_tlp,
-                                                            r.alamat
-                                                        });
+            var list_cuti = sopace.kuota_cuti.Where(e => e.NIP == nip).ToList().Select(e => new
+            {
+                e.sisa_cuti,
+                e.cuti_baru,
+                value2 = e.exp_sisa_cuti.Value.ToString("dd/MM/yyyy"),
+                value1 = e.exp_cuti_baru.Value.ToString("dd/MM/yyyy")
+            });
             return Json(list_cuti, JsonRequestBehavior.AllowGet);
         }
 
@@ -91,7 +142,7 @@ namespace SOPACE_MVC.Controllers
         public JsonResult GetDataCuti()
         {
             string nip = Session["user_nip"].ToString();
-            var list_cuti = sopace.personal_information.ToList().Join(sopace.kuota_cuti, r => r.NIP,
+            var list_cuti = sopace.personal_information.ToList().Where(e=> e.status_aktif=="aktif").Join(sopace.kuota_cuti, r => r.NIP,
                                                         bt => bt.NIP,
                                                         (r, bt) => new
                                                         {
@@ -114,7 +165,8 @@ namespace SOPACE_MVC.Controllers
             {
                 return Json("Data tidak ditemukan");
             }
-            else {
+            else
+            {
 
                 DateTime date1 = DateTime.Now;
                 DateTime date2 = join_date.Value;
@@ -130,7 +182,7 @@ namespace SOPACE_MVC.Controllers
             var kuota_cuti_baru = sopace.kuota_cuti.Where(e => e.NIP == id).Select(e => e.cuti_baru).FirstOrDefault();
             var kuota_sisa_cuti = sopace.kuota_cuti.Where(e => e.NIP == id).Select(e => e.sisa_cuti).FirstOrDefault();
 
-            return Json("Cuti Baru : "+ kuota_cuti_baru +" Sisa Cuti Tahun Lalu : " +kuota_sisa_cuti);
+            return Json("Cuti Baru : " + kuota_cuti_baru + " Sisa Cuti Tahun Lalu : " + kuota_sisa_cuti);
         }
 
         [HttpPost]
@@ -155,77 +207,45 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("UpdateKuota")]
-        public JsonResult UpdateKuota(string txtNIP, DateTime txtTglMulai, DateTime txtTglSelesai)
+        public JsonResult UpdateKuota(string txtNIP, DateTime txtTglMulai, DateTime txtTglSelesai, int txtNum)
         {
-            kuota_cuti kt = sopace.kuota_cuti.Where(e => e.NIP == txtNIP).FirstOrDefault();
-            var kuota_cuti_baru = sopace.kuota_cuti.Where(e => e.NIP == txtNIP).Select(e => e.cuti_baru).FirstOrDefault();
-            var kuota_sisa_cuti = sopace.kuota_cuti.Where(e => e.NIP == txtNIP).Select(e => e.sisa_cuti).FirstOrDefault();
-            var selisih = (txtTglSelesai.Day - txtTglMulai.Day) + 1;
-            if (kuota_sisa_cuti > 0)
-            {
-                kuota_sisa_cuti = kuota_sisa_cuti - selisih;
-                if (kuota_sisa_cuti < 0)
-                {
-                    kuota_cuti_baru = kuota_cuti_baru + kuota_sisa_cuti;
-                    kuota_sisa_cuti = 0;
-                    kt.sisa_cuti = kuota_sisa_cuti;
-                    kt.cuti_baru = kuota_cuti_baru;
-                    sopace.Entry(kt).State = EntityState.Modified;
-                    sopace.SaveChanges();
-                }
-
-            }
-            else {
-                kuota_cuti_baru = kuota_cuti_baru - selisih;
-                kt.cuti_baru = kuota_cuti_baru;
-                sopace.Entry(kt).State = EntityState.Modified;
-                sopace.SaveChanges();
-            }
-
-            return Json("Update Kuota Success");
+            sopace.pr_DiffKuotaCuti(txtNIP, txtTglMulai, txtTglSelesai, txtNum);
+            return Json("Update Kuota Sukses");
         }
 
         [HttpPost]
-        [Route("UpdateKuotaCutiMassal")]
-        public JsonResult UpdateKuotaCutiMassal(string[] CutiId, DateTime txtTglMulai, DateTime txtTglSelesai)
+        [Route("UpdateKuotaMassal")]
+        public JsonResult UpdateKuotaMassal(string[] CutiId, DateTime txtTglMulai, DateTime txtTglSelesai, int txtNum)
         {
-            var selisih = (txtTglSelesai.Day - txtTglMulai.Day) + 1;
             foreach (string id in CutiId)
             {
-                kuota_cuti kt = sopace.kuota_cuti.Where(e => e.NIP == id).FirstOrDefault();
-                var kuota_cuti_baru = sopace.kuota_cuti.Where(e => e.NIP == id).Select(e => e.cuti_baru).FirstOrDefault();
-                var kuota_sisa_cuti = sopace.kuota_cuti.Where(e => e.NIP == id).Select(e => e.sisa_cuti).FirstOrDefault();
-                if (kuota_sisa_cuti > 0)
-                {
-                    kuota_sisa_cuti = kuota_sisa_cuti - selisih;
-                    if (kuota_sisa_cuti < 0)
-                    {
-                        kuota_cuti_baru = kuota_cuti_baru + kuota_sisa_cuti;
-                        kuota_sisa_cuti = 0;
-                        kt.sisa_cuti = kuota_sisa_cuti;
-                        kt.cuti_baru = kuota_cuti_baru;
-                        sopace.Entry(kt).State = EntityState.Modified;
-                        sopace.SaveChanges();
-                    }
-                    else if(kuota_sisa_cuti > 0)
-                    {
-                        kt.sisa_cuti = kuota_sisa_cuti;
-                        sopace.Entry(kt).State = EntityState.Modified;
-                        sopace.SaveChanges();
-                    }
 
-                }
-                else
-                {
-                    kuota_cuti_baru = kuota_cuti_baru - selisih;
-                    kt.cuti_baru = kuota_cuti_baru;
-                    sopace.Entry(kt).State = EntityState.Modified;
-                    sopace.SaveChanges();
-                }
-
+                sopace.pr_DiffKuotaCuti(id, txtTglMulai, txtTglSelesai, txtNum);
             }
+            return Json("Update Kuota Sukses");
+        }
 
-
+        [HttpPost]
+        [Route("InsertCutiMassal")]
+        public JsonResult InsertCutiMassal(string[] CutiId, DateTime txtTglMulai, DateTime txtTglSelesai, string txtAlasan)
+        {
+            foreach (string id in CutiId)
+            {
+                personal_information pInfo = sopace.personal_information.Where(e => e.NIP == id).FirstOrDefault();
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                Random random = new Random();
+                string unique = new string(Enumerable.Repeat(chars, 4).Select(s => s[random.Next(s.Length)]).ToArray());
+                cuti ct = new cuti();
+                ct.id_cuti = "Cuti-" + DateTime.Now.Year + "-" + unique;
+                ct.NIP = id;
+                ct.no_tlp = pInfo.no_hp;
+                ct.tgl_mulai_cuti = txtTglMulai;
+                ct.tgl_selesai_cuti = txtTglSelesai;
+                ct.alasan_cuti = txtAlasan;
+                ct.alamat = pInfo.alamat_identitas;
+                sopace.cutis.Add(ct);
+                sopace.SaveChanges();
+            }
             return Json("Update Success");
         }
     }
