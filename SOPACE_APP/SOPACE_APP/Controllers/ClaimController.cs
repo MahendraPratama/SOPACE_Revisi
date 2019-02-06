@@ -12,6 +12,18 @@ namespace SOPACE_MVC.Controllers
     public class ClaimController : Controller
     {
         private ACEEntities sopace = new ACEEntities();
+        private string nip;
+        public void cekSession()
+        {
+            try
+            {
+                nip = Session["user_nip"].ToString();
+            }
+            catch (NullReferenceException)
+            {
+                Redirect("/home");
+            }
+        }
         // GET: Claim
         public ActionResult AddClaimMedical()
         {
@@ -79,7 +91,7 @@ namespace SOPACE_MVC.Controllers
         {
             try
             {
-                string nip = Session["user_nip"].ToString();
+                cekSession();
                 var list_klaim = sopace.klaim_medis.ToList().Where(e => e.status == status).Select(e =>
                           new {
                               e.id_klaim_medis,

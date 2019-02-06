@@ -5,17 +5,11 @@
     ViewBag.Title = "InputDataKaryawan";
     Layout = TempData["MasterLayout"].ToString();   
 }
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Input Data Karyawan</h1>
-        </div>
-        <!-- /.col-lg-12 -->
-    </div>
+<div id="page-wrapper">   
     <!-- /.row -->
     <div class="row">        
         @using (Html.BeginForm("Add", "PersonInfo", FormMethod.Post,new { enctype = "multipart/form-data", id="formAdd" })) {
-            <div>
+            <div style="margin-top:6%">
                 <h3>Informasi Umum</h3>
                 <section style="background-color:lightblue">
                     <div class="row">
