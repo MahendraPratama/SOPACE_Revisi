@@ -12,6 +12,23 @@ namespace SOPACE_MVC.Controllers
     {
         static private ACEEntities sopace = new ACEEntities();
         // GET: ClaimUser
+
+        [HttpGet]
+        [Route("GetPlafond")]
+        public JsonResult SisaSaldo()
+        {
+            string nips = Session["user_nip"].ToString();
+            var sisa = sopace.tunjangan_medical.ToList().Where(e => e.NIP == nips).Select(e =>
+            new {
+                    e.NIP,
+                    e.saldo_rawat_jalan,
+                    e.saldo_rawat_inap,
+                    e.saldo_kacamata,
+                    value = e.renewalDate.Value.ToString("dd/MM/yyyy")
+                }).FirstOrDefault();
+            return Json(sisa, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         [Route("GetCL")]
         [ActionName("ShowClaim")]
@@ -19,9 +36,10 @@ namespace SOPACE_MVC.Controllers
         {
             string nips = Session["user_nip"].ToString();
             var clm = sopace.klaim_medis.ToList()
-                                .Where(e => e.NIP == nips).Select(
+                                .Where(e => e.id_klaim_medis == e.id_klaim_medis && e.NIP == nips).Select(
                                     e => new {
                                         e.id_klaim_medis,
+                                        e.NIP,
                                         e.nama_pasien,
                                         e.hubungan_pasien,
                                         e.nama_dokter,
@@ -31,10 +49,11 @@ namespace SOPACE_MVC.Controllers
                                         e.diagnosa,
                                         e.total_tagihan,
                                         e.status,
-                                        e.id_tipe
+                                        e.id_tipe,
+                                        e.payout
                                     }
                                 );
-            return Json(clm,JsonRequestBehavior.AllowGet);
+            return Json(clm, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -50,9 +69,10 @@ namespace SOPACE_MVC.Controllers
         {
             string nips = Session["user_nip"].ToString();
             var list_claim = sopace.klaim_medis.ToList()
-                                .Where(e => e.NIP == nips).Select(
+                                .Where(e => e.NIP == nips && e.id_klaim_medis == id).Select(
                                     e => new {
                                         e.id_klaim_medis,
+                                        e.NIP,
                                         e.nama_pasien,
                                         e.hubungan_pasien,
                                         e.nama_dokter,
@@ -61,10 +81,12 @@ namespace SOPACE_MVC.Controllers
                                         e.no_tlp,
                                         e.diagnosa,
                                         e.total_tagihan,
+                                        e.alasan_reject,
                                         e.status,
-                                        e.id_tipe                                        
+                                        e.id_tipe,
+                                        e.payout
                                     }
-                                );            
+                                );
 
             return Json(list_claim, JsonRequestBehavior.AllowGet);
         }

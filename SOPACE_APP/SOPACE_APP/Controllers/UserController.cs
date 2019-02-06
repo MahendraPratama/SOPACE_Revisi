@@ -41,9 +41,9 @@ namespace SOPACE_MVC.Controllers
             {
                 var ret = sopace.file_dokumen.Where(p => p.NIP == nip).FirstOrDefault();
                 var nm = sopace.personal_information.Where(p => p.NIP == nip).FirstOrDefault();
-                if(ret.foto_profil != null)
+                if (ret.foto_profil != null)
                 {
-                    TempData["dir_profil"] = "uploads/"+nip+"/"+ret.foto_profil;
+                    TempData["dir_profil"] = "uploads/" + nip + "/" + ret.foto_profil;
                 }
                 else
                 {
@@ -266,7 +266,7 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("AddPBTH")]
-        public JsonResult AddReqPBTH(DateTime txtTgl, string txtTujuan, string txtDesc)
+        public JsonResult AddReqPBTH(string txtTujuan, string txtDesc)
         {
             cekSession();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -279,7 +279,7 @@ namespace SOPACE_MVC.Controllers
                 req.id_req = "PBTH-" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
                 req.NIP = nip;
                 req.nama_pegawai = nama;
-                req.tanggal_request = txtTgl;
+                req.tanggal_request = DateTime.Now;
                 req.status = "requested";
                 sopace.requests.Add(req);
                 sopace.SaveChanges();
@@ -289,14 +289,6 @@ namespace SOPACE_MVC.Controllers
                 pb.tujuan = txtTujuan;
                 pb.deskripsi = txtDesc;
                 sopace.pemberitahuans.Add(pb);
-                sopace.SaveChanges();
-
-                notifikasi ntf = new notifikasi();
-                ntf.id_req = req.id_req;
-                ntf.id_notifikasi = "NTF" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
-                ntf.id_penerima = "superuser";
-                ntf.status = "Delivery";
-                sopace.notifikasis.Add(ntf);
                 sopace.SaveChanges();
                 return Json("Insert Request Success", JsonRequestBehavior.AllowGet);
             }
@@ -308,7 +300,7 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("AddVisa")]
-        public JsonResult AddReqVisa(DateTime txtTgl, string txtnopass, string txtKeperluan)
+        public JsonResult AddReqVisa(string txtnopass, string txtKeperluan)
         {
             cekSession();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -321,7 +313,7 @@ namespace SOPACE_MVC.Controllers
                 req.id_req = "VISA-" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
                 req.NIP = nip;
                 req.nama_pegawai = nama;
-                req.tanggal_request = txtTgl;
+                req.tanggal_request = DateTime.Now;
                 req.status = "requested";
                 sopace.requests.Add(req);
                 sopace.SaveChanges();
@@ -331,14 +323,6 @@ namespace SOPACE_MVC.Controllers
                 vs.no_passport = txtnopass;
                 vs.keperluan = txtKeperluan;
                 sopace.visas.Add(vs);
-                sopace.SaveChanges();
-
-                notifikasi ntf = new notifikasi();
-                ntf.id_req = req.id_req;
-                ntf.id_notifikasi = "NTF" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
-                ntf.id_penerima = "superuser";
-                ntf.status = "Delivery";
-                sopace.notifikasis.Add(ntf);
                 sopace.SaveChanges();
                 return Json("Insert Request Success", JsonRequestBehavior.AllowGet);
             }
@@ -350,7 +334,7 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("AddSG")]
-        public JsonResult AddReqSG(DateTime txtTgl, string Durasi1, string Durasi2)
+        public JsonResult AddReqSG(DateTime txtTgl1, DateTime txtTgl2)
         {
             cekSession();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -363,24 +347,16 @@ namespace SOPACE_MVC.Controllers
                 req.id_req = "GAJI-" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
                 req.NIP = nip;
                 req.nama_pegawai = nama;
-                req.tanggal_request = txtTgl;
+                req.tanggal_request = DateTime.Now;
                 req.status = "requested";
                 sopace.requests.Add(req);
                 sopace.SaveChanges();
 
                 slip_gaji sg = new slip_gaji();
                 sg.id_req = req.id_req;
-                sg.durasi_awal = Durasi1;
-                sg.durasi_akhir = Durasi2;
+                sg.durasi_awal = txtTgl1.ToString("yyyy-MM-dd");
+                sg.durasi_akhir = txtTgl2.ToString("yyyy-MM-dd");
                 sopace.slip_gaji.Add(sg);
-                sopace.SaveChanges();
-
-                notifikasi ntf = new notifikasi();
-                ntf.id_req = req.id_req;
-                ntf.id_notifikasi = "NTF" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
-                ntf.id_penerima = "superuser";
-                ntf.status = "Delivery";
-                sopace.notifikasis.Add(ntf);
                 sopace.SaveChanges();
                 return Json("Insert Request Success", JsonRequestBehavior.AllowGet);
             }
@@ -392,7 +368,7 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("AddBR")]
-        public JsonResult AddReqBR(DateTime txtTgl, string NamaBank, string txtKeperluan)
+        public JsonResult AddReqBR(string NamaBank, string txtKeperluan)
         {
             cekSession();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -405,7 +381,7 @@ namespace SOPACE_MVC.Controllers
                 req.id_req = "BREK-" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
                 req.NIP = nip;
                 req.nama_pegawai = nama;
-                req.tanggal_request = txtTgl;
+                req.tanggal_request = DateTime.Now;
                 req.status = "requested";
                 sopace.requests.Add(req);
                 sopace.SaveChanges();
@@ -415,14 +391,6 @@ namespace SOPACE_MVC.Controllers
                 bk.keperluan = txtKeperluan;
                 bk.nama_bank = NamaBank;
                 sopace.buku_rekening.Add(bk);
-                sopace.SaveChanges();
-
-                notifikasi ntf = new notifikasi();
-                ntf.id_req = req.id_req;
-                ntf.id_notifikasi = "NTF" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
-                ntf.id_penerima = "superuser";
-                ntf.status = "Delivery";
-                sopace.notifikasis.Add(ntf);
                 sopace.SaveChanges();
                 return Json("Insert Request Success", JsonRequestBehavior.AllowGet);
             }
@@ -434,7 +402,7 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("AddKKRJ")]
-        public JsonResult AddReqKKRJ(DateTime txtTgl, string txtjabatan, string txtAlamat)
+        public JsonResult AddReqKKRJ(string txtjabatan, string txtAlamat)
         {
             cekSession();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -447,7 +415,7 @@ namespace SOPACE_MVC.Controllers
                 req.id_req = "KKRJ-" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
                 req.NIP = nip;
                 req.nama_pegawai = nama;
-                req.tanggal_request = txtTgl;
+                req.tanggal_request = DateTime.Now;
                 req.status = "requested";
                 sopace.requests.Add(req);
                 sopace.SaveChanges();
@@ -457,14 +425,6 @@ namespace SOPACE_MVC.Controllers
                 kk.jabatan = txtjabatan;
                 kk.alamat = txtAlamat;
                 sopace.keterangan_kerja.Add(kk);
-                sopace.SaveChanges();
-
-                notifikasi ntf = new notifikasi();
-                ntf.id_req = req.id_req;
-                ntf.id_notifikasi = "NTF" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
-                ntf.id_penerima = "superuser";
-                ntf.status = "Delivery";
-                sopace.notifikasis.Add(ntf);
                 sopace.SaveChanges();
                 return Json("Insert Request Success", JsonRequestBehavior.AllowGet);
             }
@@ -476,7 +436,7 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("AddNPWP")]
-        public JsonResult AddReqnpwp(DateTime txtTgl, string txtNoTlp, string txtAlamat)
+        public JsonResult AddReqnpwp(string txtNoTlp, string txtAlamat)
         {
             cekSession();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -489,7 +449,7 @@ namespace SOPACE_MVC.Controllers
                 req.id_req = "NPWP-" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
                 req.NIP = nip;
                 req.nama_pegawai = nama;
-                req.tanggal_request = txtTgl;
+                req.tanggal_request = DateTime.Now;
                 req.status = "requested";
                 sopace.requests.Add(req);
                 sopace.SaveChanges();
@@ -500,14 +460,6 @@ namespace SOPACE_MVC.Controllers
                 npwp.alamat_kantor_pajak = txtAlamat;
                 sopace.NPWPs.Add(npwp);
                 sopace.SaveChanges();
-
-                notifikasi ntf = new notifikasi();
-                ntf.id_req = req.id_req;
-                ntf.id_notifikasi = "NTF" + DateTime.Now.ToString("yyyy").ToString() + "-" + unique;
-                ntf.id_penerima = "superuser";
-                ntf.status = "Delivery";
-                sopace.notifikasis.Add(ntf);
-                sopace.SaveChanges();
                 return Json("Insert Request Success", JsonRequestBehavior.AllowGet);
             }
             else
@@ -515,14 +467,14 @@ namespace SOPACE_MVC.Controllers
                 return Json("Insert Request Failed", JsonRequestBehavior.AllowGet);
             }
         }
-        //======================================================================================================================================================
+//======================================================================================================================================================
         [HttpPost]
         [Route("Update")]
-        public JsonResult EditBT(buku_rekening bk1, string NamaBank)
+        public JsonResult EditBT(string txtIDReq, string NamaBank, string txtKeperluan)
         {
-            buku_rekening bk = sopace.buku_rekening.Where(e => e.id_req == bk1.id_req).First();
-            bk.keperluan = bk1.keperluan;
-            bk.nama_bank = bk1.nama_bank;
+            buku_rekening bk = sopace.buku_rekening.Where(e => e.id_req == txtIDReq).First();
+            bk.keperluan = txtKeperluan;
+            bk.nama_bank = NamaBank;
             sopace.Entry(bk).State = EntityState.Modified;
             sopace.SaveChanges();
             return Json("Update Data Request Success", JsonRequestBehavior.AllowGet);
@@ -530,11 +482,11 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("UpdateSG")]
-        public JsonResult EditSG(slip_gaji sg1, string Durasi1, string Durasi2)
+        public JsonResult EditSG(string txtIDReq, string txtTgl1, string txtTgl2)
         {
-            slip_gaji sg = sopace.slip_gaji.Where(e => e.id_req == sg1.id_req).First();
-            sg.durasi_awal = sg1.durasi_awal;
-            sg.durasi_akhir = sg1.durasi_akhir;
+            slip_gaji sg = sopace.slip_gaji.Where(e => e.id_req == txtIDReq).First();
+            sg.durasi_awal = txtTgl1;
+            sg.durasi_akhir = txtTgl2;
             sopace.Entry(sg).State = EntityState.Modified;
             sopace.SaveChanges();
             return Json("Update Data Request Success", JsonRequestBehavior.AllowGet);
@@ -542,11 +494,11 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("UpdatePBTH")]
-        public JsonResult EditPBTH(pemberitahuan pb1)
+        public JsonResult EditPBTH(string txtIDReq, string txtTujuan, string txtDesc)
         {
-            pemberitahuan pb = sopace.pemberitahuans.Where(e => e.id_req == pb1.id_req).First();
-            pb.tujuan = pb1.tujuan;
-            pb.deskripsi = pb1.deskripsi;
+            pemberitahuan pb = sopace.pemberitahuans.Where(e => e.id_req == txtIDReq).First();
+            pb.tujuan = txtTujuan;
+            pb.deskripsi = txtDesc;
             sopace.Entry(pb).State = EntityState.Modified;
             sopace.SaveChanges();
             return Json("Update Data Request Success", JsonRequestBehavior.AllowGet);
@@ -554,11 +506,11 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("UpdateKKRJ")]
-        public JsonResult EditKKRJ(keterangan_kerja kk1)
+        public JsonResult EditKKRJ(string txtIDReq, string txtjabatan, string txtAlamat)
         {
-            keterangan_kerja kk = sopace.keterangan_kerja.Where(e => e.id_req == kk1.id_req).First();
-            kk.jabatan = kk1.jabatan;
-            kk.alamat = kk1.alamat;
+            keterangan_kerja kk = sopace.keterangan_kerja.Where(e => e.id_req == txtIDReq).First();
+            kk.jabatan = txtjabatan;
+            kk.alamat = txtAlamat;
             sopace.Entry(kk).State = EntityState.Modified;
             sopace.SaveChanges();
             return Json("Update Data Request Success", JsonRequestBehavior.AllowGet);
@@ -566,11 +518,11 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("UpdateNPWP")]
-        public JsonResult EditNPWP(NPWP npwp1)
+        public JsonResult EditNPWP(string txtIDReq, string txtNoTlp, string txtAlamat)
         {
-            NPWP npwp = sopace.NPWPs.Where(e => e.id_req == npwp1.id_req).First();
-            npwp.no_tlp = npwp1.no_tlp;
-            npwp.alamat_kantor_pajak = npwp1.alamat_kantor_pajak;
+            NPWP npwp = sopace.NPWPs.Where(e => e.id_req == txtIDReq).First();
+            npwp.no_tlp = txtNoTlp;
+            npwp.alamat_kantor_pajak = txtAlamat;
             sopace.Entry(npwp).State = EntityState.Modified;
             sopace.SaveChanges();
             return Json("Update Data Request Success", JsonRequestBehavior.AllowGet);
@@ -578,130 +530,88 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost]
         [Route("UpdateVisa")]
-        public JsonResult EditVisa(visa vs1)
+        public JsonResult EditVisa(string txtIDReq, string txtnopass, string txtKeperluan)
         {
-            visa vs = sopace.visas.Where(e => e.id_req == vs1.id_req).First();
-            vs.no_passport = vs1.no_passport;
-            vs.keperluan = vs1.keperluan;
+            visa vs = sopace.visas.Where(e => e.id_req == txtIDReq).First();
+            vs.no_passport = txtnopass;
+            vs.keperluan = txtKeperluan;
             sopace.Entry(vs).State = EntityState.Modified;
             sopace.SaveChanges();
             return Json("Update Data Request Success", JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        [Route("FormEditBR/{id}")]
-        public ActionResult FormEditBR(string id)
+        [Route("EditBR/{id}")]
+        public JsonResult EditBR(string id)
         {
-            string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
-            if (status != "requested")
-            {
-
-                return Redirect("/User/ViewBR");
-            }
-            else
-            {
-
-                TempData["ID"] = id;
-                TempData.Keep();
-                var list_pInfo = sopace.buku_rekening.Where(e => e.id_req == id).First();
-                return View(list_pInfo);
-            }
+            var list_pInfo = sopace.buku_rekening.Where(e => e.id_req == id).Select(
+                                            e => new { e.id_req, e.nama_bank, e.keperluan }).First();
+            return Json(list_pInfo, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        [Route("FormEditPBTH/{id}")]
-        public ActionResult FormEditPBTH(string id)
+        [Route("EditPBTH/{id}")]
+        public JsonResult EditPBTH(string id)
         {
-            string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
-            if (status != "requested")
-            {
-
-                return Redirect("/User/ViewPBTH");
-            }
-            else
-            {
-
-                TempData["ID"] = id;
-                TempData.Keep();
-                var list_pInfo = sopace.pemberitahuans.Where(e => e.id_req == id).First();
-                return View(list_pInfo);
-            }
+            var list_pInfo = sopace.pemberitahuans.Where(e => e.id_req == id).Select(
+                                    e => new {
+                                        e.id_req,
+                                        e.tujuan,
+                                        e.deskripsi
+                                    }).First();
+            return Json(list_pInfo, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        [Route("FormEditSG/{id}")]
-        public ActionResult FormEditSG(string id)
+        [Route("EditSG/{id}")]
+        public JsonResult EditSG(string id)
         {
-            string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
-            if (status != "requested")
-            {
-                return Redirect("/User/ViewSG");
-            }
-            else
-            {
-                TempData["ID"] = id;
-                TempData.Keep();
-                var list_pInfo = sopace.slip_gaji.Where(e => e.id_req == id).First();
-                return View(list_pInfo);
-            }
+            var list_pInfo = sopace.slip_gaji.Where(e => e.id_req == id).Select(e => new {
+                e.id_req,
+                e.durasi_awal,
+                e.durasi_akhir
+            }).First();
+            return Json(list_pInfo, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        [Route("FormEditVisa/{id}")]
-        public ActionResult FormEditVisa(string id)
+        [Route("EditVisa/{id}")]
+        public JsonResult EditVisa(string id)
         {
-            string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
-            if (status != "requested")
-            {
-                return Redirect("/User/ViewVisa");
-            }
-            else
-            {
-                TempData["ID"] = id;
-                TempData.Keep();
-                var list_pInfo = sopace.visas.Where(e => e.id_req == id).First();
-                return View(list_pInfo);
-            }
+            var list_pInfo = sopace.visas.Where(e => e.id_req == id).Select(
+                                            e => new {
+                                                e.id_req,
+                                                e.no_passport,
+                                                e.keperluan
+                                            }).First();
+            return Json(list_pInfo, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        [Route("FormEditKKRJ/{id}")]
-        public ActionResult FormEditKKRJ(string id)
+        [Route("EditKKRJ/{id}")]
+        public JsonResult EditKKRJ(string id)
         {
-            string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
-            if (status != "requested")
-            {
-                return Redirect("/User/ViewKKRJ");
-            }
-            else
-            {
-                TempData["ID"] = id;
-                TempData.Keep();
-                var list_pInfo = sopace.keterangan_kerja.Where(e => e.id_req == id).First();
-                return View(list_pInfo);
-            }
+            var list_pInfo = sopace.keterangan_kerja.Where(e => e.id_req == id).Select(e => new {
+                e.id_req,
+                e.alamat,
+            }).First();
+            return Json(list_pInfo, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        [Route("FormEditNPWP/{id}")]
-        public ActionResult FormEditNPWP(string id)
+        [Route("EditNPWP/{id}")]
+        public JsonResult EditNPWP(string id)
         {
-            string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
-            if (status != "requested")
-            {
-                return Redirect("/User/ViewNPWP");
-            }
-            else
-            {
-                TempData["ID"] = id;
-                TempData.Keep();
-                var list_pInfo = sopace.NPWPs.Where(e => e.id_req == id).First();
-                return View(list_pInfo);
-            }
+            var list_pInfo = sopace.NPWPs.Where(e => e.id_req == id).Select(
+                                e => new
+                                {
+                                    e.id_req,
+                                    e.no_tlp,
+                                    e.alamat_kantor_pajak
+                                }).First();
+            return Json(list_pInfo, JsonRequestBehavior.AllowGet);
         }
-
-        //===============================================================================================================================
-
+//===============================================================================================================================
         [HttpGet]
         [Route("Delete/{id}")]
         public JsonResult DeleteBT(string id)

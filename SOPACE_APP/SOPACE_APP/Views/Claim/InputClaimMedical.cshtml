@@ -25,7 +25,7 @@
 
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="margin-top:20px">
             <h1 class="page-header">Input Claim Medical</h1>
         </div>
         <!-- /.col-lg-12 -->
@@ -65,11 +65,11 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.id_tipe, "Tipe Medis:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.id_tipe, "Tipe Klaim:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-3">
                                 @Html.HiddenFor(model => model.id_tipe)
-                                @Html.DropDownList("TipeMedis", new SelectList(listItems, "Value", "Text"), "Select Tipe Medis", new
-                                    {@class = "form-control", id="TipeMedis" })
+                                @Html.DropDownList("TipeKlaim", new SelectList(listItems, "Value", "Text"), "Select Tipe Medis", new
+                                    {@class = "form-control", id="TipeKlaim" })
                             </div>
                         </div>
 
@@ -103,8 +103,9 @@
                             @Html.LabelFor(model => model.no_tlp, "No. Telp:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-5">
                                 @Html.EditorFor(model => model.no_tlp, new { htmlAttributes = new { @class = "form-control",
-                                                    placeholder = "Nomor Telepon (Ex. 021 323xxxx)", onkeypress="return hanyaAngka(event)", maxlength = 11}})
+                                                    placeholder = "Nomor Telepon (Ex. 021 323xxxx)", maxlength = 12}})
                                 @Html.ValidationMessageFor(model => model.no_tlp, "", new { @class = "text-danger" })
+                                <span style="color:red" id="pesan1"></span>
                             </div>
                         </div>
 
@@ -117,11 +118,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.total_tagihan, "Total Tagihan:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.total_tagihan, "Total Biaya:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-5">
                                 @Html.EditorFor(model => model.total_tagihan, new { htmlAttributes = new { @class = "form-control",
-                                             onkeypress = "return hanyaAngka(event)", placeholder = "Total Tagihan Rumah Sakit" } })
+                                             placeholder = "Total Biaya Rumah Sakit" } })
                                 @Html.ValidationMessageFor(model => model.total_tagihan, "", new { @class = "text-danger" })
+                                <span style="color:red" id="pesan2"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -139,24 +141,34 @@
 </div>
 @section Script{
     <script>
-        var submissioEnabled = true;
-        function hanyaAngka(evt) {
-            var charCode = (evt.which) ? evt.which : event.keyCode
-            if (charCode > 31 && (charCode < 48 || charCode > 57))
-                return false;
-            return true;
-        }
+        //ketika input total tagihan dengan huruf, akan hilang karena tidak boleh pakai huruf
+        $(document).ready(function () {
+            $('#total_tagihan').keyup(function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+        });
 
-        function Disable() {
-            if (submissioEnabled) {
-                submissioEnabled = false;
-                return true;
-            } else {
-                return false;
-            }
-        }
+        //validasi No Telp
+        $(document).ready(function () {
+            $("#no_tlp").keypress(function (data) {
+                if (data.which != 8 && data.which != 0 && (data.which < 48 || data.which > 57)) {
+                    $("#pesan1").html("Tidak boleh menggunakan huruf atau simbol").show().fadeOut("slow");
+                    return false;
+                }
+            });
+        });
 
-        $("#TipeMedis").on("change", function (value) {
+        //validasi Total tagihan
+        $(document).ready(function () {
+            $("#total_tagihan").keypress(function (data) {
+                if (data.which != 8 && data.which != 0 && (data.which < 48 || data.which > 57)) {
+                    $("#pesan2").html("Tidak boleh menggunakan huruf atau simbol").show().fadeOut("slow");
+                    return false;
+                }
+            });
+        });
+
+        $("#TipeKlaim").on("change", function (value) {
             var valueTipeMedic = value.target.selectedOptions[0].value
             $("#id_tipe").val(valueTipeMedic);
         });
@@ -167,7 +179,7 @@
             $("#html").val("");
             $("#nama_pasien").val("");
             $("#hubungan_pasien").val("");
-            $("#TipeMedis").val("");
+            $("#TipeKlaim").val("");
             $("#tgl_perawatan").val("");
             $("#nama_dokter").val("");
             $("#alamat_rs").val("");
@@ -199,7 +211,7 @@
                 });
         });
 
-        $(document).ready(function () {                       
+        $(document).ready(function () {
             $('#formAdd').validate({
                 errorClass: 'help-block animation-slideDown',
                 errorElement: 'div',
@@ -224,14 +236,14 @@
                        required: true,
                     },
 
-                    'TipeMedis': {
+                    'TipeKlaim': {
                         required: true,
                     },
-                    
+
                     'tgl_perawatan': {
                         required: true,
                     },
-                    
+
                     'alamat_rs': {
                         required: true,
                     },
@@ -260,7 +272,7 @@
                                 location.reload();
                             },
                             error: function () {
-                                alert("Insert Data Failed");                                
+                                alert("Insert Data Failed");
                             }
                     });
                 }

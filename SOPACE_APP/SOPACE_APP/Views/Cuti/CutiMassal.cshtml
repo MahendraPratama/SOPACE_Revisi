@@ -7,7 +7,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h2>Form Input Cuti Bersama Karyawan</h2>
+            <h2>Form Cuti Bersama Karyawan</h2>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -17,10 +17,18 @@
             <form id="formCM" name="formCM">
                 <div class="panel panel-info">
                     <div class="panel-heading form-inline">
-                        <span>Tanggal Libur:</span>
+                        <span>Tanggal Hari Libur:</span>
                         <input type="date" id="txtTglMulai" name="txtTglMulai" class="form-control" style="width:200px" required />
                         <span>s/d</span>
                         <input type="date" id="txtTglSelesai" name="txtTglSelesai" class="form-control" style="width:200px" required />
+                    </div>
+                    <div class="panel-heading form-inline">
+                        <span>Jumlah Libur Nasional:</span>
+                        <input type="number" id="txtNum" name="txtNum" class="form-control" style="width:200px" required />
+                    </div>
+                    <div class="panel-heading form-inline">
+                        <span>Alasan Cuti&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
+                        <textarea name="txtAlasan" id="txtAlasan" class="form-control" style="width:430px" required></textarea>
                         <input type="submit" class="btn btn-danger" id="btnUpdate" value="Update Kuota" />
                     </div>
                 </div>
@@ -45,41 +53,12 @@
 
 @section script{
     <script type="text/javascript">
-        refresh()
-        $("#formCM").on("submit", function (e) {
-            var checkstr = confirm(`Are you sure to update Kuota Cuti?`);
-            let formdata = $("#formCM").serialize();
-            if (checkstr == true) {
-                $.ajax({
-                    url: '@Url.Action("UpdateKuotaCutiMassal", "Cuti")',
-                    type: 'POST',
-                    data: formdata,
-                    success: function (data) {
-                        alert(data);
-                        refresh();
-                    }
-                });
-            } else {
-                return false;
-            }
-                   
-        });
-
-
-        $('#checkboxAll').click(function () {
-            if ($(this).is(":checked"))
-                $('.chkCheckBoxId').prop('checked', true);
-            else
-                $('.chkCheckBoxId').prop('checked', false);
-        });
-
-         function refresh() {
-             $.get(
+         $.get(
         '@Url.Action("GetDataCuti")',
                  function (data) {
                      $( "#dataTables tbody").empty();
                      $.each(data, function (i, model) {
-                         var cb = `<input type="checkbox" name="CutiId" class="chkCheckBoxId" value="${model.NIP}"/>` 
+                         var cb = `<input type="checkbox" name="CutiId" class="chkCheckBoxId" value="${model.NIP}"/>`
                          var rows = `<tr>
                                         <td height=50px>${cb}</td>
                                         <td height=50px>${model.NIP}</td>
@@ -91,13 +70,59 @@
                          $("#dataTables tbody").append(rows);
                          $("#txtTglMulai").val("");
                          $("#txtTglSelesai").val("");
-                     });                     
+                     });
                      $('.table').DataTable();
                 });
 
+        $("#formCM").on("submit", function (e) {
+            var checkstr = confirm(`Are you sure to update Kuota Cuti?`);
+            let formdata = $("#formCM").serialize();
+            console.log(formdata);
+            if (checkstr == true) {
+                $.ajax({
+                    url: '@Url.Action("InsertCutiMassal", "Cuti")',
+                    type: 'POST',
+                    data: formdata,
+                    success: function (data) {
+                        alert(data);
+                         $.ajax({
+                            url: '@Url.Action("UpdateKuotaMassal", "Cuti")',
+                            type: 'POST',
+                            data: formdata,
+                            success: function (data) {
+                                alert(data);
+                                refresh();
+                            },
+                            error: function () {
+                                alert("Update Kuota Failed");
+                                refresh();
+                            }
+                        });
+                        refresh();
+                    },
+                    error: function () {
+                        alert("Update Data Failed")
+                    }
+                });
+            } else {
+                return false;
+            }
+
+        });
+
+
+        $('#checkboxAll').click(function () {
+            if ($(this).is(":checked"))
+                $('.chkCheckBoxId').prop('checked', true);
+            else
+                $('.chkCheckBoxId').prop('checked', false);
+        });
+
+        function refresh() {
+            location.reload();
          }
     </script>
-    
-    
-    }
+
+
+}
 
