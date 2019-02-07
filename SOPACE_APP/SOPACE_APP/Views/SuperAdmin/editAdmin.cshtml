@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label> Password </label>
                         <div class="input-group">
-                            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "password" } })
+                            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", id = "password" } })
                             <div class="input-group-addon" style="padding:0px; background-color:transparent; border:none">
                                 <i id="showPassword" class="glyphicon glyphicon-eye-open btn btn-primary"></i>
                             </div>
@@ -70,7 +70,51 @@
             }
 
         });
-         $("#NIP").change(function () {
+
+        $.validator.addMethod(
+            "uniqueUsername",
+            function (value, element) {
+                
+                $.post('@Url.Action("CekUsername","SuperAdmin")',
+                    { usrnme: $("#username").val() },
+                    function (msg) {
+                        response2 = (msg == 0) ? false : true;
+                    }
+                )
+                return response2;
+            },
+            "Username sudah ada"
+        );
+
+        $("#formAdd").validate({
+            onkeyup: false,
+            errorPlacement: function errorPlacement(error, element) { element.after(error); },
+            rules: {
+                "username": {
+                    required: true,
+                    uniqueUsername: true
+                }
+            },
+            messages: {
+
+            },
+            submitHandler: function () {
+               
+                let formdata = $("#formAdd").serialize();
+                $.ajax({
+                    url: '@Url.Action("UpdateAdmin","SuperAdmin")',
+                    type: 'POST',
+                    data: formdata,
+                    success: function (data) {
+                        alert(data);
+                        location.href = "/SuperAdmin/ViewAdmin"
+                    }
+                }); 
+            }
+
+        });
+
+         @*$("#NIP").change(function () {
             $.post("@Url.Action("CekNIP","SuperAdmin")"
                 ,
                 {
@@ -87,9 +131,9 @@
                         $("#NIP").css("border-color", "");
                     }
                 });
-        });
+        });*@
 
-        $("#formAdd").on("submit", function (e) {            
+        @*$("#formAdd").on("submit", function (e) {            
             e.preventDefault();
             let formdata = $(this).serialize();
             $.ajax({
@@ -101,160 +145,12 @@
                     location.href = linkBack;
                 }
             });
-        });
-
-
-        //var form = $("#formAdd");
-
-        //form.validate({
-        //    errorPlacement: function errorPlacement(error, element) { element.after (error); },
-        //    rules: {
-        //        "NIP": {
-        //            required: true,
-        //        },
-        //        "id_user": {
-        //            required: true,
-        //        }
-
-        //    },
-        //    messages: {
-        //        "NIP": {
-        //            required: "NIP harus di isi"
-        //        },
-        //        "id_user": {
-        //            required: "ID User harus di isi"
-        //        },
-        //        "username": "Username harus di isi"
-        //        }
-        //});
-
-        @* $().ready(function () {
-            $.get('@Url.Action("GetNIP","Admin")', function (data) {
-                console.log(data);
-                $("#NIP").val(data);
-            });
         });*@
+
+
         
 
-         @* $("#nip").change(function () {
-            $("#asd").html("Checking . . .");
-            $.post("@Url.Action("CekNIP","AdminUser")",
-                {
-                    nip: $("#nip").val()
-                },
-                function (data) {
-                    if (data == 0) {
-                        $("#asd").html(`<font color="Red">NIP Tidak Terdaftar</font>`);
-                        $("#asd").val(null);
-                        $("#nip").css("border-color", "red");
-                        $("#nama").text(null);
-                    }
-                    else {
-                        $("#asd").html("");
-                        $("#nip").css("border-color", "");
-                        $("#nama").text(`${data}`)
-                    }
-                });
-        });*@
         
-        //form.children("div").steps({
-        //    headerTag: "h3",
-        //    bodyTag: "section",
-        //    transitionEffect: "slideLeft",
-        //    onInit: function (event, current) {
-                @*$("#formAdd input[id=btn_generate_nip]").on("click", function () {
-                    $.get('@Url.Action("CekNIP", "PersonInfo")', function (data) {
-                        $("#Personal_Information_NIP").val(data);
-                        $("#Personal_Information_NIP").focusout();
-                    });
-                });*@
-
-
-                //$("#btn_generate_usrnm").on("click", function () {
-                //    let nmArr = $("#Personal_Information_nama_pegawai").val().split(" ");
-                //    let tglhrArr = $("#Personal_Information_tgl_lahir").val().split("-");
-                //    let usrnmArr = _.sampleSize(nmArr, 2);
-                //    usrnameVal = usrnmArr[0] + "_" + usrnmArr[1];
-                //    $("#User_username").val(usrnameVal);
-                //    $("#User_username").keyup();
-                //});
-
-                @*$("#username").keyup(function () {
-                    $('span.error-keyup-2').remove();
-                    $.get('@Url.Action("IsUsernameUsed","PersonInfo")',
-                        { 'username': $("#username").val() },
-                        function (data) {
-                            if (data == "User Already Used") {
-                                $("#username").closest("div").after('<span class="alert alert-danger error-keyup-2" style="padding:4px">Username Already Used</span>');
-                                $("#username").css("border-color", "red");
-                            } else {
-                                $("#username").css("border-color", "green");
-                            }
-                        });
-                });*@
-
-                @*$("input[type=file]").on("change", function (value) {
-                    console.log(value.target.name);
-                    let formdata = new FormData();
-                    formdata.append(value.target.files[0].name, value.target.files[0]);
-                    formdata.append("tipeFile", value.target.name);
-                    formdata.append("nip", $("#Personal_Information_NIP").val());
-
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '@Url.Action("Upload","PersonInfo")');
-                    xhr.send(formdata);
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState == 4 && xhr.status == 200) {
-                            alert(xhr.responseText);
-                        }
-                    }
-                    return false;
-
-                });*@
-            //},
-            //onStepChanging: function (event, currentIndex, newIndex) {
-            //    if (currentIndex > 0) {
-            //        $("#User_NIP").val($("#Personal_Information_NIP").val());
-            //        $("#User_role").val("user");
-            //    }
-            //    form.validate().settings.ignore = ":disabled,:hidden";
-            //    return form.valid();
-            //},
-            //onFinishing: function (event, currentIndex) {
-            //    form.validate().settings.ignore = ":disabled";
-            //    return form.valid();
-            //},
-            //onFinished: function (event, currentIndex) {
-            //    event.preventDefault();
-            //    let formdata = form.serialize();
-                //let formdata = new FormData(form);
-                @*$.ajax({
-                    url: form.attr('action'), @*'@Url.Action("Add","PersonInfo")'*@
-                    @*type: 'POST',*@
-                    /*data: formdata**/
-                    //success: function (data) {
-                    //    alert(data);
-                    //}
-        //        });
-        //        alert("Insert Data Success");
-        //        location.href = '/Admin/AddAdmin';
-
-        //    },
-        //    labels: {
-        //        finish: 'Save <i class="fa fa-save"></i>'
-        //    }
-        //});
-        //$.fn.steps.reset = function () {
-        //    var wizard = this,
-        //        option = getOptions(this),
-        //        state = getState(this);
-        //    goToStep(wizard, option, state, 0);
-
-        //    for (i = 1; i < state.stepCount; i++) {
-        //        var stepAnchor = getStepAnchor(wizard, i);
-        //        stepAnchor.parent().removeClass("done")._enableAria(false);
-        //    }
-        //};
 
     </script>
 }

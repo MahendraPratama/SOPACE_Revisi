@@ -121,6 +121,47 @@ namespace SOPACE_MVC.Controllers
             }
         }
 
+        [ActionName("CekNIPAdmin")]
+        [Route("CekNIPAdmin")]
+        public JsonResult CekNIPAdmin(string nip)
+        {
+            int cekCount = sopace.personal_information.Where(a => a.NIP == nip).Count();
+            int cekCountUser = sopace.users.Where(a => a.NIP == nip && a.role == "admin").Count();
+            if (cekCount > 0 && cekCountUser == 0)
+            {
+                string nama = sopace.personal_information.Where(a => a.NIP == nip).Select(a => a.nama_pegawai).FirstOrDefault();
+                return Json(nama);
+            }
+            else if (cekCount > 0 && cekCountUser > 0)
+            {
+                string ret = "NIP sudah digunakan";
+                return Json(ret);
+            }
+            else
+            {
+                return Json(0);
+            }
+        }
+
+        [ActionName("CekNIPAdminUser")]
+        [Route("CekNIPAdminUser")]
+        public JsonResult CekNIPAdminUser(string nip)
+        {
+            int cekCount = sopace.users.Where(a => a.NIP == nip && a.role == "admin").Count();
+            
+            if (cekCount == 0)
+            {
+                string ret = sopace.personal_information.Where(a => a.NIP == nip).Select(a => a.nama_pegawai).FirstOrDefault();
+                return Json(ret);
+
+            }
+            else
+            {
+                //string nama = "NIP sudah digunakan";
+                return Json(0);
+            }
+        }
+
         [ActionName("CekUsername")]
         [Route("CekUsername")]
         public JsonResult CekUsername(string usrnme)
@@ -128,12 +169,12 @@ namespace SOPACE_MVC.Controllers
             int counter = sopace.users.Where(c => c.username == usrnme).Count();
             if (counter > 0)
             {
-                string usr = "Username sudah ada";
-                return Json(usr);
+                //string usr = "Username sudah ada";
+                return Json(0);
             }
             else
             {
-                return Json(0);
+                return Json(1);
             }
         }
     }

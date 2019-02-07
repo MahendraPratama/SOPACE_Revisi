@@ -19,7 +19,7 @@
                     <section style="margin-top:20px">
                         <div class="form-group">
                             <label> NIP *</label>
-                            @Html.EditorFor(model => model.User.NIP, new { htmlAttributes = new { @class = "form-control", placeholder = "NIP", required = "true", id = "NIP" } })
+                            @Html.EditorFor(model => model.User.NIP, new { htmlAttributes = new { @class = "form-control", placeholder = "NIP", id = "NIP" } })
                             <div><label id="asd"></label></div>
                         </div>
                         <div class="form-group">
@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label> Password </label>
                             <div class="input-group">
-                                @Html.EditorFor(model => model.User.password, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "password" } })
+                                @Html.EditorFor(model => model.User.password, new { htmlAttributes = new { @class = "form-control", id = "password" } })
                                 <div class="input-group-addon" style="padding:0px; background-color:transparent; border:none">
                                     <i id="showPassword" class="glyphicon glyphicon-eye-open btn btn-primary"></i>
                                 </div>
@@ -54,6 +54,8 @@
 @section Script{
     <script src="~/Scripts/lodash.js"></script>
     <script>
+        var response, response1, response2;
+        
         $("#password").val("ACEadmin");
         $("#role").val("admin");
         $("#password").attr("type", "password");
@@ -66,7 +68,7 @@
             }
 
         });
-        $("#NIP").change(function () {
+        @*$("#NIP").change(function () {
             $.post("@Url.Action("CekNIP","SuperAdmin")"
                 ,
                 {
@@ -75,12 +77,36 @@
                 function (data) {
                     if (data == 0) {
                         $("#asd").html(`<font color="Red">NIP Tidak Terdaftar</font>`);
-                        $("#asd").val(null);
                         $("#NIP").css("border-color", "red");
+                        $(":submit").attr("disabled", true);
                     }
                     else {
                         $("#asd").html(`${data}`);
                         $("#NIP").css("border-color", "");
+                        $(":submit").removeAttr("disabled");
+                    }
+                });
+
+            $.post("@Url.Action("CekNIPAdminUser","SuperAdmin")"
+                ,
+                {
+                    nip: $("#NIP").val()
+                },
+                function (data) {
+                    if (data == "NIP sudah digunakan") {
+                        //console.log(`${data}`);
+                        $("#asd").html(`${data}`);
+                        $("#NIP").css("border-color", "red");
+                        $(":submit").attr("disabled", true);
+                        
+                        
+                    }
+                    else {
+                        //console.log(`${data}`);
+                        $("#asd").html(`${data}`);
+                        $("#NIP").css("border-color", "");
+                        $(":submit").removeAttr("disabled");
+                    
                     }
                 });
         });
@@ -96,16 +122,97 @@
                         //console.log(`${data}`)
                         $("#asd1").html(`<font color="black">Username Available</font>`);
                         $("#username").css("border-color", "");
+                        $(":submit").removeAttr("disabled");
                     }
                     else {
                         //console.log(`${data}`);
                         $("#asd1").html(`${data}`);
                         $("#username").css("border-color", "red");
+                        $(":submit").attr("disabled", true);
                     }
                 });
+        });*@
+
+        $.validator.addMethod(
+            "uniqueNIP",
+            function (value, element) {
+                
+                $.post('@Url.Action("CekNIP","SuperAdmin")',
+                    { nip: $("#NIP").val() },
+                    
+                    function (msg) {
+                        response = (msg == 0) ? false : true;
+                    }
+                )
+                return response;
+            },
+            "NIP tidak terdaftar"
+        );
+
+        $.validator.addMethod(
+            "uniqueNIPAdmin",
+            function (value, element) {
+                
+                $.post('@Url.Action("CekNIPAdminUser","SuperAdmin")',
+                    { nip: $("#NIP").val() },
+                    function (msg) {
+                        response1 = (msg == 0) ? false : true;
+                    }
+                )
+                return response1;
+            },
+            "NIP sudah digunakan"
+        );
+
+        $.validator.addMethod(
+            "uniqueUsername",
+            function (value, element) {
+                
+                $.post('@Url.Action("CekUsername","SuperAdmin")',
+                    { usrnme: $("#username").val() },
+                    function (msg) {
+                        response2 = (msg == 0) ? false : true;
+                    }
+                )
+                return response2;
+            },
+            "Username sudah ada"
+        );
+
+        $("#formAdd").validate({
+            onkeyup: false,
+            errorPlacement: function errorPlacement(error, element) { element.after(error); },
+            rules: {
+                "User.NIP": {
+                    required: true,
+                    uniqueNIP: true,
+                    uniqueNIPAdmin: true
+                },
+                "User.username": {
+                    required: true,
+                    uniqueUsername: true
+                }
+            },
+            messages: {
+
+            },
+            submitHandler: function () {
+               
+                let formdata = $("#formAdd").serialize();
+                $.ajax({
+                    url: '@Url.Action("Add","SuperAdmin")',
+                    type: 'POST',
+                    data: formdata,
+                    success: function (data) {
+                        alert(data);
+                        location.href = "/SuperAdmin/ViewAdmin"
+                    }
+                }); 
+            }
+
         });
 
-        $("#formAdd").on("submit", function (e) {
+        @*$("#formAdd").on("submit", function (e) {
 
             e.preventDefault();
             let formdata = $(this).serialize();
@@ -118,7 +225,7 @@
                     location.href = "/SuperAdmin/ViewAdmin"
                 }
             });
-        });
+        });*@
     </script>
 }
 

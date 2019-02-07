@@ -52,7 +52,7 @@ namespace SOPACE_MVC.Controllers
             TempData["processed"] = processed;
 
             var usrnm = sopace.users.Where(e => e.NIP == nip && e.role.Contains("admin")).FirstOrDefault().username;
-            TempData["username"] = usrnm;
+            Session["username"] = usrnm;
             TempData.Keep();
         }
 
