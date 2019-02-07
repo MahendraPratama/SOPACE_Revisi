@@ -22,7 +22,8 @@ namespace SOPACE_MVC.Controllers
 
         [HttpPost,ActionName("recover")]
         public JsonResult SendRecovery(string email)
-        {            
+        {
+            Encryptor encryptor = new Encryptor();
             var recoverInfo = sopace.personal_information.Where(pi => pi.email == email)
                     .Join(sopace.users, pi => pi.NIP, us => us.NIP,
                         (pi, us) => new
@@ -37,7 +38,7 @@ namespace SOPACE_MVC.Controllers
             {
                 mm.Body = string.Format("Your Username Is : {0} \nYour Password Is : {1}"
                     ,recoverInfo[0].username
-                    ,recoverInfo[0].password);
+                    ,encryptor.Decrypt(recoverInfo[0].password));
             }
             else
             {

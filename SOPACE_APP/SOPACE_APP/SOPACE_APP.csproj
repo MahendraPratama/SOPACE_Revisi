@@ -139,7 +139,6 @@
     <Compile Include="Controllers\ClaimUserController.cs" />
     <Compile Include="Controllers\CutiController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
-    <Compile Include="Controllers\GlobalController.cs" />
     <Compile Include="Controllers\LemburController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\Personal_InformationController.cs" />

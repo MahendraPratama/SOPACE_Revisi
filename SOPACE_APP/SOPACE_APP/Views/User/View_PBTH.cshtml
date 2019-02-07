@@ -13,7 +13,8 @@
     <div class="row">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#mymodal">Add Request</a>
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#mymodal">
+                    <i class="glyphicon glyphicon-plus"></i>Add Request</a>
             </div>
         </div>
         <div class="panel panel-primary">
@@ -21,12 +22,12 @@
                 <table id="tblPBTH" class="table table-striped table-bordered table-sm">
                     <thead>
                         <tr>
-                            <th scope="col" width="230px" height=25px>ID Request</th>
-                            <th scope="col" width="200px" height=25px>Tanggal Request</th>
-                            <th scope="col" width="200px" height=25px>Yang dituju</th>
-                            <th scope="col" width="350px" height=25px>Deskripsi Pemberitahuan</th>
-                            <th scope="col" width="150px" height=25px>Status</th>
-                            <th scope="col" width="300px" height=25px>Action</th>
+                            <th style="text-align:center" scope="col" width="230px" height=25px>ID Request</th>
+                            <th style="text-align:center" scope="col" width="200px" height=25px>Tanggal Request</th>
+                            <th style="text-align:center" scope="col" width="300px" height=25px>Yang dituju</th>
+                            <th style="text-align:center" scope="col" width="350px" height=25px>Deskripsi Pemberitahuan</th>
+                            <th style="text-align:center" scope="col" width="200px" height=25px>Status</th>
+                            <th style="text-align:center" scope="col" width="150px" height=25px>Action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -62,8 +63,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="refresh()" data-dismiss="modal">Close</button>
-                <input type="submit" id="btnSubmit" class="btn btn-primary" value="Submit" />
+                <input type="submit" id="btnSubmit" class="btn btn-success" value="Submit" />
+                <button type="button" class="btn btn-danger" onclick="refresh()" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -106,7 +107,7 @@
                 }
                 }
                 else if ($("#txtIDReq").val().length > 0) {
-                   var check = confirm("Are you sure to update data?")
+                    var check = confirm(`Are you sure to Update data ${e.target.id} ?`);
                     e.preventDefault();
                     let formdata = $("#formPBTH").serialize();
                     if (check == true) {
@@ -138,24 +139,26 @@
                      $.each(data, function (i, model) {
 
                          var date = `${model.value}`
-                         var button = `<button id="${model.id_req}" class='btn btn-danger'>Delete</button>`
-                         var a = `<a id="${model.id_req}" data-toggle="modal" data-target="#mymodal" class='btn btn-primary'>Edit</a>`
+                         var button = `<button id="${model.id_req}" class='btn btn-danger'>
+                                        <i class="glyphicon glyphicon-trash"></i></button>`
+                         var a = `<a id="${model.id_req}" data-toggle="modal" data-target="#mymodal" 
+                                    class='btn btn-primary'><i class="glyphicon glyphicon-edit"></i></a>`
                          if (model.status == "requested") {
                              var rows = `<tr>
-                                        <td height=50px>${model.id_req}</td>
-                                        <td height=50px >${date}</td >
-                                        <td height=50px >${model.tujuan}</td >
-                                        <td height=50px >${model.deskripsi}</td >
-                                        <td height=50px >${model.status}</td >
-                                        <td height=50px >${a} ${button} </td >
+                                        <td style="text-align:center" height=50px>${model.id_req}</td>
+                                        <td style="text-align:center" height=50px >${date}</td >
+                                        <td style="text-align:center" height=50px >${model.tujuan}</td >
+                                        <td style="text-align:center" height=50px >${model.deskripsi}</td >
+                                        <td style="text-align:center" height=50px >${model.status}</td >
+                                        <td style="text-align:center" height=50px >${a} ${button} </td >
                                     </tr >`;
                          } else if (model.status != "requested") {
                              var rows = `<tr>
-                                        <td height=50px>${model.id_req}</td>
-                                        <td height=50px >${date}</td >
-                                        <td height=50px >${model.tujuan}</td >
-                                        <td height=50px >${model.deskripsi}</td >
-                                        <td height=50px >${model.status}</td >
+                                        <td style="text-align:center" height=50px>${model.id_req}</td>
+                                        <td style="text-align:center" height=50px >${date}</td >
+                                        <td style="text-align:center" height=50px >${model.tujuan}</td >
+                                        <td style="text-align:center" height=50px >${model.deskripsi}</td >
+                                        <td style="text-align:center" height=50px >${model.status}</td >
                                         <td height=50px ></td >
                                     </tr >`;
                          }
@@ -174,7 +177,7 @@
         }
 
         $("#tblPBTH").on("click", "button", function (e) {
-            var checkstr = confirm(`are you sure you want to delete Request ${e.target.id}?`);
+            var checkstr = confirm(`are you sure you want to Delete Request ${e.target.id}?`);
             if (checkstr == true) {
 
                 $.get(`DeletePBTH/${e.target.id}`, function (data) {

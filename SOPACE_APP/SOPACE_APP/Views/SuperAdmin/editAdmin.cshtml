@@ -7,7 +7,7 @@
 }
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="margin-top:20px">
             <h1 class="page-header">Update Admin</h1>
         </div>
         <!-- /.col-lg-12 -->
@@ -15,11 +15,11 @@
     <!-- /.row -->
     <div class="row">
         <form id="formAdd">
-            <div>
-                <section>
+            <div class="col-lg-6 panel" style="background-color:lightblue">
+                <section style="margin-top:20px">
                     <div class="form-group">
                         <label> NIP *</label>
-                        @Html.EditorFor(model => model.NIP, new { htmlAttributes = new { @class = "form-control", id = "NIP", required = "true", @readonly="true" } })
+                        @Html.EditorFor(model => model.NIP, new { htmlAttributes = new { @class = "form-control", id = "NIP", required = "true", @readonly = "true" } })
                         <div><label id="asd"></label></div>
                     </div>
                     <div class="form-group">
@@ -27,8 +27,13 @@
                         @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder = "Username", required = "true" } })
                     </div>
                     <div class="form-group">
-                        <label> Password *</label>
-                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+                        <label> Password </label>
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", id = "password" } })
+                            <div class="input-group-addon" style="padding:0px; background-color:transparent; border:none">
+                                <i id="showPassword" class="glyphicon glyphicon-eye-open btn btn-primary"></i>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label> Role </label>
@@ -36,8 +41,8 @@
                     </div>
                     <p>(*) Harus di isi</p>
                     <div class="form-group">
-                        <input type="submit" value="Update" class="btn btn-dark" />
-
+                        <input type="submit" value="Update" class="btn btn-primary" />
+                        <button></button>
                     </div>
                 </section>
             </div>
@@ -55,6 +60,16 @@
         } else {
             linkBack = '/admin';
         }
+        $("#password").attr("type", "password");
+        $("#showPassword").click(function () {
+            let txtPwd = $("#password");
+            if (txtPwd.attr("type") == "password") {
+                txtPwd.attr("type", "text");
+            } else {
+                txtPwd.attr("type", "password");
+            }
+
+        });
          $("#NIP").change(function () {
             $.post("@Url.Action("CekNIP","SuperAdmin")"
                 ,

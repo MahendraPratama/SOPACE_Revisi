@@ -22,19 +22,19 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>
+                                <th style="text-align:center">
                                     ID Lembur
                                 </th>
-                                <th>
+                                <th style="text-align:center">
                                     Tanggal Lembur
                                 </th>
-                                <th>
+                                <th style="text-align:center">
                                     Jam Mulai
                                 </th>
-                                <th>
+                                <th style="text-align:center">
                                     Jam Selesai
                                 </th>
-                                <th>
+                                <th style="text-align:center">
                                     Total Jam Lembur
                                 </th>
                                 
@@ -44,19 +44,19 @@
                             @foreach (var lembur in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td style="text-align:center">
                                         @Html.DisplayFor(modelLembur => lembur.id_lembur)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelLembur => lembur.tanggal)
+                                    <td style="text-align:center">
+                                        @String.Format("{0:dd MMMM yyyy}", lembur.tanggal)
                                     </td>
-                                    <td>
+                                    <td style="text-align:center">
                                         @Html.DisplayFor(modelLembur => lembur.jam_mulai)
                                     </td>
-                                    <td>
+                                    <td style="text-align:center">
                                         @Html.DisplayFor(modelLembur => lembur.jam_selesai)
                                     </td>
-                                    <td>
+                                    <td style="text-align:center">
                                         @Html.DisplayFor(modelTotal => lembur.total_jam)
                                     </td>
                                 </tr>

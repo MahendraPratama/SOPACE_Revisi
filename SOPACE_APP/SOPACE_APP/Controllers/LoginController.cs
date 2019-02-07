@@ -80,51 +80,18 @@ namespace SOPACE_MVC.Controllers
             }
             else if (retRole.Contains("admin") || retRole.EndsWith("user"))
             {
+                var jabatan = sopace.users.Where(n => n.username == usr.username).Join(sopace.personal_information, n => n.NIP,
+                                                                pi => pi.NIP, (n, pi) => pi.posisi).FirstOrDefault();
                 string nip = sopace.users.Where(n => n.username == usr.username).Select(n => n.NIP).First();
+
                 Session["user_role"] = retRole;
                 Session["user_nip"] = nip;
+                Session["jabatan"] = jabatan;
 
-                if (retRole.Contains("user"))                
+                if (retRole.Contains("user"))
                 {
                     sopace.pr_RenewalClaim(nip);
-                    kuota_cuti LoginUser = sopace.kuota_cuti.Where(e => e.NIP == nip).First();                    
-                    var sisa_cuti = LoginUser.sisa_cuti;
-                    var cuti_baru = LoginUser.cuti_baru;
-                    var join_date = LoginUser.personal_information.tgl_masuk;                    
-
-                    if (DateTime.Now.ToString("dd-MM") == join_date.Value.ToString("dd-MM") && LoginUser.status == "not update")
-                    {
-                        if (cuti_baru <= 0)
-                        {
-                            LoginUser.sisa_cuti = 0;
-                            LoginUser.cuti_baru = 12 + cuti_baru;
-                            LoginUser.exp_sisa_cuti = LoginUser.exp_cuti_baru;
-                            LoginUser.status = "update";
-                            LoginUser.exp_cuti_baru = DateTime.Now.AddMonths(18);
-                            sopace.Entry(LoginUser).State = EntityState.Modified;
-                            sopace.SaveChanges();
-                        }
-                        else
-                        {
-                            LoginUser.sisa_cuti = cuti_baru;
-                            LoginUser.cuti_baru = 12;
-                            LoginUser.status = "update";
-                            LoginUser.exp_sisa_cuti = LoginUser.exp_cuti_baru;
-                            LoginUser.exp_cuti_baru = DateTime.Now.AddMonths(18);
-                            sopace.Entry(LoginUser).State = EntityState.Modified;
-                            sopace.SaveChanges();
-                        }
-                    }
-                    else if (DateTime.Now.ToString("dd-MM") != join_date.Value.ToString("dd-MM"))
-                    {
-                        LoginUser.status = "not update";
-                        if (DateTime.Now >= LoginUser.exp_sisa_cuti.Value)
-                        {
-                            LoginUser.sisa_cuti = 0;
-                        }
-                        sopace.Entry(LoginUser).State = EntityState.Modified;
-                        sopace.SaveChanges();
-                    }
+                    sopace.pr_KuotaCuti(nip);
                 }
             }
             return Json(retRole);           

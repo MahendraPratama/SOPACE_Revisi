@@ -11,13 +11,25 @@ namespace SOPACE_MVC.Controllers
     public class ClaimUserController : Controller
     {
         static private ACEEntities sopace = new ACEEntities();
+        private string nips;
+        public void cekSession()
+        {
+            try
+            {
+                nips = Session["user_nip"].ToString();
+            }
+            catch (NullReferenceException)
+            {
+                Redirect("/home");
+            }
+        }
         // GET: ClaimUser
 
         [HttpGet]
         [Route("GetPlafond")]
         public JsonResult SisaSaldo()
         {
-            string nips = Session["user_nip"].ToString();
+            cekSession();
             var sisa = sopace.tunjangan_medical.ToList().Where(e => e.NIP == nips).Select(e =>
             new {
                     e.NIP,
@@ -34,7 +46,7 @@ namespace SOPACE_MVC.Controllers
         [ActionName("ShowClaim")]
         public JsonResult TampilkanClaim()
         {
-            string nips = Session["user_nip"].ToString();
+            cekSession();
             var clm = sopace.klaim_medis.ToList()
                                 .Where(e => e.id_klaim_medis == e.id_klaim_medis && e.NIP == nips).Select(
                                     e => new {
@@ -67,7 +79,7 @@ namespace SOPACE_MVC.Controllers
         [Route("GetClaim/{id}")]
         public JsonResult GetClaim(string id)
         {
-            string nips = Session["user_nip"].ToString();
+            cekSession();
             var list_claim = sopace.klaim_medis.ToList()
                                 .Where(e => e.NIP == nips && e.id_klaim_medis == id).Select(
                                     e => new {

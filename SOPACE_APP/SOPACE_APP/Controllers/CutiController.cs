@@ -10,6 +10,19 @@ namespace SOPACE_MVC.Controllers
     public class CutiController : Controller
     {
         private ACEEntities sopace = new ACEEntities();
+        private string nip,role;
+        public void cekSession()
+        {
+            try
+            {
+                nip = Session["user_nip"].ToString();
+                role = Session["user_role"].ToString();
+            }
+            catch (NullReferenceException)
+            {
+                Redirect("/home");
+            }
+        }
         // GET: Cuti
         public ActionResult Index()
         {
@@ -73,8 +86,7 @@ namespace SOPACE_MVC.Controllers
         [Route("getcutikaryawan")]
         public JsonResult getcutikaryawan()
         {
-
-            string nip = Session["user_nip"].ToString();
+            cekSession();
             var list_cuti = sopace.cutis.ToList().Where(e => e.NIP == nip).Select(e => new {
                 e.id_cuti,
                 value1 = e.tgl_mulai_cuti.Value.ToString("dd-MM-yyyy"),
@@ -88,7 +100,8 @@ namespace SOPACE_MVC.Controllers
         [Route("getDetailcutikaryawan/{id}")]
         public JsonResult getDetailcutikaryawan(string id)
         {
-            if (Session["user_role"].ToString() == "admin" || Session["user_role"].ToString() == "superadmin")
+            cekSession();
+            if (role.Contains("admin"))
             {
                 var list_cuti = sopace.cutis.ToList().Where(e => e.id_cuti == id).Select(e => new
                 {
@@ -104,8 +117,7 @@ namespace SOPACE_MVC.Controllers
                 return Json(list_cuti, JsonRequestBehavior.AllowGet);
             }
             else
-            {
-                string nip = Session["user_nip"].ToString();
+            {                
                 var list_cuti = sopace.cutis.ToList().Where(e => e.NIP == nip && e.id_cuti == id).Select(e => new {
                     e.id_cuti,
                     e.NIP,
@@ -125,8 +137,7 @@ namespace SOPACE_MVC.Controllers
         [Route("GetKuotaCutiKaryawan")]
         public JsonResult getcutikaryawanID()
         {
-
-            string nip = Session["user_nip"].ToString();
+            cekSession();
             var list_cuti = sopace.kuota_cuti.Where(e => e.NIP == nip).ToList().Select(e => new
             {
                 e.sisa_cuti,
@@ -141,7 +152,7 @@ namespace SOPACE_MVC.Controllers
         [Route("GetDataCutiKaryawan")]
         public JsonResult GetDataCuti()
         {
-            string nip = Session["user_nip"].ToString();
+            cekSession();
             var list_cuti = sopace.personal_information.ToList().Where(e=> e.status_aktif=="aktif").Join(sopace.kuota_cuti, r => r.NIP,
                                                         bt => bt.NIP,
                                                         (r, bt) => new

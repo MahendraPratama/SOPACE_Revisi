@@ -72,14 +72,13 @@ namespace SOPACE_MVC.Controllers
                 ubahStatus.alasan_resign = alasan_resign;
                 sopace.Entry(ubahStatus).State = EntityState.Modified;
                 sopace.SaveChanges();
-                return Json("success", JsonRequestBehavior.AllowGet);
+                return Json("Data Updated Successfully..", JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(nip_pegawai + " Data not Found", JsonRequestBehavior.AllowGet);
+                return Json(nip_pegawai + " Data not Found..", JsonRequestBehavior.AllowGet);
             }
         }
-
 
         [HttpPost]
         [Route("Add")]
@@ -103,7 +102,7 @@ namespace SOPACE_MVC.Controllers
                 sopace.SaveChanges();
 
                 insertTableElse(personNIP, joinDate);
-                jsonResult = "Insert Data Success";
+                jsonResult = "Insert Data Successfully..";
             }            
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
@@ -119,7 +118,7 @@ namespace SOPACE_MVC.Controllers
             tunjangan.saldo_rawat_jalan = 3000000;
             tunjangan.status = "update";
             int year = DateTime.Now.Year - tgl_masuk.Year;
-            tunjangan.renewalDate = tgl_masuk.AddMonths(3).AddYears(year);
+            tunjangan.renewalDate = tgl_masuk.AddYears(year);
             //======================================= insert data to kuota_cuti
             kuota_Cuti.NIP = nip;
             kuota_Cuti.cuti_baru = 0;
@@ -176,8 +175,7 @@ namespace SOPACE_MVC.Controllers
         [Route("DownloadFile")]
         public ActionResult DonwloadFile(string fileName, string nip)
         {
-            string mapPath = "~/Content/uploads/" + nip;
-            //var fd = sopace.file_dokumen.Where(f => f.NIP == nip).FirstOrDefault();
+            string mapPath = "~/Content/uploads/" + nip;            
             var path = Server.MapPath(mapPath);
            
             byte[] fileBytes = System.IO.File.ReadAllBytes(Path.Combine(Server.MapPath(mapPath), fileName));
