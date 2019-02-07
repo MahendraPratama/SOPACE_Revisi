@@ -228,36 +228,49 @@ namespace SOPACE_MVC.Controllers
         [Route("UpdateKuotaMassal")]
         public JsonResult UpdateKuotaMassal(string[] CutiId, DateTime txtTglMulai, DateTime txtTglSelesai, int txtNum)
         {
-            foreach (string id in CutiId)
-            {
+            try {
+                foreach (string id in CutiId)
+                {
 
-                sopace.pr_DiffKuotaCuti(id, txtTglMulai, txtTglSelesai, txtNum);
+                    sopace.pr_DiffKuotaCuti(id, txtTglMulai, txtTglSelesai, txtNum);
+                }
+                return Json("Update Kuota Sukses");
             }
-            return Json("Update Kuota Sukses");
+            catch (Exception e) {
+                return Json("Update Kuota Filed");
+            }
+           
         }
 
         [HttpPost]
         [Route("InsertCutiMassal")]
         public JsonResult InsertCutiMassal(string[] CutiId, DateTime txtTglMulai, DateTime txtTglSelesai, string txtAlasan)
         {
-            foreach (string id in CutiId)
+            try
             {
-                personal_information pInfo = sopace.personal_information.Where(e => e.NIP == id).FirstOrDefault();
-                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                Random random = new Random();
-                string unique = new string(Enumerable.Repeat(chars, 4).Select(s => s[random.Next(s.Length)]).ToArray());
-                cuti ct = new cuti();
-                ct.id_cuti = "Cuti-" + DateTime.Now.Year + "-" + unique;
-                ct.NIP = id;
-                ct.no_tlp = pInfo.no_hp;
-                ct.tgl_mulai_cuti = txtTglMulai;
-                ct.tgl_selesai_cuti = txtTglSelesai;
-                ct.alasan_cuti = txtAlasan;
-                ct.alamat = pInfo.alamat_identitas;
-                sopace.cutis.Add(ct);
-                sopace.SaveChanges();
+                foreach (string id in CutiId)
+                {
+                    personal_information pInfo = sopace.personal_information.Where(e => e.NIP == id).FirstOrDefault();
+                    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    Random random = new Random();
+                    string unique = new string(Enumerable.Repeat(chars, 4).Select(s => s[random.Next(s.Length)]).ToArray());
+                    cuti ct = new cuti();
+                    ct.id_cuti = "Cuti-" + DateTime.Now.Year + "-" + unique;
+                    ct.NIP = id;
+                    ct.no_tlp = pInfo.no_hp;
+                    ct.tgl_mulai_cuti = txtTglMulai;
+                    ct.tgl_selesai_cuti = txtTglSelesai;
+                    ct.alasan_cuti = txtAlasan;
+                    ct.alamat = pInfo.alamat_identitas;
+                    sopace.cutis.Add(ct);
+                    sopace.SaveChanges();
+                }
+                return Json("Input Success");
             }
-            return Json("Update Success");
+            catch(Exception e) {
+                return Json("Input Filed, please check your data input");
+            }
+           
         }
     }
 }

@@ -20,6 +20,9 @@ namespace SOPACE_MVC.Models
         public Nullable<System.TimeSpan> jam_mulai { get; set; }
         public Nullable<System.TimeSpan> jam_selesai { get; set; }
         public Nullable<System.TimeSpan> total_jam { get; set; }
+        public string alasan { get; set; }
+        public string stats { get; set; }
+        public string keterangan { get; set; }
     
         public virtual personal_information personal_information { get; set; }
     }

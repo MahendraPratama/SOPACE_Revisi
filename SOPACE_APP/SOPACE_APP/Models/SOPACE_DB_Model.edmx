@@ -41,7 +41,7 @@
           </Key>
           <Property Name="id_req" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="jabatan" Type="varchar" MaxLength="20" />
-          <Property Name="alamat" Type="varchar" MaxLength="50" />
+          <Property Name="alamat" Type="text" />
         </EntityType>
         <EntityType Name="klaim_medis">
           <Key>
@@ -83,6 +83,9 @@
           <Property Name="jam_mulai" Type="time" Precision="7" />
           <Property Name="jam_selesai" Type="time" Precision="7" />
           <Property Name="total_jam" Type="time" Precision="7" />
+          <Property Name="alasan" Type="varchar" MaxLength="255" />
+          <Property Name="stats" Type="varchar" MaxLength="20" />
+          <Property Name="keterangan" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="notifikasi">
           <Key>
@@ -538,7 +541,7 @@
           </Key>
           <Property Name="id_req" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="jabatan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="alamat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="alamat" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="request" Relationship="Self.FK_REQ_K" FromRole="keterangan_kerja" ToRole="request" />
         </EntityType>
         <EntityType Name="klaim_medis">
@@ -584,6 +587,9 @@
           <Property Name="jam_selesai" Type="Time" Precision="7" />
           <Property Name="total_jam" Type="Time" Precision="7" />
           <NavigationProperty Name="personal_information" Relationship="Self.FK_NIP_LEMBUR" FromRole="lembur" ToRole="personal_information" />
+          <Property Name="alasan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="stats" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="keterangan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="notifikasi">
           <Key>
@@ -1089,6 +1095,9 @@
           <EntitySetMapping Name="lemburs">
             <EntityTypeMapping TypeName="ACEModel.lembur">
               <MappingFragment StoreEntitySet="lembur">
+                <ScalarProperty Name="keterangan" ColumnName="keterangan" />
+                <ScalarProperty Name="stats" ColumnName="stats" />
+                <ScalarProperty Name="alasan" ColumnName="alasan" />
                 <ScalarProperty Name="id_lembur" ColumnName="id_lembur" />
                 <ScalarProperty Name="NIP" ColumnName="NIP" />
                 <ScalarProperty Name="tanggal" ColumnName="tanggal" />

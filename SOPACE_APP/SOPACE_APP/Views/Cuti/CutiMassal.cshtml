@@ -35,7 +35,7 @@
                         <textarea name="txtAlasan" id="txtAlasan" class="form-control" style="width:430px;height:60px;resize:none" required></textarea>                        
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-danger" id="btnUpdate" value="Update Kuota" />
+                        <input type="submit" class="btn btn-danger" id="btnUpdate" value="Input Cuti" />
                     </div>
                 </div>
             </div>                
@@ -66,13 +66,13 @@
                  function (data) {
                      $( "#dataTables tbody").empty();
                      $.each(data, function (i, model) {
-                         var cb = `<input type="checkbox" name="CutiId" class="chkCheckBoxId" value="${model.NIP}"/>`
+                         var cb = `<input type="checkbox" name="CutiId" class="chkCheckBoxId" value="${model.NIP}" required/>`
                          var rows = `<tr>
-                                        <td style="text-align:center" height=50px>${cb}</td>
-                                        <td style="text-align:center" height=50px>${model.NIP}</td>
-                                        <td style="text-align:center" height=50px >${model.nama_pegawai}</td >
-                                        <td height=50px >${model.sisa_cuti}</td >
-                                        <td height=50px >${model.cuti_baru}</td >
+                                        <td style="text-align:center" height=25px>${cb}</td>
+                                        <td style="text-align:center" height=25px>${model.NIP}</td>
+                                        <td style="text-align:center" height=25px >${model.nama_pegawai}</td >
+                                        <td height=25px >${model.sisa_cuti}</td >
+                                        <td height=25px >${model.cuti_baru}</td >
                                     </tr >`;
 
                          $("#dataTables tbody").append(rows);

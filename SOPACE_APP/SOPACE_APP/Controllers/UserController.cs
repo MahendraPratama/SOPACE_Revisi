@@ -544,6 +544,7 @@ namespace SOPACE_MVC.Controllers
         [Route("EditBR/{id}")]
         public JsonResult EditBR(string id)
         {
+            cekSession();
             var list_pInfo = sopace.buku_rekening.Where(e => e.id_req == id).Select(
                                             e => new { e.id_req, e.nama_bank, e.keperluan }).First();
             return Json(list_pInfo, JsonRequestBehavior.AllowGet);
@@ -553,6 +554,7 @@ namespace SOPACE_MVC.Controllers
         [Route("EditPBTH/{id}")]
         public JsonResult EditPBTH(string id)
         {
+            cekSession();
             var list_pInfo = sopace.pemberitahuans.Where(e => e.id_req == id).Select(
                                     e => new {
                                         e.id_req,
@@ -566,6 +568,7 @@ namespace SOPACE_MVC.Controllers
         [Route("EditSG/{id}")]
         public JsonResult EditSG(string id)
         {
+            cekSession();
             var list_pInfo = sopace.slip_gaji.Where(e => e.id_req == id).Select(e => new {
                 e.id_req,
                 e.durasi_awal,
@@ -578,6 +581,7 @@ namespace SOPACE_MVC.Controllers
         [Route("EditVisa/{id}")]
         public JsonResult EditVisa(string id)
         {
+            cekSession();
             var list_pInfo = sopace.visas.Where(e => e.id_req == id).Select(
                                             e => new {
                                                 e.id_req,
@@ -591,6 +595,7 @@ namespace SOPACE_MVC.Controllers
         [Route("EditKKRJ/{id}")]
         public JsonResult EditKKRJ(string id)
         {
+            cekSession();
             var list_pInfo = sopace.keterangan_kerja.Where(e => e.id_req == id).Select(e => new {
                 e.id_req,
                 e.alamat,
@@ -616,6 +621,7 @@ namespace SOPACE_MVC.Controllers
         [Route("Delete/{id}")]
         public JsonResult DeleteBT(string id)
         {
+            cekSession();
             string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
             if (status != "requested")
             {
@@ -634,6 +640,7 @@ namespace SOPACE_MVC.Controllers
         [Route("DeleteKKRJ/{id}")]
         public JsonResult DeleteKKRJ(string id)
         {
+            cekSession();
             string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
             if (status != "requested")
             {
@@ -652,6 +659,7 @@ namespace SOPACE_MVC.Controllers
         [Route("DeleteNPWP/{id}")]
         public JsonResult DeleteNPWP(string id)
         {
+            cekSession();
             string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
             if (status != "requested")
             {
@@ -671,6 +679,7 @@ namespace SOPACE_MVC.Controllers
         [Route("DeleteSG/{id}")]
         public JsonResult DeleteSG(string id)
         {
+            cekSession();
             string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
             if (status != "requested")
             {
@@ -689,6 +698,7 @@ namespace SOPACE_MVC.Controllers
         [Route("DeleteVisa/{id}")]
         public JsonResult DeleteVisa(string id)
         {
+            cekSession();
             string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
             if (status != "requested")
             {
@@ -707,6 +717,7 @@ namespace SOPACE_MVC.Controllers
         [Route("DeletePBTH/{id}")]
         public JsonResult DeletePBTH(string id)
         {
+            cekSession();
             string status = sopace.requests.Where(e => e.id_req == id).Select(e => e.status).FirstOrDefault();
             if (status != "requested")
             {
