@@ -11,7 +11,7 @@ namespace SOPACE_MVC.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class lembur
     {
         public string id_lembur { get; set; }
@@ -23,7 +23,9 @@ namespace SOPACE_MVC.Models
         public string alasan { get; set; }
         public string stats { get; set; }
         public string keterangan { get; set; }
-    
+
         public virtual personal_information personal_information { get; set; }
+
+
     }
 }
