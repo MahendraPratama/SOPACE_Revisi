@@ -93,8 +93,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <input type="submit" id="btnSubmit" class="btn btn-primary" data-dismiss="modal" value="Save" />
+                    <input type="submit" id="btnSubmit" class="btn btn-success" data-dismiss="modal" value="Submit" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -231,11 +231,11 @@
                         <table id="tbl_reqSurat" class="table-striped tbl_reqSurat">
                             <thead>
                                 <tr>
-                                    <th scope="col" width="200px" height=25px>ID Request</th>
-                                    <th scope="col" width="250px" height=25px>Nama</th>
-                                    <th scope="col" width="150px" height=25px>Tanggal Request</th>
-                                    <th scope="col" width="150px" height=25px>Status</th>
-                                    <th scope="col" width="250px" height=25px>Action</th>
+                                    <th style="text-align:center" scope="col" width="200px" height=25px>ID Request</th>
+                                    <th style="text-align:center" scope="col" width="250px" height=25px>Nama</th>
+                                    <th style="text-align:center" scope="col" width="150px" height=25px>Tanggal Request</th>
+                                    <th style="text-align:center" scope="col" width="150px" height=25px>Status</th>
+                                    <th style="text-align:center" scope="col" width="250px" height=25px>Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -277,14 +277,15 @@
                     $("#tbl_reqSurat tbody").empty();
                     $.each(data, function (i, model) {
                         var date = `${model.tglReq}`
-                        var button = `<button id="${model.id_req}" class='btn btn-success' data-toggle="modal" data-target="#MyModal" >View</button>`
+                        var button = `<button id="${model.id_req}" class='btn btn-success' data-toggle="modal" data-target="#MyModal" >
+                                        <i class='glyphicon glyphicon-ok'></i></button>`
                         var a = `<a href="#/${model.id_req}" class="btn btn-xs btn-success">Check</a>`
                         var rows = `<tr>
-                                        <td height=50px>${model.id_req}</td>
-                                        <td height=50px >${model.nama_pegawai}</td >
-                                        <td height=50px >${date}</td >
-                                        <td height=50px >${model.status}</td >
-                                        <td height=50px >${button} </td >
+                                        <td height=50px style="text-align:center" >${model.id_req}</td>
+                                        <td height=50px style="text-align:center" >${model.nama_pegawai}</td >
+                                        <td height=50px style="text-align:center" >${date}</td >
+                                        <td height=50px style="text-align:center" >${model.status}</td >
+                                        <td height=50px style="text-align:center" >${button} </td >
                                     </tr >`;
                         $("#tbl_reqSurat tbody").append(rows);
                     });                              

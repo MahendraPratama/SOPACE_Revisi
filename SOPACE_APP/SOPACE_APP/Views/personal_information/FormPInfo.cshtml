@@ -37,7 +37,9 @@
                             </div>
                             <div class="form-group">
                                 <label> Nomor HP</label>
-                                @Html.EditorFor(model => model.Personal_Information.no_hp, new { htmlAttributes = new { @class = "form-control", placeholder = "Nomor HP ex: 081888xxxxxx" } })
+                                @Html.EditorFor(model => model.Personal_Information.no_hp, new { htmlAttributes = new { @class = "form-control",
+                                    placeholder = "Nomor HP ex: 081888xxxxxx" } })
+                                <label id="pesan1"></label>
                             </div>
                             <div class="form-group">
                                 <label> Jenis Kelamin *</label>
@@ -87,7 +89,9 @@
                             </div>
                             <div class="form-group">
                                 <label> Nomor KTP *</label>
-                                @Html.EditorFor(model => model.Personal_Information.no_ktp, new { htmlAttributes = new { @class = "form-control", placeholder = "Nomor KTP", required = "true" } })
+                                @Html.EditorFor(model => model.Personal_Information.no_ktp, new { htmlAttributes = new { @class = "form-control",
+                                            placeholder = "Nomor KTP", required = "true" } })
+                                <label id="pesan2"></label>
                             </div>
                             <div class="form-group">
                                 <label> Alamat Identitas</label>
@@ -101,7 +105,8 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label> Email</label>
-                                @Html.EditorFor(model => model.Personal_Information.email, new { htmlAttributes = new { @class = "form-control", type = "email", placeholder = "Email" } })
+                                @Html.EditorFor(model => model.Personal_Information.email, new { htmlAttributes = new { @class = "form-control", type = "email",
+                                    placeholder = "Email" } })
                             </div>
                             <div class="form-group">
                                 <label> Pendidikan</label>
@@ -113,11 +118,15 @@
                             </div>
                             <div class="form-group">
                                 <label> NPWP</label>
-                                @Html.EditorFor(model => model.Personal_Information.NPWP, new { htmlAttributes = new { @class = "form-control", placeholder = "NPWP" } })
+                                @Html.EditorFor(model => model.Personal_Information.NPWP, new { htmlAttributes = new { @class = "form-control",
+                                    placeholder = "NPWP" } })
+                                <label id="pesan3"></label>
                             </div>
                             <div class="form-group">
                                 <label> Nomor Rekening</label>
-                                @Html.EditorFor(model => model.Personal_Information.no_rek, new { htmlAttributes = new { @class = "form-control", placeholder = "Nomor Rekening" } })
+                                @Html.EditorFor(model => model.Personal_Information.no_rek, new { htmlAttributes = new { @class = "form-control",
+                                    placeholder = "Nomor Rekening" } })
+                                <label id="pesan4"></label>
                             </div>
                             <div class="form-group">
                                 <label> Status Pajak</label>
@@ -204,6 +213,47 @@
 @section Script{
     <script src="~/Scripts/lodash.js"></script>
     <script>
+        //apabila input diberi huruf/simbol, huruf/ simbol akan hilang
+        $(document).ready(function () {
+            $('#Personal_Information_no_hp,#Personal_Information_no_ktp, #Personal_Information_no_rek,#Personal_Information_NPWP')
+                .keyup(function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+        });
+
+        //validasi No HP dan KTP
+        $(document).ready(function () {
+            $('#Personal_Information_no_hp,#Personal_Information_no_ktp').keypress(function (data) {
+                if (data.which != 8 && data.which != 0 && (data.which < 48 || data.which > 57)) {
+                    $('#pesan1,#pesan2').css("color", "red");
+                    $("#pesan1,#pesan2").html("Tidak boleh menggunakan huruf atau simbol").show().fadeOut("slow");
+                    return false;
+                }
+            });
+        });
+
+        //validasi NPWP
+        $(document).ready(function () {
+            $('#Personal_Information_NPWP').keypress(function (data) {
+                if (data.which != 8 && data.which != 0 && (data.which < 48 || data.which > 57)) {
+                    $('#pesan3').css("color", "red");
+                    $("#pesan3").html("Tidak boleh menggunakan huruf atau simbol").show().fadeOut("slow");
+                    return false;
+                }
+            });
+        });
+
+        //validasi No Rekening
+        $(document).ready(function () {
+            $('#Personal_Information_no_rek').keypress(function (data) {
+                if (data.which != 8 && data.which != 0 && (data.which < 48 || data.which > 57)) {
+                    $('#pesan4').css("color", "red");
+                    $("#pesan4").html("Tidak boleh menggunakan huruf atau simbol").show().fadeOut("slow");
+                    return false;
+                }
+            });
+        });
+
         var form = $("#formAdd");
         var id_nip = $("#Personal_Information_NIP");
         var id_username = $("#User_username");

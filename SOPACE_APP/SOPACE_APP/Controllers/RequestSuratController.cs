@@ -114,9 +114,9 @@ namespace SOPACE_MVC.Controllers
                                                                         )
                                                                     )
                                                                 ),
-                                                         textDet2 = (idReq.Contains("BREK") ? "Nama Bank" :
+                                                         textDet2 = (idReq.Contains("BREK") ? "Keperluan" :
                                                                     ((idReq.Contains("KKRJ")) ? "Jabatan" :
-                                                                        ((idReq.Contains("NPWP")) ? "No Telp" :
+                                                                        ((idReq.Contains("NPWP")) ? "Alamat Kantor Pajak" :
                                                                             ((idReq.Contains("VISA")) ? "Keperluan" :
                                                                                 ((idReq.Contains("PBTH")) ? "Deskripsi" :
                                                                                 "none"

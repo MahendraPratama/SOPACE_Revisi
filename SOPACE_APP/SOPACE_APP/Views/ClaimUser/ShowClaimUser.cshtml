@@ -40,6 +40,7 @@
         </div>
     </div>
 </div>
+
 <!--Modal Saldo Claim Medical-->
 <div class="modal" tabindex="-1" role="dialog" id="saldoModal">
     <div class="modal-dialog" role="document">
@@ -168,14 +169,14 @@
                 $.each(data, function (i, model) {
                     var date = `${model.value}`
                     var rows = `<tr>
-                                        <td height=20px>${model.id_klaim_medis}</td>
-                                        <td height=20px >${model.id_tipe}</td>
-                                        <td height=20px >${date}</td>
-                                        <td height=20px >Rp. ${model.payout}</td>
-                                        <td height=20px >${model.status}</td> @* Total Tagihan atau Total Biaya *@
-                                        <td height=20px >
-                                        <a id=${model.id_klaim_medis} style="text-align:center" class="glyphicon glyphicon-eye-open"
-                                            href="#" data-toggle="modal" data-target="#mymodal" />
+                                        <td style="text-align:center" height=20px>${model.id_klaim_medis}</td>
+                                        <td style="text-align:center" height=20px >${model.id_tipe}</td>
+                                        <td style="text-align:center" height=20px >${date}</td>
+                                        <td style="text-align:center" height=20px >Rp. ${model.payout}</td>
+                                        <td style="text-align:center" height=20px >${model.status}</td> @* Total Tagihan atau Total Biaya *@
+                                        <td style="text-align:center" height=20px ><a id=${model.id_klaim_medis} 
+                                            style="text-align:center" class="glyphicon glyphicon-eye-open"
+                                                href="#" data-toggle="modal" data-target="#mymodal" />
                                         </td>
                                     </tr >`;
                     $("#dataTables-Claim tbody").append(rows);

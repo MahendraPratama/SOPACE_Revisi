@@ -32,19 +32,9 @@
                     <div class="form-group">
                         @Html.Label("Nama Pegawai", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-3">
-                            @*@Html.Editor("Nama", new { htmlAttributes = new { @class = "form-control", id = "nama", @readonly = "true" } })*@
                             <label class="form-control" id="nama"></label>
-                            @*@Html.Label("Nama", new { htmlAttributes = new { @class = "form-control", id = "nama" } })*@
                         </div>
                     </div>
-                    @*<div class="form-group">
-                    @Html.LabelFor(model => model.NIP, "NIP", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("NIP", null, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.NIP, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-
                     <div class="form-group">
                         @Html.Label("Tanggal", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-3">
@@ -79,11 +69,10 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Create" class="btn btn-default" id="input" />
+                            <input type="submit" value="Create" class="btn btn-success" id="input" />
                         </div>
                     </div>
                 </div>
-                @*}*@
             </form>
         </div>
     </div>
