@@ -101,7 +101,7 @@ namespace SOPACE_MVC.Controllers
         [Route("GetVisa")]
         public JsonResult ViewRequestVisa()
         {
-            string nip = Session["user_nip"].ToString();
+            cekSession();
             var list_pInfo = sopace.requests.ToList().Where(e => e.NIP == nip).OrderByDescending(e => e.tanggal_request).Join(sopace.visas, r => r.id_req,
                                                         bt => bt.id_req,
                                                         (r, bt) => new {

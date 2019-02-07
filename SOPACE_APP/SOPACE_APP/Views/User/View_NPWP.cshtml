@@ -15,7 +15,8 @@
     <div class="row">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#mymodal">Add Request</a>
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#mymodal">
+                   <i class="glyphicon glyphicon-plus"></i>Add Request</a>
             </div>
         </div>
         <div class="panel panel-primary">
@@ -23,12 +24,12 @@
                 <table id="tblNPWP" class="table table-striped table-bordered table-sm">
                     <thead>
                         <tr>
-                            <th scope="col" width="200px" height=25px>ID Request</th>
-                            <th scope="col" width="150px" height=25px>Tanggal Request</th>
-                            <th scope="col" width="150px" height=25px>No Tlp</th>
-                            <th scope="col" width="300px" height=25px>Alamat Kantor Pajak</th>
-                            <th scope="col" width="200px" height=25px>Status</th>
-                            <th scope="col" width="200px" height=25px>Action</th>
+                            <th style="text-align:center" scope="col" width="200px" height=25px>ID Request</th>
+                            <th style="text-align:center" scope="col" width="200px" height=25px>Tanggal Request</th>
+                            <th style="text-align:center" scope="col" width="150px" height=25px>No Tlp</th>
+                            <th style="text-align:center" scope="col" width="300px" height=25px>Alamat Kantor Pajak</th>
+                            <th style="text-align:center" scope="col" width="200px" height=25px>Status</th>
+                            <th style="text-align:center" scope="col" width="150px" height=25px>Action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -63,8 +64,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="refresh()" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" id="btnSubmit" class="btn btn-primary" value="Submit" />
+                <input type="submit" id="btnSubmit" class="btn btn-success" value="Submit" />
+                <button type="button" onclick="refresh()" class="btn btn-danger" data-dismiss="modal">Close</button>
+
             </div>
         </div>
     </div>
@@ -144,24 +146,26 @@
                      $( "#tblNPWP tbody").empty();
                      $.each(data, function (i, model) {
                          var date = `${model.value}`
-                         var button = `<button id="${model.id_req}" class='btn btn-danger'>Delete</button>`
-                         var a = `<a id="${model.id_req}" data-toggle="modal" data-target="#mymodal" class='btn btn-primary'>Edit</a>`
+                         var button = `<button id="${model.id_req}" class='btn btn-danger'>
+                            <i class="glyphicon glyphicon-trash"></i></button>`
+                         var a = `<a id="${model.id_req}" data-toggle="modal" data-target="#mymodal" class='btn btn-primary'>
+                            <i class="glyphicon glyphicon-edit"></i></a>`
                          if (model.status == "requested") {
                              var rows = `<tr>
-                                        <td height=50px>${model.id_req}</td>
-                                        <td height=50px >${date}</td >
-                                        <td height=50px > ${model.no_tlp}</td >
-                                        <td height = 50px > ${ model.alamat_kantor_pajak}</td >
-                                        <td height = 50px > ${ model.status}</td >
-                                        <td height=50px >  ${a} ${button} </td >
+                                        <td style="text-align:center" height=50px>${model.id_req}</td>
+                                        <td style="text-align:center" height=50px >${date}</td >
+                                        <td style="text-align:center" height=50px > ${model.no_tlp}</td >
+                                        <td style="text-align:center" height = 50px > ${ model.alamat_kantor_pajak}</td >
+                                        <td style="text-align:center" height = 50px > ${ model.status}</td >
+                                        <td style="text-align:center" height=50px >  ${a} ${button} </td >
                                     </tr >`;
                          } else if (model.status != "requested") {
                              var rows = `<tr>
-                                        <td height=50px>${model.id_req}</td>
-                                        <td height=50px >${date}</td >
-                                        <td height=50px > ${model.no_tlp}</td >
-                                        <td height = 50px > ${ model.alamat_kantor_pajak}</td >
-                                        <td height = 50px > ${ model.status}</td >
+                                        <td style="text-align:center" height=50px>${model.id_req}</td>
+                                        <td style="text-align:center" height=50px >${date}</td >
+                                        <td style="text-align:center" height=50px > ${model.no_tlp}</td >
+                                        <td style="text-align:center" height = 50px > ${ model.alamat_kantor_pajak}</td >
+                                        <td style="text-align:center" height = 50px > ${ model.status}</td >
                                         <td height=50px ></td >
                                     </tr >`;
                          }
@@ -196,7 +200,7 @@
         });
 
         $("#tblNPWP").on("click", "a", function (e) {
-            var checkstr = confirm(`are you sure you want to delete Request ${e.target.id}?`);
+            var checkstr = confirm(`are you sure you want to Update Request ${e.target.id}?`);
             if (checkstr == true) {
                 $.get(`EditNPWP/${e.target.id}`, function (data) {
                     $("#txtIDReq").val(`${data.id_req}`);

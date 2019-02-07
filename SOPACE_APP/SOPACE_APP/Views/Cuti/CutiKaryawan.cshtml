@@ -15,16 +15,18 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel">
-                <button id="btnCuti" onclick="BtnClick()" class="btn btn-success" data-toggle="modal" data-target="#mymodal">Kuota Cuti</button>
+                <button id="btnCuti" onclick="BtnClick()" class="btn btn-primary" 
+                        data-toggle="modal" data-target="#mymodal">
+                            <i class="glyphicon glyphicon-eye-open"></i> Kuota Cuti</button>
             </div>
 
             <table id="tblCuti" class="table table-striped table-bordered table-sm-striped">
                 <thead>
                     <tr>
-                        <th scope="col" width="150px" height=20px>Tanggal Mulai Cuti</th>
-                        <th scope="col" width="150px" height=20px>Tanggal Selesai Cuti</th>
-                        <th scope="col" width="150px" height=20px>Alasan Cuti</th>
-                        <th scope="col" width="150px" height=20px>Detail</th>
+                        <th style="text-align:center" scope="col" width="200px" height=20px>Tanggal Mulai Cuti</th>
+                        <th style="text-align:center" scope="col" width="200px" height=20px>Tanggal Selesai Cuti</th>
+                        <th style="text-align:center" scope="col" width="350px" height=20px>Alasan Cuti</th>
+                        <th style="text-align:center" scope="col" width="100px" height=20px>Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -36,11 +38,9 @@
 <div class="modal" tabindex="-1" role="dialog" id="mymodal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Informasi Detail Cuti</h3>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>*@
+            <div class="modal-header" style="background-color:dodgerblue">
+                <h3 class="modal-title">
+                <i class="glyphicon glyphicon-eye-open"></i> Informasi Detail Cuti</h3>
             </div>
             <div class="modal-body row">
                 <form id="formCuti" name="formCuti">
@@ -75,36 +75,10 @@
                         </div>
                     </div>
 
-                    @*<div class="col-md-8">
-                            <div class="form-inline">
-
-                            </div>
-                            <div class="form-inline">
-
-                                <text name="txtNO" id="txtNo" class="form-control" style="border-color:white;background:none" readonly></text>
-                            </div>
-                            <div class="form-inline">
-
-                                <text name="txtTglMulai" id="txtTglMulai" class="form-control" style="border-color:white;background:none" readonly></text>
-                            </div>
-                            <div class="form-inline">
-
-                                <text name="txtTglSelesai" id="txtTglSelesai" class="form-control" style="border-color:white;background:none" readonly></text>
-                            </div>
-                            <div class="form-inline">
-
-                                <textarea name="txtAlasan"id="txtAlasan" class="form-control" style="border-color:white;background:none" readonly></textarea>
-                            </div>
-                            <div class="form-inline">
-
-                                <textarea name="txtAlamat" id="txtAlamat" class="form-control" style="border-color:white;background:none" readonly></textarea>
-                            </div>
-                        </div>*@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="refresh()" data-dismiss="modal">Close</button>
-                @*<input type="submit" id="btnSubmit" class="btn btn-primary" data-dismiss="modal" value="Submit" />*@
+                <button type="button" class="btn btn-danger" onclick="refresh()" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -121,16 +95,16 @@
                          //var button = `<button id="${model.id_req}" class='btn btn-danger'>Delete</button>`
                          var a = `<a id="${model.id_cuti}" data-toggle="modal" data-target="#mymodal" class='glyphicon glyphicon-eye-open'></a>`
                          var rows = `<tr>
-                                        <td height=30px >${date1}</td >
-                                        <td height=30px > ${date2}</td >
-                                        <td height=30px>${model.alasan_cuti}</td>
-                                        <td height=30px>${a}</td>
+                                        <td style="text-align:center" height=30px >${date1}</td >
+                                        <td style="text-align:center" height=30px > ${date2}</td >
+                                        <td style="text-align:center" height=30px>${model.alasan_cuti}</td>
+                                        <td style="text-align:center" height=30px>${a}</td>
                                     </tr >`;
-
                          $("#tblCuti tbody").append(rows);
                      });
                      $("#tblCuti").DataTable();
-            });
+                 });
+
         $("#tblCuti").on("click", "a", function (e) {
             $.get(`getDetailcutikaryawan/${e.target.id}`, function (data) {
                 $.each(data, function (i, model) {
@@ -163,10 +137,9 @@
                 });
             });
         };
+
         function refresh() {
             location.reload();
         }
-
-
     </script>
 }
