@@ -37,7 +37,10 @@
                                 <th style="text-align:center">
                                     Total Jam Lembur
                                 </th>
-                                
+                                <th style="text-align:center">
+                                    Status Lembur
+                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -45,7 +48,9 @@
                             {
                                 <tr>
                                     <td style="text-align:center">
-                                        @Html.DisplayFor(modelLembur => lembur.id_lembur)
+                                        <a data-toggle="modal" data-target="#mymodal" onclick="ViewDetail('@lembur.id_lembur')">
+                                            @Html.DisplayFor(modelLembur => lembur.id_lembur)
+                                        </a>
                                     </td>
                                     <td style="text-align:center">
                                         @String.Format("{0:dd MMMM yyyy}", lembur.tanggal)
@@ -59,6 +64,9 @@
                                     <td style="text-align:center">
                                         @Html.DisplayFor(modelTotal => lembur.total_jam)
                                     </td>
+                                    <td style="text-align:center">
+                                        @Html.DisplayFor(modelStats => lembur.stats)
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -67,5 +75,83 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="mymodal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:dodgerblue">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title"><i class="glyphicon glyphicon-eye-open"></i> View Detail Lembur</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <span>ID Lembur</span>
+                                <input disabled id="idlembur" placeholder="ID Lembur" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>NIP</span>
+                                <input disabled id="nipegawai" placeholder="NIP" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Status Lembur</span>
+                                <input id="stts" disabled class="form-control" placeholder="Status Lembur" />
+                            </div>
+                            <div class="form-group">
+                                <span>Keterangan Status Lembur</span>
+                                <textarea disabled id="ket" placeholder="Keterangan Status Lembur" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <span>Tanggal</span>
+                                <input disabled id="tgl" placeholder="Tanggal" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Jam Mulai</span>
+                                <input disabled id="jamm" placeholder="Jam Mulai" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Jam Selesai</span>
+                                <input disabled id="jams" class="form-control" placeholder="Jam Selesai" />
+                            </div>
+                            <div class="form-group">
+                                <span>Total Jam Lembur</span>
+                                <input disabled id="total" placeholder="Total Jam" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <span>Alasan Lembur</span>
+                                <textarea disabled id="alasan" placeholder="Alasan Lembur" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-@section script{}
+@section script{
+    <script>
+        function ViewDetail(id_lembur) {
+            $.get('@Url.Action("detailLembur", "UserLembur")'
+                , { 'id_lembur': id_lembur }
+                , function (model) {
+                    $("#idlembur").val(model[0].id_lembur);
+                    $("#nipegawai").val(model[0].NIP);
+                    $("#stts").val(model[0].stats);
+                    $("#ket").val(model[0].keterangan);
+                    $("#tgl").val(model[0].value);
+                    $("#jamm").val(model[0].jammu);
+                    $("#jams").val(model[0].jamse);
+                    $("#total").val(model[0].totjam);
+                    $("#alasan").val(model[0].alasan);
+        });
+    }
+    </script>
+}

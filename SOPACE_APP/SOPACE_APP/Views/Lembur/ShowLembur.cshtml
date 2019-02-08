@@ -37,7 +37,10 @@
                                     Jam Selesai
                                 </th>
                                 <th style="text-align:center">
-                                    Total Jam Lembur
+                                    Jumlah Jam
+                                </th>
+                                <th style="text-align:center">
+                                    Status Lembur
                                 </th>
                                 <th></th>
                             </tr>
@@ -45,31 +48,33 @@
                         <tbody>
                             @foreach (var lembur in Model)
                             {
-                                <tr>
-                                    <td style="text-align:center">
-                                        @Html.DisplayFor(modelLembur => lembur.id_lembur)
-                                    
-                                    </td>
-                                    <td style="text-align:center">
-                                        @Html.DisplayFor(modelLembur => lembur.NIP)
-                                    </td>
-                                    <td style="text-align:center">
-                                        @String.Format("{0:dd MMMM yyyy}",lembur.tanggal)
-                                    </td>
-                                    <td style="text-align:center">
-                                        @Html.DisplayFor(modelLembur => lembur.jam_mulai)
-                                    </td>
-                                    <td style="text-align:center">
-                                        @Html.DisplayFor(modelLembur => lembur.jam_selesai)
-                                    </td>
-                                    <td style="text-align:center">
-                                        @Html.DisplayFor(modelTotal => lembur.total_jam)
-                                    </td>
-                                    <td>
-                                        <a class="glyphicon glyphicon-pencil" href="Edit/@lembur.id_lembur" />&nbsp;|&nbsp;
-                                        <a class="glyphicon glyphicon-trash" href="DeleteLembur/@lembur.id_lembur" onclick="return confirm(`Are you sure to Delete?`)" />
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td style="text-align:center">
+                                    @Html.DisplayFor(modelLembur => lembur.id_lembur)
+                                </td>
+                                <td style="text-align:center">
+                                    @Html.DisplayFor(modelLembur => lembur.NIP)
+                                </td>
+                                <td style="text-align:center">
+                                    @String.Format("{0:dd MMMM yyyy}", lembur.tanggal)
+                                </td>
+                                <td style="text-align:center">
+                                    @Html.DisplayFor(modelLembur => lembur.jam_mulai)
+                                </td>
+                                <td style="text-align:center">
+                                    @Html.DisplayFor(modelLembur => lembur.jam_selesai)
+                                </td>
+                                <td style="text-align:center">
+                                    @Html.DisplayFor(modelTotal => lembur.total_jam)
+                                </td>
+                                <td style="text-align:center">
+                                    @Html.DisplayFor(modelStats => lembur.stats)
+                                </td>
+                                <td>
+                                    <a class="glyphicon glyphicon-pencil" href="Edit/@lembur.id_lembur" />&nbsp;|&nbsp;
+                                    <a class="glyphicon glyphicon-trash" href="DeleteLembur/@lembur.id_lembur" onclick="return confirm(`Are you sure to Delete?`)" />
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

@@ -84,7 +84,7 @@ namespace SOPACE_MVC.Controllers
                 });
             return Json(detail, JsonRequestBehavior.AllowGet);
         }
-
+         
         [HttpGet]
         [Route("GetListClaim")]
         public JsonResult getDataListClaim(string status)

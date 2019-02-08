@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="form-check-inline">
-                            @Html.Label("Keterangan", htmlAttributes: new { @class = "control-label", @style = "text-align:left;" })
+                            @Html.Label("Keterangan Status Lembur", htmlAttributes: new { @class = "control-label", @style = "text-align:left;" })
                             @Html.TextAreaFor(model => model.keterangan, new { @class = "form-control", id = "keterangan", style = "height: 95px; width:325px;" })
                             @Html.ValidationMessageFor(model => model.keterangan, "", new { @class = "text-danger" })
                         </div>
@@ -136,7 +136,7 @@
                 $("#id_lembur").val(data);
             });
         });
-
+        
         $().ready(function () {
             $("#totjam").html("");
             $("#jams, #jamm").change(function () {
@@ -208,7 +208,6 @@
                         }
                    });
             }
-
         });
     </script>
 }
