@@ -20,8 +20,7 @@ namespace SOPACE_MVC.Controllers
         
         [Route(""),ActionName("Index")]
         public ActionResult Index()
-        {
-            
+        {            
             return View("HalamanLogin");
         }
 
