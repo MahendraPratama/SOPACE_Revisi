@@ -55,7 +55,12 @@ namespace SOPACE_MVC.Controllers
             Session["username"] = usrnm;
             TempData.Keep();
         }
-
+        private int counter(string kodeReq, string selectMonth)
+        {
+            return sopace.requests.Where(e => e.id_req.Contains(kodeReq) &&
+                     e.tanggal_request.Value.Month.ToString().Contains(selectMonth) &&
+                     e.tanggal_request.Value.Year.Equals(DateTime.Now.Year)).Count();
+        }
         [HttpPost]
         public ActionResult Getdata(string month)
         {
@@ -65,11 +70,7 @@ namespace SOPACE_MVC.Controllers
             int BREK = counter("BREK", month);
             int VISA = counter("VISA", month);
 
-            int counter(string kodeReq, string selectMonth){
-               return sopace.requests.Where(e => e.id_req.Contains(kodeReq) && 
-                        e.tanggal_request.Value.Month.ToString().Contains(selectMonth) &&
-                        e.tanggal_request.Value.Year.Equals(DateTime.Now.Year)).Count();
-            }
+            
 
             Ratio obj = new Ratio();
             obj.SG = SG;
