@@ -256,6 +256,7 @@
       <DependentUpon>SOPACE_DB_Model.edmx</DependentUpon>
     </Content>
     <Content Include="Scripts\chosen.jquery.min.js" />
+    <None Include="Properties\PublishProfiles\SOPACE.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\canvasjs.min.js" />
     <Content Include="Scripts\canvasjs.react.js" />
